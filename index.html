@@ -4,28 +4,416 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>bunsoootchi</title>
+<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lilita+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg: #F6F1E7; --ink: #161411; --faint: #6F6A62; --red: #DE3E2D; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #0B0A09; --ink: #ECE7DE; --faint: #9A948A; --red: #F05A48; } }
-  body { background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 40px 16px 64px; }
-  main { max-width: 640px; margin: 0 auto; }
-  h1 { font: 400 40px/1.1 Georgia, "Times New Roman", serif; margin: 0 0 6px; }
-  h2 { font: 600 18px/1.3 system-ui, sans-serif; margin: 32px 0 6px; }
-  p { color: var(--faint); margin: 0 0 8px; }
-  .rule { width: 36px; height: 4px; border-radius: 2px; background: var(--red); margin: 18px 0 24px; }
-  a { color: inherit; }
+  :root {
+    --mint: #EAF7F2; --mint-dot: #DCF1EA; --cobalt: #3049B8; --cobalt-deep: #24388F;
+    --green: #3F9E5A; --lime: #8CC97E; --sun: #F3D58A; --ink: #23263F; --paper: #FFFDF9; --cream: #F7F3EC; --line: #E6E1D8; --soft-blue: #EEF1FB;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 500 17px/1.6 "Nunito", system-ui, sans-serif; color: var(--ink); background: var(--paper); }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  .display { font-family: "Lilita One", system-ui, sans-serif; font-weight: 400; letter-spacing: .5px; }
+
+  /* NAV */
+  nav { position: fixed; inset: 0 0 auto 0; z-index: 10; transition: background .3s, box-shadow .3s; }
+  nav.scrolled { background: rgba(255,253,249,.92); backdrop-filter: blur(8px); box-shadow: 0 1px 0 var(--line); }
+  .nav-logo { display: flex; align-items: center; gap: 4px; }
+  .nav-face { height: 44px; display: block; transition: transform .35s; }
+  .nav-text { height: 46px; max-width: 0; opacity: 0; display: block; object-fit: contain; object-position: left center; transition: max-width .45s ease, opacity .3s ease; }
+  nav.scrolled .nav-text { max-width: 120px; opacity: 1; }
+  nav.scrolled .nav-face { height: 36px; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+  .logo { font-family: "Lilita One"; font-size: 26px; color: var(--cobalt); text-decoration: none; }
+  .logo span { color: var(--green); }
+  .navlinks { display: flex; gap: 22px; align-items: center; font-weight: 800; font-size: 15px; }
+  .navlinks a { color: var(--ink); text-decoration: none; }
+  .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; }
+
+  /* HERO */
+  .hero { position: relative; background: var(--mint); overflow: hidden;
+    background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px; padding: 120px 0 150px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 24px; }
+  .tag { display: inline-block; background: #fff; color: var(--cobalt); font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); transform: rotate(-3deg); }
+  .hero h1 { font-size: 92px; line-height: .95; color: var(--cobalt); margin: 18px 0 10px; text-shadow: 3px 3px 0 #fff; }
+  .hi { font-size: 34px; color: var(--green); margin: 0 0 4px; transform: rotate(-4deg); display: inline-block; }
+  .logo-h1 { margin: 0 0 18px; }
+  .logo-h1 img { width: 440px; max-width: 100%; display: block; filter: drop-shadow(3px 3px 0 #fff); }
+  .aka { font-weight: 800; color: var(--green); font-size: 20px; margin: 0 0 14px; }
+  .hero p.lead { font-size: 20px; max-width: 30ch; margin: 0 0 26px; }
+  .btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { font-family: "Lilita One"; font-size: 20px; text-decoration: none; padding: 12px 26px; border-radius: 999px; display: inline-block; }
+  .btn.primary { background: var(--cobalt); color: #fff; box-shadow: 0 4px 0 var(--cobalt-deep); }
+  .btn.ghost { background: #fff; color: var(--cobalt); border: 2px solid var(--line); }
+  .mascot { position: relative; justify-self: center; }
+  .mascot img { width: 400px; max-width: 100%; animation: float 5s ease-in-out infinite; filter: drop-shadow(0 18px 18px rgba(20,24,58,.18)); }
+  @keyframes float { 50% { transform: translateY(-16px) rotate(3deg); } }
+  .spark { position: absolute; color: #E8C25E; font-size: 34px; }
+  /* the little stars around the mascot twinkle, each on its own timing */
+  .spark { display: inline-block; animation: twinkle 3.2s ease-in-out infinite; }
+  .spark:nth-of-type(2) { animation-duration: 4.1s; animation-delay: -1.4s; }
+  .spark:nth-of-type(3) { animation-duration: 2.7s; animation-delay: -.6s; }
+  @keyframes twinkle {
+    0%, 100% { transform: scale(.75) rotate(0deg); opacity: .6; }
+    45% { transform: scale(1.15) rotate(25deg); opacity: 1; }
+    60% { transform: scale(1) rotate(45deg); opacity: .9; }
+  }
+  @media (prefers-reduced-motion: reduce) { .spark { animation: none; } }
+  .wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; }
+  .wave svg { width: 100%; height: 90px; display: block; }
+
+  /* PROJECTS */
+  .projects { background: var(--paper); color: var(--ink); padding: 40px 0 120px; position: relative; }
+  .section-title { font-size: 54px; line-height: 1; margin: 0 0 12px; color: var(--cobalt); }
+  .section-sub { margin: 0 0 34px; line-height: 1.4; color: #6B6E85; font-size: 18px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card { position: relative; overflow: hidden; text-decoration: none; background: var(--paper); color: var(--ink); border-radius: 24px; padding: 14px; border: 1.5px solid var(--line); box-shadow: 0 10px 30px rgba(35,38,63,.07); display: flex; flex-direction: column;
+    transition: transform .3s cubic-bezier(.3,1.6,.5,1), box-shadow .25s, border-color .2s, opacity .6s ease, translate .6s ease; }
+  /* hover: the card "snaps" into chunky game-UI style */
+  .card:hover, .card:focus-visible, .card.demo-hover { transform: translateY(-8px) rotate(-1.2deg); border-color: var(--ink); box-shadow: 0 0 0 1.5px var(--ink), 8px 10px 0 1.5px var(--accent, var(--cobalt)); outline: none; }
+  .grid > .card:nth-child(even):hover, .grid > .card:nth-child(even).demo-hover { transform: translateY(-8px) rotate(1.2deg); }
+  .card::after { content: ""; position: absolute; inset: -50%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.65) 50%, transparent 60%); transform: translateX(-100%); pointer-events: none; }
+  .card:hover::after, .card.demo-hover::after { transform: translateX(100%); transition: transform .8s ease; }
+  .go { position: absolute; z-index: 2; top: 14px; right: 14px; background: var(--ink); color: #fff; font-weight: 800; font-size: 13px; padding: 6px 12px; border-radius: 999px; opacity: 0; transform: translateY(-8px) scale(.9); transition: opacity .2s, transform .3s cubic-bezier(.3,1.6,.5,1); }
+  .card:hover .go, .card.demo-hover .go { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .card, .card .thumb, .card::after, .go, .icon-btn { transition: none; } .card:hover { transform: none; } }
+  /* full-image cards: picture fills the card, text sits on a frosted panel */
+  .grid { grid-auto-rows: 340px; }
+  .card { padding: 0; display: block; }
+  .card .thumb { position: absolute; inset: 0; border-radius: 0; }
+  .card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+  .card:hover .thumb img, .card.demo-hover .thumb img { transform: scale(1.06); }
+  .card .body { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 1; padding: 14px 16px 15px; border-radius: 16px;
+    background: rgba(255,253,249,.55); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); border: 1px solid rgba(255,255,255,.55); box-shadow: 0 6px 18px rgba(35,38,63,.10); }
+  .card h3 { font-family: "Lilita One"; font-weight: 400; font-size: 24px; line-height: 1.1; margin: 8px 0 4px; }
+  .card p { margin: 0; font-size: 14px; line-height: 1.4; color: #2E3150; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-block; font-weight: 800; font-size: 12px; padding: 3px 10px; border-radius: 999px; }
+  .chip.app { background: #E3E8FF; color: var(--cobalt); }
+  .chip.tama { background: #E2F3E6; color: var(--green); }
+  .chip.eink { background: #E3F7DD; color: #2E8A20; }
+  .chip.soon { background: #FFF2CC; color: #9A6B00; }
+  .chip.game { background: #FFE6D6; color: #B4501E; }
+  .card.featured, .card.wide { grid-column: span 2; }
+  .card.wide .thumb img { object-position: right center; }
+  .card.wide .body { right: auto; width: min(380px, 58%); }
+  .card.panel-right .thumb img { object-position: left center; }
+  .card.panel-right .body { left: auto; right: 12px; }
+  .card.panel-right .go { right: auto; left: 14px; }
+  .card img[src*="bigger-brother"] { object-position: center 52%; }
+  .card img[src*="weddingotchi"] { object-position: left top; }
+  .card.featured .thumb img { object-position: center; }
+  .card.featured .body { right: auto; width: min(380px, 58%); }
+  .card.featured h3 { font-size: 32px; }
+
+  /* GAMES BAND */
+  .games { background: var(--mint); color: var(--ink); background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px; padding: 70px 0 80px; position: relative; text-align: center; }
+  .games h2 { font-size: 60px; line-height: 1; margin: 0 0 12px; color: var(--cobalt); text-wrap: balance; }
+  .games p { font-size: 19px; line-height: 1.4; max-width: 62ch; margin: 0 auto 40px; text-wrap: pretty; }
+  .games .btn { background: var(--cobalt); color: #fff; box-shadow: 0 4px 0 var(--cobalt-deep); }
+  .wave-top { position: absolute; top: -89px; left: 0; right: 0; line-height: 0; }
+  .wave-top svg { width: 100%; height: 90px; display: block; }
+
+
+  /* ART COLLAGE */
+  .collage { position: relative; height: 730px; margin: 83px auto 40px; max-width: 1040px; text-align: left; color: var(--cobalt); }
+  .sticker { position: absolute; left: var(--x); top: var(--y); width: var(--w); margin: 0; background: #fff; padding: 8px; border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(35,38,63,.14); transform: rotate(var(--r)); transition: transform .35s cubic-bezier(.3,1.6,.5,1), box-shadow .3s, opacity .6s ease, translate .6s ease; cursor: pointer; display: block; text-decoration: none; }
+  .sticker img { display: block; width: 100%; border-radius: 8px; }
+  .sticker.taped::before { content: ""; position: absolute; top: -12px; left: 50%; width: 76px; height: 24px; transform: translateX(-50%) rotate(-4deg);
+    background: rgba(63,158,90,.32); border-radius: 3px; backdrop-filter: blur(1px); }
+  .sticker:nth-child(4n+3).taped::before { background: rgba(48,73,184,.28); }
+  .sticker:hover, .sticker.demo-hover { transform: rotate(0deg) scale(1.12); z-index: 5; box-shadow: 0 0 0 2px var(--ink), 7px 9px 0 2px var(--cobalt); }
+  .note { position: absolute; font-family: "Gochi Hand", cursive; font-size: 24px; line-height: 1.2; color: var(--green); transform: rotate(var(--r)); white-space: nowrap; z-index: 6; pointer-events: none;
+    background: rgba(255,253,249,.94); padding: 2px 12px 3px; border-radius: 6px; box-shadow: 0 3px 10px rgba(35,38,63,.14); }
+  .doodle { position: absolute; z-index: 6; pointer-events: none; }
+  @media (max-width: 760px) {
+    .collage { margin-top: 52px; height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .sticker { position: static; width: auto; align-self: start; }
+    .sticker img { aspect-ratio: 1; object-fit: cover; }
+    .sticker.no-phone { display: none; }
+    .note, .doodle { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sticker { transition: none; } }
+
+
+  /* SCRIBBLES: hand-drawn doodles that draw themselves in, then sway slowly */
+  .wrap { position: relative; z-index: 1; }
+  footer { position: relative; overflow: hidden; }
+  .projects, .games { overflow-x: clip; }
+  .scribble { position: absolute; z-index: 0; pointer-events: none; color: var(--cobalt); opacity: .75; transform: rotate(var(--r, 0deg)); }
+  .scribble.green { color: var(--green); }
+  .scribble.inline { position: relative; display: inline-block; vertical-align: middle; margin-left: 18px; top: -4px; }
+  .scribble.covered { visibility: hidden; }
+  .scribble svg { display: block; width: 100%; height: auto; overflow: visible; animation: sway var(--d, 8s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+  .scribble path { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  /* once in view: draw in, hold, erase in reverse, repeat. Each doodle gets its own random 2s, 3s or 5s rhythm. */
+  .scribble.drawn path { animation: scribble-draw var(--loop, 3s) ease-in-out var(--ldelay, 0s) infinite alternate both; }
+  @keyframes scribble-draw { 0% { stroke-dashoffset: 1; } 55%, 100% { stroke-dashoffset: 0; } }
+  @keyframes sway { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-6px) rotate(3deg); } }
+  @media (max-width: 1180px) { .scribble.gutter { display: none; } }
+  @media (max-width: 760px) { .scribble { transform: rotate(var(--r, 0deg)) scale(.7); } .scribble.desk { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .scribble svg { animation: none; } .scribble path, .scribble.drawn path { animation: none; stroke-dashoffset: 0; } }
+
+
+  /* FADE IN ON SCROLL: once, small and quick. Hidden from the first frame (no flicker).
+     Uses `translate` so it never fights the hover `transform`. */
+  .js :is(.hero .hi, .logo-h1, .hero .lead, .hero .btns, .mascot, .section-title, .section-sub, .card, .games h2, .games p, .sticker, footer .foot-left, footer .foot-right):not(.in) { opacity: 0; translate: 0 16px; }
+  .hero .hi, .logo-h1, .hero .lead, .hero .btns, .mascot,
+  .section-title, .section-sub, .games h2, .games p, footer .foot-left, footer .foot-right { transition: opacity .6s ease, translate .6s ease; }
+  @media (prefers-reduced-motion: reduce) { .js :is(.hero .hi, .logo-h1, .hero .lead, .hero .btns, .mascot, .section-title, .section-sub, .card, .games h2, .games p, .sticker, footer .foot-left, footer .foot-right):not(.in) { opacity: 1; translate: none; } }
+
+  /* FOOTER */
+  footer { background: var(--cream); color: #6B6E85; padding: 48px 0 40px; font-size: 15px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .foot-logo { height: 96px; display: block; }
+  .foot-left p { margin: 8px 0 0; }
+  .foot-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .privacy { margin: 0; }
+  footer a { color: var(--cobalt); }
+  footer .logo { color: var(--cobalt); }
+  .socials { display: flex; gap: 12px; }
+  .icon-btn { width: 48px; height: 48px; display: grid; place-items: center; background: #fff; color: var(--cobalt); border: 1.5px solid var(--line); border-radius: 50%; transition: transform .2s cubic-bezier(.3,1.6,.5,1), background .2s, color .2s, box-shadow .2s; }
+  .icon-btn:hover { transform: translateY(-4px) rotate(-6deg); background: var(--cobalt); color: #fff; box-shadow: 3px 4px 0 var(--ink); }
+
+  @media (max-width: 760px) {
+    .navlinks a:not(.pill) { display: none; }
+    footer .wrap { flex-direction: column; align-items: center; text-align: center; }
+    .foot-right { align-items: center; }
+    .hero { padding: 100px 0 120px; }
+    .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+    .logo-h1 img { width: 260px; margin: 0 auto; }
+    .hero p.lead { margin-inline: auto; }
+    .btns { justify-content: center; }
+    .mascot { order: -1; }
+    .mascot img { width: 230px; }
+    .grid { grid-template-columns: 1fr; }
+    .card.featured { grid-column: auto; }
+    .card.featured .body, .card.wide .body { left: 12px; right: 12px; width: auto; }
+    .card.wide { grid-column: auto; }
+    .grid { grid-auto-rows: 320px; }
+    .section-title { font-size: 42px; }
+    .games h2 { font-size: 44px; }
+  }
 </style>
+<script>document.documentElement.classList.add("js"); setTimeout(() => { if (!window.revealReady) document.documentElement.classList.remove("js"); }, 3000);</script>
 </head>
 <body>
-<main>
-  <h1>bunsoootchi</h1>
-  <p>Apps made with fun in mind, for all.</p>
-  <div class="rule"></div>
-  <h2>Performatively</h2>
-  <p>An e-reader for the Galaxy Z Fold 8 that shows your book's cover on the outer screen.</p>
-  <p><a href="performatively/privacy.html">Privacy policy</a></p>
-  <h2>Contact</h2>
-  <p><a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a></p>
-</main>
+<nav><div class="wrap">
+  <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-text.webp" alt=""><img class="nav-face" src="logo-face.webp" alt="bunsoootchi"></a>
+  <div class="navlinks"><a href="#apps">Apps</a><a href="mailto:bunsoootchi@gmail.com">Email</a><a href="https://www.instagram.com/bunsoootchi/">Instagram</a><a class="pill" href="https://ko-fi.com/bunsoootchi">Support on Ko-fi ♥</a></div>
+</div></nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="hi display">Hi, I'm</p>
+      <h1 class="logo-h1"><img src="logo-text.webp" alt="bunsoootchi, custom stufftchi"></h1>
+      <p class="lead">I design and create custom apps and software for niche devices like Tamagotchis and Mini eReaders! Oh, and also games!</p>
+      <div class="btns"><a class="btn primary" href="#apps">See my stuff</a></div>
+    </div>
+    <div class="mascot">
+      <span class="spark" style="top:4%;left:4%">✦</span><span class="spark" style="top:70%;right:2%;font-size:24px">✦</span><span class="spark" style="bottom:2%;left:18%;font-size:20px;color:var(--green)">✦</span>
+      <img src="mascot.webp" alt="bunsoootchi floating in a space suit">
+    </div>
+  </div>
+  <div class="wave"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,50 C180,95 360,5 540,40 C720,75 900,95 1080,45 C1260,0 1350,30 1440,45 L1440,90 L0,90 Z" fill="#FFFDF9"/></svg></div>
+</header>
+
+<section class="projects" id="apps">
+  <div class="wrap">
+    <h2 class="section-title display">Things I made</h2>
+    <p class="section-sub">Apps, games, digital goodies, and themes.</p>
+    <div class="grid">
+      <a class="card featured" href="https://ko-fi.com/s/142aa34945" style="--accent:#3049B8"><span class="go">Open →</span>
+        <div class="thumb"><img src="art/cards/performatively.webp" alt="Performatively" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip app">Android app</span><span class="chip app">Coming to Google Play</span></div><h3>Performatively</h3><p>An e-reader for the Galaxy Z Fold 8 that shows your book's cover on the outer screen while you read.</p></div>
+      </a>
+      <a class="card" href="https://ko-fi.com/s/abc64b288d" style="--accent:#3F9E5A"><span class="go">Open →</span>
+        <div class="thumb"><img src="art/cards/weddingotchi.webp" alt="Weddingotchi" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip tama">Tamagotchi</span></div><h3>Weddingotchi</h3><p>A web app to marry your Tamagotchi Meets/On to your own custom character.</p></div>
+      </a>
+      <a class="card" href="https://ko-fi.com/bunsoootchi" style="--accent:#E0B04A"><span class="go">Follow →</span>
+        <div class="thumb"><img src="art/cards/ohaiyou.webp" alt="Ohaiyou" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip soon">Coming soon</span></div><h3>Ohaiyou</h3><p>A cozy journal with a little pet who listens.</p></div>
+      </a>
+      <a class="card" href="https://ko-fi.com/bunsoootchi" style="--accent:#D9534F"><span class="go">Follow →</span>
+        <div class="thumb"><img src="art/cards/kinbits.webp" alt="Kinbits" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip soon">Coming soon</span></div><h3>Kinbits</h3><p>Hatch a tiny pet, dress it up, go on trips, get married and grow a family.</p></div>
+      </a>
+      <a class="card" href="https://ko-fi.com/bunsoootchi" style="--accent:#E5B43C"><span class="go">Follow →</span>
+        <div class="thumb"><img src="art/cards/bigger-brother.webp" alt="Bigger Brother" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip game">Game</span></div><h3>Bigger Brother</h3><p>Six strangers. One roof. Cameras everywhere.</p></div>
+      </a>
+      <a class="card" href="https://ko-fi.com/s/458d6fbcbe" style="--accent:#6FB561"><span class="go">Open →</span>
+        <div class="thumb"><img src="art/cards/faceplates.webp" alt="Paradise faceplates" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip tama">Tamagotchi</span></div><h3>Paradise faceplates</h3><p>16 printable custom faceplates for Tamagotchi Paradise.</p></div>
+      </a>
+      <a class="card wide panel-right" href="https://ko-fi.com/s/4d63b4fb76" style="--accent:#7C80A0"><span class="go">Open →</span>
+        <div class="thumb"><img src="art/cards/roundedraff.webp" alt="RoundedRaff" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip eink">E-ink</span></div><h3>RoundedRaff</h3><p>A theme for CrossPoint on the Xteink X4 e-reader.</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="games" id="games">
+  <div class="wave-top"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,40 C200,0 380,80 600,50 C820,20 1000,0 1200,40 C1320,64 1390,60 1440,50 L1440,90 L0,90 Z" fill="#EAF7F2"/></svg></div>
+  <div class="wrap">
+    <h2 class="display">Making art <i>and</i> software</h2>
+    <p>Small, quirky, and cozy things. Follow on Instagram for new random creations!</p>
+    <div class="collage">
+      <a class="sticker taped" style="--x:0%;--y:10px;--w:230px;--r:-9deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Ghost in a starry sky, digital painting, see more on Instagram"><img src="art/cosmic-ghost.webp" alt="Ghost in a starry sky, digital painting" loading="lazy"></a>
+      <a class="sticker no-phone" style="--x:17%;--y:0px;--w:310px;--r:5deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="My Furby collection, see more on Instagram"><img src="art/furby-collection.webp" alt="My Furby collection" loading="lazy"></a>
+      <a class="sticker" style="--x:46%;--y:-10px;--w:180px;--r:-7deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Needle-felted Detective Pikachu, see more on Instagram"><img src="art/felt-pikachu.webp" alt="Needle-felted Detective Pikachu" loading="lazy"></a>
+      <a class="sticker taped" style="--x:61%;--y:30px;--w:290px;--r:8deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="3D-printable BMO Apple Watch charging dock, see more on Instagram"><img src="art/bmo-dock.webp" alt="3D-printable BMO Apple Watch charging dock" loading="lazy"></a>
+      <a class="sticker no-phone" style="--x:83%;--y:110px;--w:175px;--r:-6deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Kyutichi doodle, see more on Instagram"><img src="art/kyutichi.webp" alt="Kyutichi doodle" loading="lazy"></a>
+      <a class="sticker no-phone" style="--x:2%;--y:235px;--w:210px;--r:7deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Pikatchi pixel art for Tamagotchi 4U, see more on Instagram"><img src="art/pikatchi-pixel.webp" alt="Pikatchi pixel art for Tamagotchi 4U" loading="lazy"></a>
+      <a class="sticker no-phone taped" style="--x:66%;--y:250px;--w:300px;--r:-5deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="3D-printable Gengar lamp shell, see more on Instagram"><img src="art/gengar-lamp.webp" alt="3D-printable Gengar lamp shell" loading="lazy"></a>
+      <a class="sticker" style="--x:25%;--y:215px;--w:430px;--r:-3deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Illustrated portrait, a commission for a friend, see more on Instagram"><img src="art/commission.webp" alt="Illustrated portrait, a commission for a friend" loading="lazy"></a>
+      <a class="sticker no-phone" style="--x:0%;--y:430px;--w:175px;--r:-10deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Pikatchi on a Tamagotchi in a crochet case, see more on Instagram"><img src="art/crochet-pikachu.webp" alt="Pikatchi on a Tamagotchi in a crochet case" loading="lazy"></a>
+      <a class="sticker taped" style="--x:14%;--y:420px;--w:250px;--r:6deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="3D game scene with the bunsoootchi astronaut, see more on Instagram"><img src="art/forest-scene.webp" alt="3D game scene with the bunsoootchi astronaut" loading="lazy"></a>
+      <a class="sticker" style="--x:41%;--y:410px;--w:220px;--r:-8deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Green pet under the moon, digital painting, see more on Instagram"><img src="art/cosmic-dino.webp" alt="Green pet under the moon, digital painting" loading="lazy"></a>
+      <a class="sticker no-phone" style="--x:61%;--y:440px;--w:310px;--r:9deg" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener" aria-label="Repairing 2005 Furbys, see more on Instagram"><img src="art/furby-repair.webp" alt="Repairing 2005 Furbys" loading="lazy"></a>
+      <span class="note" style="left:0;top:-30px;--r:-8deg">digital paintings!</span>
+      <span class="note" style="left:24%;top:-34px;--r:4deg">my Furby gang ♥</span>
+      <span class="note" style="right:1%;top:-4px;--r:6deg">3D printables!</span>
+      <span class="note" style="left:44%;top:186px;--r:-4deg">a commission for a friend</span>
+      <span class="note" style="left:17%;top:672px;--r:-3deg">3D game stuff</span>
+      <span class="note" style="right:9%;top:652px;--r:4deg">Furby surgery 🔧</span>
+    </div>
+  </div>
+</section>
+
+<footer id="about"><div class="wrap">
+  <div class="foot-left"><a href="#"><img src="logo-flat.webp" alt="bunsoootchi" class="foot-logo"></a><p>Made with fun in mind, for all.</p></div>
+  <div class="foot-right">
+    <div class="socials">
+      <a class="icon-btn" href="https://ko-fi.com/bunsoootchi" aria-label="Support on Ko-fi" title="Ko-fi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M10 15.5s-3-1.8-3-3.6c0-.9.7-1.6 1.5-1.6.6 0 1.1.3 1.5.9.4-.6.9-.9 1.5-.9.8 0 1.5.7 1.5 1.6 0 1.8-3 3.6-3 3.6z" fill="currentColor" stroke="none"/></svg></a>
+      <a class="icon-btn" href="https://www.instagram.com/bunsoootchi/" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a class="icon-btn" href="mailto:bunsoootchi@gmail.com" aria-label="Email bunsoootchi" title="Email"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a>
+    </div>
+    <p class="privacy">Privacy policies: <a href="performatively/privacy.html">Performatively</a></p>
+  </div>
+</div></footer>
+<script>
+  const nav = document.querySelector("nav");
+  const heroLogo = document.querySelector(".logo-h1");
+  const update = () => nav.classList.toggle("scrolled", heroLogo.getBoundingClientRect().bottom < 80);
+  addEventListener("scroll", update, { passive: true }); update();
+</script>
+<script>
+  // Hand-drawn doodles placed in the page margins. Each shape is drawn in when it scrolls into view.
+  const SHAPES = {
+    star: ['0 0 100 100', 'M50 8 61 38 93 39 67 58 77 90 50 71 23 90 33 58 7 39 39 38Z'],
+    sparkle: ['0 0 100 100', 'M50 6c4 30 14 40 44 44-30 4-40 14-44 44-4-30-14-40-44-44 30-4 40-14 44-44Z'],
+    squiggle: ['0 0 100 60', 'M5 40c10-30 25-30 22 0s14 30 20 0 16-30 22 0 14 30 26-10'],
+    arrow: ['0 0 160 80', 'M6 60c30 10 50-40 30-44S20 50 50 52s60-30 100-14M138 26l13 12-16 8'],
+    spiral: ['0 0 100 100', 'M50 50c0-6 8-6 8 0s-12 10-16 0 10-20 22-8 4 30-18 28-26-28 0-36 40 6 30 34'],
+    heart: ['0 0 100 100', 'M50 85S12 60 12 35c0-12 9-20 19-20 9 0 15 6 19 13 4-7 10-13 19-13 10 0 19 8 19 20 0 25-38 50-38 50Z'],
+    zigzag: ['0 0 100 40', 'M5 30 20 10 35 30 50 10 65 30 80 10 95 30'],
+    loop: ['0 0 100 100', 'M20 50c0-25 60-32 65-5 4 22-35 35-55 22-15-10-6-35 25-38']
+  };
+  // [section, shape, css position, width, rotation, extra classes]
+  const PLACES = [
+    ['.hero', 'sparkle', 'left:3%;top:170px', 46, -8, 'gutter'],
+    ['.hero', 'heart', 'right:4%;top:120px', 44, 10, 'green gutter'],
+    ['.hero', 'squiggle', 'left:47%;top:610px', 80, -6, 'desk'],
+    ['.hero', 'loop', 'right:7%;top:560px', 70, 0, 'desk'],
+    ['.projects', 'star', 'left:2.5%;top:90px', 56, -10, 'gutter'],
+    ['.section-title', 'arrow', '', 90, 6, 'inline desk'],
+    ['.projects', 'zigzag', 'right:3%;top:150px', 70, -12, 'green gutter'],
+    ['.projects', 'spiral', 'left:2%;top:620px', 60, 0, 'gutter'],
+    ['.projects', 'sparkle', 'right:2.5%;top:760px', 44, 12, 'gutter'],
+    ['.projects', 'squiggle', 'left:3%;top:1080px', 70, 8, 'green gutter'],
+    ['.games', 'heart', 'left:9%;top:110px', 46, -12, 'green desk'],
+    ['.games', 'sparkle', 'right:10%;top:90px', 44, 8, 'desk'],
+    ['.games', 'star', 'left:47%;top:420px', 60, 4, 'desk'],
+    ['.games', 'squiggle', 'right:3%;top:640px', 70, -6, 'gutter'],
+    ['.games', 'spiral', 'left:2%;top:760px', 56, 0, 'green gutter'],
+    ['footer', 'squiggle', 'left:42%;top:40px', 64, -4, 'desk'],
+    ['footer', 'sparkle', 'left:58%;top:70px', 32, 10, 'green desk']
+  ];
+  const seen = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('drawn'); seen.unobserve(e.target); }
+  }), { threshold: .4 });
+  PLACES.forEach(([where, shape, pos, w, r, cls], i) => {
+    const [box, d] = SHAPES[shape];
+    const el = document.createElement('span');
+    el.className = 'scribble ' + cls;
+    el.setAttribute('aria-hidden', 'true');
+    const loop = [2, 3, 5][Math.floor(Math.random() * 3)];
+    el.style.cssText = `${pos};width:${w}px;--r:${r}deg;--d:${7 + (i % 4)}s;--delay:-${i * 1.3}s;--loop:${loop}s;--ldelay:${(Math.random() * .6).toFixed(2)}s`;
+    el.innerHTML = `<svg viewBox="${box}"><path pathLength="1" d="${d}"/></svg>`;
+    document.querySelector(where).appendChild(el);
+    seen.observe(el);
+  });
+
+  // Hide any doodle that would sit on top of text or pictures at the current screen size.
+  const SOLID = 'h1, h2, h3, p, .btn, .note, .navlinks a, .card, .sticker, .logo-h1 img, .mascot img, .chip, .icon-btn, .foot-logo';
+  function keepScribblesClear() {
+    const solids = [...document.querySelectorAll(SOLID)].map(e => e.getBoundingClientRect()).filter(r => r.width && r.height);
+    document.querySelectorAll('.scribble:not(.inline)').forEach(sc => {
+      sc.classList.remove('covered');
+      const r = sc.getBoundingClientRect(), pad = 10;
+      if (!r.width) return;
+      const hit = solids.some(o => r.left - pad < o.right && r.right + pad > o.left && r.top - pad < o.bottom && r.bottom + pad > o.top);
+      sc.classList.toggle('covered', hit);
+    });
+  }
+  let clearTimer;
+  addEventListener('resize', () => { clearTimeout(clearTimer); clearTimer = setTimeout(keepScribblesClear, 150); });
+  addEventListener('load', keepScribblesClear);
+  document.fonts && document.fonts.ready.then(keepScribblesClear);
+</script>
+<script>
+  // Fade elements in the first time they scroll into view. Siblings come in one after another.
+  window.revealReady = true;
+  const revealItems = [...document.querySelectorAll('.hero .hi, .logo-h1, .hero .lead, .hero .btns, .mascot, .section-title, .section-sub, .card, .games h2, .games p, .sticker, footer .foot-left, footer .foot-right')];
+  const reveal = new IntersectionObserver(entries => {
+    entries.filter(e => e.isIntersecting).forEach((e, i) => {
+      const el = e.target;
+      const delay = Math.min(i * 70, 420);
+      el.style.transitionDelay = delay + 'ms';
+      el.classList.add('in');
+      // drop the delay afterwards so hover effects stay instant
+      setTimeout(() => { el.style.transitionDelay = ''; }, delay + 700);
+      reveal.unobserve(el);
+    });
+  }, { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+  revealItems.forEach(el => reveal.observe(el));
+</script>
+<script>
+  // Hint that cards and collage pictures are clickable: now and then, one visible piece plays its hover effect by itself.
+  // Random order, one at a time, and every piece gets a turn before any repeats.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const groups = [document.querySelectorAll('.card'), document.querySelectorAll('.collage .sticker')]
+      .map(list => ({ all: [...list], bag: [] }));
+    const onScreen = el => {
+      const r = el.getBoundingClientRect();
+      return getComputedStyle(el).display !== 'none' && r.top > 60 && r.bottom < innerHeight - 20;
+    };
+    let userHovering = false;
+    document.addEventListener('pointerover', e => { userHovering = !!e.target.closest('.card, .sticker'); });
+    function nextDemo() {
+      setTimeout(nextDemo, 2500 + Math.random() * 2500);
+      if (document.hidden || userHovering) return;
+      const live = groups.filter(g => g.all.some(onScreen));
+      if (!live.length) return;
+      const g = live[Math.floor(Math.random() * live.length)];
+      if (!g.bag.some(onScreen)) g.bag = g.all.filter(onScreen).concat(g.bag.filter(el => !onScreen(el)));
+      const choices = g.bag.filter(onScreen);
+      const el = choices[Math.floor(Math.random() * choices.length)];
+      g.bag.splice(g.bag.indexOf(el), 1);
+      el.classList.add('demo-hover');
+      setTimeout(() => el.classList.remove('demo-hover'), 1400);
+    }
+    setTimeout(nextDemo, 2500);
+  }
+</script>
 </body>
 </html>
