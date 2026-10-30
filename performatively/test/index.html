@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Test Performatively</title>
+<link rel="icon" href="icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F1E7; --card: #EFE8DB; --ink: #161411; --faint: #6F6A62; --line: #E0D8C8;
+    --red: #DE3E2D; --screen: #FFFFFF; --screen-ink: #1F1F1F; --screen-faint: #5F6368; --screen-line: #E8EAED;
+    --g-blue: #1A73E8; --g-green: #01875F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0B0A09; --card: #171513; --ink: #ECE7DE; --faint: #9A948A; --line: #2A2723; --red: #F05A48; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 "Inter", system-ui, -apple-system, sans-serif; padding: 40px 16px 72px; }
+  main { max-width: 860px; margin: 0 auto; }
+  a { color: inherit; }
+  header { display: grid; gap: 10px; max-width: 620px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 52px; height: 52px; border-radius: 12px; }
+  .brand span { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  h1 { font: 400 clamp(40px, 9vw, 58px)/1.02 "Instrument Serif", Georgia, serif; margin: 6px 0 0; text-wrap: balance; }
+  .lede { color: var(--faint); margin: 0; text-wrap: pretty; }
+  .rule { width: 36px; height: 4px; border-radius: 2px; background: var(--red); margin: 8px 0 0; }
+
+  .before { background: var(--card); border-radius: 18px; padding: 18px 20px; margin: 32px 0 8px; max-width: 620px; }
+  .before h2 { font: 600 16px/1.3 "Inter", sans-serif; margin: 0 0 6px; }
+  .before ul { margin: 0; padding-left: 20px; }
+  .before li + li { margin-top: 4px; }
+
+  .step { display: grid; grid-template-columns: 1fr 260px; gap: 32px; align-items: start; padding: 36px 0; border-bottom: 1px solid var(--line); }
+  .step:last-of-type { border-bottom: 0; }
+  .num { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: var(--bg); font-weight: 700; font-size: 16px; }
+  .step h2 { font: 400 32px/1.1 "Instrument Serif", Georgia, serif; margin: 12px 0 8px; }
+  .step p { margin: 0 0 10px; text-wrap: pretty; }
+  .step ol { margin: 0 0 10px; padding-left: 22px; }
+  .step li + li { margin-top: 4px; }
+  .link { display: inline-block; margin: 4px 0 10px; padding: 12px 20px; border-radius: 999px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 16px; word-break: break-word; }
+  .tip { color: var(--faint); font-size: 15px; }
+  .shots { display: grid; gap: 14px; justify-items: center; }
+
+  /* Simplified drawings of each screen. The red ring shows what to tap. */
+  .phone { width: 240px; border: 8px solid #161411; border-radius: 30px; background: var(--screen); color: var(--screen-ink); overflow: hidden; font: 13px/1.4 "Inter", Roboto, system-ui, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+  .phone .bar { height: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 10px; font-weight: 600; color: var(--screen-faint); }
+  .phone .body { padding: 10px 14px 18px; min-height: 260px; }
+  .top { display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--screen-line); margin: 0 -14px 12px; padding-left: 14px; padding-right: 14px; }
+  .top b { font-size: 15px; font-weight: 500; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--g-blue); flex: none; }
+  .avatar { width: 22px; height: 22px; border-radius: 50%; background: #F4B400; margin-left: auto; flex: none; }
+  .gbtn { display: inline-block; border: 1px solid #DADCE0; color: var(--g-blue); border-radius: 6px; padding: 5px 10px; font-weight: 500; font-size: 12px; }
+  .gbtn.fill { background: var(--g-blue); border-color: var(--g-blue); color: #fff; }
+  .gbtn.play { background: var(--g-green); border-color: var(--g-green); color: #fff; border-radius: 999px; padding: 7px 0; width: 100%; text-align: center; font-size: 13px; }
+  .muted { color: var(--screen-faint); font-size: 11.5px; text-align: center; margin-top: 30px; }
+  .no { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #C4C7C5; margin: 0 auto 8px; position: relative; }
+  .no::after { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; width: 3px; background: #C4C7C5; transform: translateX(-50%) rotate(45deg); }
+  .menu { border-radius: 14px; background: #F1F4F9; padding: 6px 0; }
+  .menu div { padding: 9px 14px; display: flex; align-items: center; gap: 10px; }
+  .menu i { width: 14px; height: 14px; border-radius: 4px; background: #C4C7C5; flex: none; }
+  .appinfo { display: flex; gap: 10px; align-items: center; margin: 4px 0 12px; }
+  .appinfo img { width: 48px; height: 48px; border-radius: 12px; }
+  .appinfo b { display: block; font-size: 15px; font-weight: 600; }
+  .appinfo span { color: var(--g-green); font-size: 11.5px; font-weight: 500; }
+  .field { border: 1px solid #DADCE0; border-radius: 6px; padding: 9px 10px; color: var(--screen-faint); letter-spacing: .08em; margin: 10px 0 12px; }
+  .label { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .right { text-align: right; }
+  .tap { position: relative; border-radius: 10px; }
+  .tap::after { content: ""; position: absolute; inset: -6px; border: 3px solid var(--red); border-radius: 12px; pointer-events: none; animation: pulse 1.6s ease-in-out infinite; }
+  .menu .tap::after { inset: 0 6px; }
+  @keyframes pulse { 50% { transform: scale(1.04); opacity: .55; } }
+  @media (prefers-reduced-motion: reduce) { .tap::after { animation: none; } }
+  .cap { font-size: 13px; color: var(--faint); text-align: center; max-width: 240px; }
+
+  .help { margin-top: 40px; max-width: 620px; }
+  .help h2 { font: 400 32px/1.1 "Instrument Serif", Georgia, serif; margin: 0 0 10px; }
+  .help h3 { font: 600 16px/1.3 "Inter", sans-serif; margin: 20px 0 4px; }
+  .help p { margin: 0; color: var(--faint); }
+  footer { margin-top: 48px; color: var(--faint); font-size: 14px; }
+
+  @media (max-width: 680px) {
+    body { padding-top: 28px; }
+    .step { grid-template-columns: 1fr; gap: 20px; }
+    .shots { justify-items: start; }
+    .cap { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand"><img src="icon.webp" alt=""><span>Performatively testers</span></div>
+    <h1>Help test Performatively on Google Play</h1>
+    <p class="lede">Thank you for helping! Google needs 12 people to test the app for 14 days before it can go on the Play Store. Testing is free: you'll get a code, so you won't pay the US$4.99.</p>
+    <div class="rule"></div>
+  </header>
+
+  <section class="before">
+    <h2>Before you start</h2>
+    <ul>
+      <li>You need an Android phone. The app is made for the Galaxy Z Fold, but it works on any phone.</li>
+      <li>Use the <strong>same Google account</strong> for every step, the one your phone's Play Store uses.</li>
+      <li>You'll get your own code from me, bunsoootchi, in a DM. Each code works once, so please don't share it.</li>
+    </ul>
+  </section>
+
+  <section class="step">
+    <div>
+      <span class="num">1</span>
+      <h2>Join the tester group</h2>
+      <p>Open this link and tap <strong>Join group</strong>. A small window opens. Tap <strong>Join group</strong> again.</p>
+      <a class="link" href="https://groups.google.com/g/performatively-testers" target="_blank" rel="noopener">Open the tester group</a>
+      <p class="tip">The page says "You don't have permission to access this content." That's normal: only I can see the group's posts. Joining still works.</p>
+    </div>
+    <div class="shots">
+      <div class="phone" aria-hidden="true">
+        <div class="bar"><span>9:41</span><span>●●●</span></div>
+        <div class="body">
+          <div class="top"><span class="dot"></span><b>Groups</b><span class="avatar"></span></div>
+          <div style="font-size:15px;margin-bottom:10px">Performatively testers</div>
+          <span class="gbtn tap">Join group</span>
+          <div class="muted"><div class="no"></div>You don't have permission to access this content</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div>
+      <span class="num">2</span>
+      <h2>Become a tester</h2>
+      <p>Open this link and tap <strong>Become a tester</strong>. The page then says you're a tester.</p>
+      <a class="link" href="https://play.google.com/apps/testing/com.bunsoootchi.performatively" target="_blank" rel="noopener">Open the testing page</a>
+      <p class="tip">If the page says it isn't available, make sure you're signed in with the same account you used to join the group, then try again in a few minutes.</p>
+    </div>
+    <div class="shots">
+      <div class="phone" aria-hidden="true">
+        <div class="bar"><span>9:41</span><span>●●●</span></div>
+        <div class="body">
+          <div class="top"><span class="dot" style="background:var(--g-green)"></span><b>Google Play</b><span class="avatar"></span></div>
+          <div class="appinfo"><img src="icon.webp" alt=""><div><b>Performatively</b><span>Closed test</span></div></div>
+          <p style="margin:0 0 14px;color:var(--screen-faint)">Become a tester to get the app before it comes out.</p>
+          <span class="gbtn fill tap">BECOME A TESTER</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div>
+      <span class="num">3</span>
+      <h2>Redeem your code</h2>
+      <p>I'll send you your code in a DM. Don't have one yet? Message me and ask for one.</p>
+      <p>On your phone, open the <strong>Play Store</strong> app, then:</p>
+      <ol>
+        <li>Tap your profile picture at the top right.</li>
+        <li>Tap <strong>Payments &amp; subscriptions</strong>.</li>
+        <li>Tap <strong>Redeem code</strong>.</li>
+        <li>Type the code from my DM, and tap <strong>Redeem</strong>.</li>
+      </ol>
+      <p class="tip">On a computer, you can also redeem it at <a href="https://play.google.com/redeem" target="_blank" rel="noopener">play.google.com/redeem</a>. Use the same Google account.</p>
+    </div>
+    <div class="shots">
+      <div class="phone" aria-hidden="true">
+        <div class="bar"><span>9:41</span><span>●●●</span></div>
+        <div class="body">
+          <div class="top"><b>Google Play</b><span class="avatar tap" style="border-radius:50%"></span></div>
+          <div class="menu">
+            <div><i></i>Manage apps &amp; device</div>
+            <div class="tap"><i></i>Payments &amp; subscriptions</div>
+            <div><i></i>Play Protect</div>
+            <div><i></i>Settings</div>
+          </div>
+          <div class="menu" style="margin-top:12px">
+            <div><i></i>Payment methods</div>
+            <div><i></i>Subscriptions</div>
+            <div class="tap"><i></i>Redeem code</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div class="bar"><span>9:41</span><span>●●●</span></div>
+        <div class="body" style="min-height:0">
+          <div class="label">Redeem code</div>
+          <div class="field">XXXX XXXX XXXX</div>
+          <div class="right"><span class="gbtn fill tap">Redeem</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div>
+      <span class="num">4</span>
+      <h2>Install it</h2>
+      <p>Search for <strong>Performatively</strong> in the Play Store, or open the testing page again and tap the Google Play link. Tap <strong>Install</strong>. It should be free.</p>
+      <p class="tip">If it still shows US$4.99, don't pay. Message me and I'll help.</p>
+    </div>
+    <div class="shots">
+      <div class="phone" aria-hidden="true">
+        <div class="bar"><span>9:41</span><span>●●●</span></div>
+        <div class="body">
+          <div class="top"><b>Google Play</b><span class="avatar"></span></div>
+          <div class="appinfo"><img src="icon.webp" alt=""><div><b>Performatively</b><span>bunsoootchi</span></div></div>
+          <p style="margin:0 0 14px;color:var(--screen-faint);font-size:11.5px">You're a tester for this app.</p>
+          <span class="gbtn play tap">Install</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div>
+      <span class="num">5</span>
+      <h2>Keep it for 14 days</h2>
+      <p>Keep the app installed, and stay in the group, for at least 14 days. Read with it whenever you like. That's all Google needs.</p>
+      <p>Found a bug or have an idea? Tell me anytime. In the app, Settings → About has a button to email me.</p>
+    </div>
+    <div class="shots">
+      <p class="cap">Thank you so much. You're helping a tiny app get on the Play Store 🧡</p>
+    </div>
+  </section>
+
+  <section class="help">
+    <h2>If something goes wrong</h2>
+    <h3>The testing page says the app isn't available</h3>
+    <p>Join the group first (step 1), with the same Google account. It can take a few minutes after joining.</p>
+    <h3>The code doesn't work</h3>
+    <p>Check that you typed it exactly, and that you're using the same Google account. Each code works only once. If it still fails, message me for a new one.</p>
+    <h3>I have more than one Google account</h3>
+    <p>In the Play Store, tap your profile picture and switch to the account you used for the group before you redeem and install.</p>
+    <h3>I had the old version from GitHub</h3>
+    <p>You don't need to uninstall it. The Play version should install right over it and keep your books, progress, and stickers.</p>
+  </section>
+
+  <footer>Made by <a href="https://bunsoootchi.github.io">bunsoootchi</a>. Questions? Email <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a>.</footer>
+</main>
+</body>
+</html>
