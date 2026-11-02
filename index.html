@@ -121,7 +121,18 @@
   .card.panel-right .thumb img { object-position: left center; }
   .card.panel-right .body { left: auto; right: 12px; }
   .card.panel-right .go { right: auto; left: 14px; }
-  .card img[src*="bigger-brother"] { object-position: center 52%; }
+  /* SECRET PROJECT: a case file on a manila folder, with redacted words. The hidden words are jokes for anyone reading the source. */
+  .card.secret .thumb { background: #E2C68C repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 2px, transparent 2px 7px); }
+  .sheet { position: absolute; top: 26px; left: 9%; right: 9%; height: 250px; padding: 22px 24px; background: #FFFDF6; border-radius: 4px; transform: rotate(-2.5deg);
+    box-shadow: 0 8px 18px rgba(80,55,10,.22); font: 700 13px/26px "Courier New", ui-monospace, monospace; color: #3B3A36; letter-spacing: .3px; transition: transform .45s cubic-bezier(.3,1.6,.5,1); }
+  .sheet .file-no { font-size: 11px; color: #8C8577; margin-bottom: 4px; }
+  .clip { position: absolute; top: -14px; left: 26px; width: 22px; }
+  .stamp { position: absolute; top: 58px; right: -10px; padding: 3px 10px 1px; border: 3px double #C8372D; border-radius: 6px; color: #C8372D; font: 400 22px/1.1 "Lilita One", system-ui, sans-serif; letter-spacing: 1.5px;
+    transform: rotate(13deg); opacity: .85; mix-blend-mode: multiply; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+  .card.secret:hover .sheet, .card.secret.demo-hover .sheet { transform: rotate(-1deg) translateY(-6px); }
+  .card.secret:hover .stamp, .card.secret.demo-hover .stamp { transform: rotate(9deg) scale(1.12); }
+  .redact { background: var(--ink); color: transparent; border-radius: 3px; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; user-select: none; -webkit-user-select: none; }
+  .chip.secret { background: #FBE1DE; color: #B3261E; }
   .card img[src*="weddingotchi"] { object-position: left top; }
   .card.featured .thumb img { object-position: center; }
   .card.featured .body { right: auto; width: min(380px, 58%); }
@@ -262,9 +273,19 @@
         <div class="thumb"><img src="art/cards/kinbits.webp" alt="Kinbits" loading="lazy"></div>
         <div class="body"><div class="chips"><span class="chip soon">Coming soon</span></div><h3>Kinbits</h3><p>Hatch a tiny pet, dress it up, go on trips, get married, and grow a family.</p></div>
       </a>
-      <a class="card" href="https://ko-fi.com/bunsoootchi" style="--accent:#E5B43C"><span class="go">Follow →</span>
-        <div class="thumb"><img src="art/cards/bigger-brother.webp" alt="Bigger Brother" loading="lazy"></div>
-        <div class="body"><div class="chips"><span class="chip game">Game</span></div><h3>Bigger Brother</h3><p>Six strangers. One roof. Cameras everywhere.</p></div>
+      <a class="card secret" href="https://ko-fi.com/bunsoootchi" style="--accent:#C8372D"><span class="go">Psst, follow →</span>
+        <div class="thumb" aria-hidden="true">
+          <div class="sheet">
+            <svg class="clip" viewBox="0 0 22 50"><path d="M7 14V8a4 4 0 0 1 8 0v30a7 7 0 0 1-14 0V12" fill="none" stroke="#9AA0AE" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <span class="stamp">TOP SECRET</span>
+            <div class="file-no">CASE FILE No. 0026</div>
+            <div>CODENAME: <span class="redact">nice try</span></div>
+            <div>STATUS: <span class="redact">so secret</span></div>
+            <div>BUDGET: one iced coffee</div>
+            <div>LEAKS: 0 (so far)</div>
+          </div>
+        </div>
+        <div class="body"><div class="chips"><span class="chip secret">Top secret</span></div><h3>Secret project</h3><p>I can't say much yet. It's a <span class="redact">nice try</span> for <span class="redact">not telling</span>, and it <span class="redact">stop peeking</span>.</p></div>
       </a>
       <a class="card" href="https://ko-fi.com/s/458d6fbcbe" style="--accent:#6FB561"><span class="go">Open →</span>
         <div class="thumb"><img src="art/cards/faceplates.webp" alt="Paradise faceplates" loading="lazy"></div>
