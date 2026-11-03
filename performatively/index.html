@@ -114,8 +114,14 @@
 
   /* TRAILER: the vertical trailer, framed like the phone screens */
   .center-head { text-align: center; }
-  .center-head p { margin-inline: auto; }
-  .trailer-video { width: min(360px, 100%); margin: 30px auto 0; border-radius: 28px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line), 0 30px 60px -20px rgba(0,0,0,.35); }
+  .center-head p, .center-head .eyebrow { margin-left: auto; margin-right: auto; }
+  /* the video in the middle, two-page spreads on the unfolded Fold on both sides, running off the edges of the page like a still slider */
+  .reel { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 34px; overflow: hidden; padding: 20px 0 40px; }
+  .reel > * { flex: none; }
+  .reel .shot { width: 470px; background: #0A0A0A; border-radius: 22px; padding: 8px; box-shadow: 0 0 0 1px #2A2A2C, 0 24px 44px -22px rgba(0,0,0,.35); }
+  .reel .shot img { display: block; width: 100%; aspect-ratio: 2448 / 1848; object-fit: cover; border-radius: 15px; }
+  .trailer-video { width: 340px; border-radius: 28px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line), 0 30px 60px -20px rgba(0,0,0,.35); }
+  @media (max-width: 640px) { .reel { gap: 12px; } .reel .shot { width: 280px; border-radius: 16px; padding: 6px; } .reel .shot img { border-radius: 11px; } .trailer-video { width: min(250px, 66vw); } }
   .trailer-video video { display: block; width: 100%; aspect-ratio: 9 / 16; background: #000; }
 
   /* FEATURES: pick a reader type, see only what matters to you */
@@ -277,8 +283,17 @@
     <p class="eyebrow">Trailer</p>
     <h2 class="serif">Watch the trailer</h2>
   </div>
-  <div class="trailer-video"><video src="img/trailer.mp4" poster="img/trailer-poster.webp" controls playsinline preload="none"></video></div>
-</div></section>
+</div>
+  <div class="reel">
+    <div class="shot" aria-hidden="true"><img src="img/spread-pages.webp" alt=""></div>
+    <div class="shot" aria-hidden="true"><img src="img/spread-text.webp" alt=""></div>
+    <div class="shot" aria-hidden="true"><img src="img/spread-chapter.webp" alt=""></div>
+    <div class="trailer-video"><video src="img/trailer.mp4" poster="img/trailer-poster.webp" controls playsinline preload="none"></video></div>
+    <div class="shot" aria-hidden="true"><img src="img/spread-picture.webp" alt=""></div>
+    <div class="shot" aria-hidden="true"><img src="img/spread-dinner.webp" alt=""></div>
+    <div class="shot" aria-hidden="true"><img src="img/spread-chapter14.webp" alt=""></div>
+  </div>
+</section>
 
 <section id="features"><div class="wrap">
   <div class="section-head">
