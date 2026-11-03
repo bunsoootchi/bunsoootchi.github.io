@@ -21,14 +21,14 @@
 <meta name="twitter:title" content="bunsoootchi">
 <meta name="twitter:description" content="Custom apps, games, and art for Tamagotchis, mini e-readers, and other niche devices.">
 <meta name="twitter:image" content="https://bunsoootchi.github.io/og-image.jpg">
-<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lilita+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lilita+One&family=Figtree:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --mint: #EAF7F2; --mint-dot: #DCF1EA; --cobalt: #3049B8; --cobalt-deep: #24388F;
     --green: #3F9E5A; --lime: #8CC97E; --sun: #F3D58A; --ink: #23263F; --paper: #FFFFFF; --cream: #FFFFFF; --line: #E5E5E5; --soft-blue: #EEF1FB;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font: 500 17px/1.6 "Nunito", system-ui, sans-serif; color: var(--ink); background: var(--paper); }
+  body { margin: 0; font: 500 17px/1.6 "Figtree", system-ui, sans-serif; color: var(--ink); background: var(--paper); }
   html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   h1, h2, h3 { text-wrap: balance; }
@@ -50,6 +50,8 @@
   .navlinks { display: flex; gap: 22px; align-items: center; font-weight: 800; font-size: 15px; }
   .navlinks a { color: var(--ink); text-decoration: none; }
   .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; }
+  /* pills and buttons always stay on one line */
+  .pill, .tag, .btn, .go, .chip { white-space: nowrap; }
 
   /* HERO */
   .hero { position: relative; background: var(--mint); overflow: hidden;

@@ -26,6 +26,8 @@
   }
   :root[data-theme="dark"] { --bg: #000000; --ink: #F2F2F2; --text: #D0D0D0; --faint: #8E8E93; --line: #232325; --card: #111112; --red: #F05A48; --on-ink: #000000; color-scheme: dark; }
   * { box-sizing: border-box; }
+  /* pills and buttons always stay on one line */
+  .get, .play, .btn-ghost, .seg button, .type, .badge { white-space: nowrap; }
   html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.6 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
