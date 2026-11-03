@@ -86,7 +86,9 @@
   .tour .stick .phone img + img { position: absolute; inset: 9px; width: calc(100% - 18px); opacity: 0; }
   .tour .stick .phone img.on { opacity: 1; }
   .step { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 20px 0; }
-  .step .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c); margin-bottom: 16px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--c) 22%, transparent); }
+  /* each part gets one of the app's own icons, in a round white button like the ones on Mochi's screen */
+  .step .mark { width: 58px; height: 58px; border-radius: 50%; background: #fff; display: grid; place-items: center; margin-bottom: 18px; box-shadow: 0 6px 16px rgba(47,74,69,.12), 0 0 0 1px var(--line); }
+  .step .mark img { width: 34px; height: 34px; }
   .step h3 { font-size: clamp(30px, 3.6vw, 42px); margin: 0 0 10px; }
   .step .tag { font-size: 19px; color: var(--ink-soft); margin: 0 0 14px; font-weight: 700; }
   .step p { margin: 0; max-width: 42ch; }
@@ -213,32 +215,32 @@
     </div></div>
     <div>
       <div class="step" data-i="0" style="--c:var(--orange)">
-        <span class="dot"></span><h3>A little pet who listens</h3><p class="tag">Chat about your day, any time.</p>
+        <span class="mark"><img src="img/icon-chat.png" alt=""></span><h3>A little pet who listens</h3><p class="tag">Chat about your day, any time.</p>
         <p>Tell your pet about your day, vent after a rough one, or just say hi. No buttons, no menus, you just tell it things.</p>
         <div class="phone"><img src="img/hero.webp" alt="Chatting with Mochi"></div>
       </div>
       <div class="step" data-i="1" style="--c:var(--pink)">
-        <span class="dot"></span><h3>It writes your diary for you</h3><p class="tag">Just chat. Your days get saved.</p>
+        <span class="mark"><img src="img/icon-journal.png" alt=""></span><h3>It writes your diary for you</h3><p class="tag">Just chat. Your days get saved.</p>
         <p>When you pause, it writes a short diary page about what you shared, so your days are saved without you having to write a thing. Want to write yourself? Add your own pages, moods, and up to 3 photos.</p>
         <div class="phone"><img src="img/diary.webp" alt="The Journal with diary pages and a mood calendar"></div>
       </div>
       <div class="step" data-i="2" style="--c:var(--green)">
-        <span class="dot"></span><h3>100% private</h3><p class="tag">The AI lives on your phone. No account, no cloud.</p>
+        <span class="mark"><img src="img/icon-lock.png" alt=""></span><h3>100% private</h3><p class="tag">The AI lives on your phone. No account, no cloud.</p>
         <p>Your pet's brain is a small AI that runs right on your phone. No ads, no tracking. Your chats, diary, and photos never leave your device. It even works on a plane.</p>
         <div class="phone"><img src="img/private.webp" alt="The help page in Settings, answering what stays on your phone"></div>
       </div>
       <div class="step" data-i="3" style="--c:var(--purple)">
-        <span class="dot"></span><h3>It has a life of its own</h3><p class="tag">TV nights, naps, and garden adventures.</p>
+        <span class="mark"><img src="img/icon-paw.png" alt=""></span><h3>It has a life of its own</h3><p class="tag">TV nights, naps, and garden adventures.</p>
         <p>When you're busy, your pet naps, watches TV, reads, plays with its ball, and explores the garden. Ask it what it's been up to.</p>
         <div class="phone"><img src="img/alive.webp" alt="Mochi watching TV at night"></div>
       </div>
       <div class="step" data-i="4" style="--c:var(--blue)">
-        <span class="dot"></span><h3>Ask it to do anything</h3><p class="tag">Lights, TV, music, games, and more.</p>
+        <span class="mark"><img src="img/icon-sparkle.png" alt=""></span><h3>Ask it to do anything</h3><p class="tag">Lights, TV, music, games, and more.</p>
         <p>"Turn off the lamp." "Put on a cooking show." "Make it snow!" Your pet can switch the lights, play the radio, read a book, play games, do tricks, and much more.</p>
         <div class="phone"><img src="img/tricks.webp" alt="The list of things your pet can do"></div>
       </div>
       <div class="step" data-i="5" style="--c:var(--orange)">
-        <span class="dot"></span><h3>Cozy all year round</h3><p class="tag">Seasons, snow, and holidays.</p>
+        <span class="mark"><img src="img/icon-santa.png" alt=""></span><h3>Cozy all year round</h3><p class="tag">Seasons, snow, and holidays.</p>
         <p>Seasons, weather, snow days, and holiday decorations.</p>
         <div class="phone"><img src="img/snow.webp" alt="Mochi in a Santa hat on a snowy day"></div>
       </div>
@@ -338,7 +340,7 @@
 
   // Fade blocks in the first time they scroll into view.
   window.revealReady = true;
-  document.querySelectorAll(".step > *:not(.dot)").forEach(el => el.classList.add("reveal"));
+  document.querySelectorAll(".step > *").forEach(el => el.classList.add("reveal"));
   const revealer = new IntersectionObserver(entries => {
     entries.filter(e => e.isIntersecting).forEach((e, i) => {
       e.target.style.transitionDelay = Math.min(i * 80, 400) + "ms";
