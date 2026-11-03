@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ohaiyou</title>
+<meta name="description" content="A cozy journal with a little pet who listens. Chat about your day and it writes your diary for you. Its AI lives on your phone: no account, no cloud.">
+<link rel="icon" type="image/png" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ohaiyou">
+<meta property="og:description" content="A cozy journal with a pet who listens. Private: it stays on your phone.">
+<meta property="og:url" content="https://bunsoootchi.github.io/ohaiyou/">
+<meta property="og:image" content="https://bunsoootchi.github.io/ohaiyou/img/trailer-poster.webp">
+<meta name="theme-color" content="#F2F2F2">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Ohaiyou colors: the soft gray of its store art, white, and the dark green it writes in. The pets bring the color. */
+  :root { --ink: #2F4A45; --ink-soft: #5B6F6B; --line: #E4E6E6; --bg: #FFFFFF; --mist: #F2F2F3; --mist-deep: #E3E3E5;
+    --orange: #F0824C; --pink: #EE9BB8; --blue: #8CC6EC; --green: #86C77A; --purple: #8E7CBF; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 500 17px/1.65 "M PLUS Rounded 1c", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-weight: 800; line-height: 1.1; text-wrap: balance; margin: 0; }
+  p { text-wrap: pretty; }
+  a { color: inherit; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+  nav.scrolled { border-color: var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  nav .brand img { height: 34px; display: block; }
+  nav .links { display: flex; gap: 22px; align-items: center; font-weight: 700; font-size: 15px; }
+  nav .links a { text-decoration: none; color: var(--ink-soft); white-space: nowrap; }
+  nav .links a:hover { color: var(--ink); }
+  nav .links .get { background: var(--ink); color: #fff; padding: 8px 18px; border-radius: 999px; }
+  @media (max-width: 640px) { nav .links .hide-sm { display: none; } }
+
+  /* store badges: two lines on purpose, like the official ones */
+  .badges { display: flex; flex-wrap: wrap; gap: 12px; }
+  .badge { display: inline-flex; align-items: center; gap: 11px; background: var(--ink); color: #fff; border-radius: 14px; padding: 9px 20px 9px 15px; white-space: nowrap; cursor: default; }
+  .badge svg { width: 24px; height: 24px; flex: none; }
+  .badge small { display: block; font-size: 11.5px; line-height: 1.2; opacity: .8; font-weight: 500; }
+  .badge b { display: block; font-size: 18px; line-height: 1.15; font-weight: 800; }
+
+  /* HERO: the soft gray room from the store art */
+  .hero { background: linear-gradient(to bottom, transparent 62%, #FFFFFF 100%), radial-gradient(120% 90% at 50% 0%, #FBFBFB 0%, var(--mist) 55%, var(--mist-deep) 100%); padding: 56px 0 40px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+  .hero .wrap > * { min-width: 0; }
+  .hero .copy { padding-bottom: 20px; }
+  .hero .logo { width: min(260px, 70%); display: block; margin: 0 0 22px; filter: drop-shadow(0 6px 14px rgba(47,74,69,.10)); }
+  .hero h1 { font-size: clamp(40px, 5.6vw, 64px); margin: 0 0 18px; }
+  .hero .lead { font-size: 19px; color: var(--ink-soft); margin: 0 0 28px; max-width: 34ch; }
+  .hero .soon { font-size: 14px; color: var(--ink-soft); margin: 14px 0 0; }
+  .hero .phone { justify-self: center; width: min(300px, 74vw); }
+
+  .phone { background: #1E2423; border-radius: 40px; padding: 9px; box-shadow: 0 30px 60px -24px rgba(47,74,69,.45); }
+  .phone img { display: block; width: 100%; border-radius: 32px; aspect-ratio: 640 / 1391; object-fit: cover; }
+
+  section { padding: 90px 0; }
+  .center { text-align: center; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin: 0 0 12px; }
+  h2 { font-size: clamp(34px, 4.6vw, 50px); margin: 0 0 14px; }
+  .sub { color: var(--ink-soft); font-size: 18px; margin: 0 auto; max-width: 46ch; }
+
+  /* PETS */
+  .pets { padding-top: 60px; }
+
+  /* the ten pets, each its own cut-out, bobbing a little out of step */
+  .crew { display: flex; justify-content: center; align-items: flex-end; margin: 36px auto 0; max-width: 980px; }
+  .crew img { width: 11%; margin: 0 -.5%; height: auto; filter: drop-shadow(0 10px 10px rgba(47,74,69,.14)); animation: bob 3.6s ease-in-out infinite; transition: scale .3s cubic-bezier(.3,1.6,.5,1); }
+  .crew img:nth-child(2n) { animation-delay: -1.2s; } .crew img:nth-child(3n) { animation-delay: -2.4s; }
+  .crew img:hover { scale: 1.12; }
+  .crew.small { max-width: 760px; margin-top: 34px; padding-bottom: 40px; }
+  @keyframes bob { 50% { translate: 0 -7px; } }
+  @media (prefers-reduced-motion: reduce) { .crew img { animation: none; } }
+
+  /* TOUR: on wide screens the phone stays put and its screen changes as you read; on phones each part has its own picture */
+  .tour { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 20px; }
+  .tour > * { min-width: 0; }
+  .tour .stick { position: sticky; top: 110px; display: grid; place-items: center; }
+  .tour .stick .phone { width: min(300px, 100%); position: relative; }
+  .tour .stick .phone img { transition: opacity .45s ease; }
+  .tour .stick .phone img + img { position: absolute; inset: 9px; width: calc(100% - 18px); opacity: 0; }
+  .tour .stick .phone img.on { opacity: 1; }
+  .step { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 20px 0; }
+  .step .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c); margin-bottom: 16px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--c) 22%, transparent); }
+  .step h3 { font-size: clamp(30px, 3.6vw, 42px); margin: 0 0 10px; }
+  .step .tag { font-size: 19px; color: var(--ink-soft); margin: 0 0 14px; font-weight: 700; }
+  .step p { margin: 0; max-width: 42ch; }
+  .step .phone { display: none; }
+
+  /* HELPERS */
+  .helpers { background: linear-gradient(to bottom, #FFFFFF 0%, var(--mist) 28%, var(--mist) 72%, #FFFFFF 100%); }
+  .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 34px 26px; margin-top: 48px; }
+  .grid .help { width: calc((100% - 52px) / 3); max-width: 330px; }
+  /* each helper is a yellow lined note, like the app's diary pages, taped to the wall.
+     The paper has its bottom right corner cut off, and the folded flap sits in that gap.
+     The shadow is on the outer box, so it follows the real paper shape. */
+  .help { position: relative; rotate: var(--r, 0deg); filter: drop-shadow(0 8px 9px rgba(47,74,69,.16)) drop-shadow(0 1px 1px rgba(47,74,69,.10));
+    transition: rotate .3s cubic-bezier(.3,1.6,.5,1), translate .3s cubic-bezier(.3,1.6,.5,1); }
+  .help:hover { rotate: 0deg; translate: 0 -4px; }
+  .help .paper { position: relative; text-align: left; padding: 20px 18px 34px 36px; min-height: 172px; height: 100%; border-radius: 3px;
+    background: repeating-linear-gradient(to bottom, transparent 0 27px, rgba(70,110,140,.16) 27px 28px) 0 19px / 100% 28px, #FFF2A3;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%); }
+  .help .paper::after { content: ""; position: absolute; top: 0; bottom: 0; left: 22px; width: 1.5px; background: rgba(226,104,104,.45); }
+  .help::before { content: ""; position: absolute; z-index: 1; top: -12px; left: 50%; width: 74px; height: 24px; translate: -50% 0; rotate: var(--t, -3deg);
+    background: rgba(255,255,255,.62); border: 1px solid rgba(47,74,69,.06); }
+  .help i { position: absolute; right: 0; bottom: 0; width: 22px; height: 22px; background: linear-gradient(to bottom right, #F3E27E, #E2CF62); clip-path: polygon(0 0, 100% 0, 0 100%); border-radius: 0 0 0 2px; }
+  .help b { display: block; font-size: 16px; line-height: 28px; font-weight: 700; }
+  /* a screenshot pasted into the note, 7 ruled lines tall plus 1 empty line under it, so the words still sit on the lines */
+  .help .shot { display: block; width: 100%; height: 196px; margin-bottom: 28px; object-fit: cover; object-position: var(--pos, 50% 0%); border: 5px solid #fff; border-radius: 4px; box-shadow: 0 2px 6px rgba(47,74,69,.14); }
+
+  /* TRAILER */
+  .video { margin: 34px auto 0; max-width: 900px; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 50px -24px rgba(47,74,69,.35); background: var(--mist); }
+  .video video { display: block; width: 100%; aspect-ratio: 16 / 9; }
+
+  /* FAQ */
+  .faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; align-items: start; }
+  .faq > * { min-width: 0; }
+  .qa { border-top: 1px solid var(--line); }
+  .qa details { border-bottom: 1px solid var(--line); }
+  .qa summary { cursor: pointer; list-style: none; padding: 20px 40px 20px 0; position: relative; font-weight: 800; font-size: 18px; }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after { content: "+"; position: absolute; right: 6px; top: 13px; font-size: 28px; font-weight: 500; color: var(--ink-soft); transition: transform .2s; }
+  .qa details[open] summary::after { transform: rotate(45deg); color: var(--orange); }
+  .qa .a { padding: 0 0 20px; color: var(--ink-soft); }
+  .qa .a p { margin: 0 0 10px; }
+
+  /* FINAL */
+  .final { background: linear-gradient(to bottom, #FFFFFF 0%, transparent 40%), linear-gradient(to top, #FFFFFF 0%, transparent 35%), radial-gradient(120% 100% at 50% 100%, var(--mist-deep) 0%, var(--mist) 45%, #FFFFFF 100%); text-align: center; padding: 90px 0 0; overflow: hidden; }
+  .final h2 { margin-bottom: 12px; }
+  .final .badges { justify-content: center; margin: 28px 0 0; }
+
+  footer { padding: 30px 0 40px; font-size: 15px; color: var(--ink-soft); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer .links a { text-decoration: none; font-weight: 700; color: var(--ink); }
+
+  /* fade in on scroll, once */
+  .js .reveal:not(.in) { opacity: 0; translate: 0 26px; }
+  .reveal { transition: opacity .7s ease, translate .7s cubic-bezier(.2,.7,.2,1); }
+  @media (prefers-reduced-motion: reduce) { .js .reveal:not(.in) { opacity: 1; translate: none; } .reveal { transition: none; } }
+
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+    .hero .copy { padding-bottom: 20px; }
+    .hero .logo { margin-inline: auto; }
+    .hero .lead { margin-inline: auto; }
+    .hero .badges { justify-content: center; }
+    .hero .phone { width: min(250px, 66vw); }
+    .tour { grid-template-columns: 1fr; gap: 0; }
+    .tour .stick { display: none; }
+    .step { min-height: 0; padding: 30px 0 40px; align-items: center; text-align: center; }
+    .step .phone { display: block; width: min(250px, 68vw); margin-top: 24px; }
+    .grid .help { width: calc((100% - 26px) / 2); }
+    .faq { grid-template-columns: 1fr; gap: 20px; }
+    section { padding: 70px 0; }
+    .pets { padding-top: 40px; }
+    .js .reveal:not(.in) { translate: 0 14px; }
+  }
+  @media (max-width: 600px) { .crew { flex-wrap: wrap; row-gap: 6px; } .crew img { width: 20%; margin: 0; } }
+  @media (max-width: 600px) { .grid .help { width: 100%; max-width: 360px; } }
+</style>
+<script>document.documentElement.classList.add("js"); setTimeout(() => { if (!window.revealReady) document.documentElement.classList.remove("js"); }, 3000);</script>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top" aria-label="Ohaiyou, back to top"><img src="img/logo.png" alt="Ohaiyou"></a>
+  <div class="links">
+    <a class="hide-sm" href="#features">Features</a>
+    <a class="hide-sm" href="#faq">FAQ</a>
+    <a class="get" href="#get">Get it</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div class="copy">
+    <img class="logo" src="img/logo.png" alt="Ohaiyou">
+    <h1>A cozy journal with a pet who listens</h1>
+    <p class="lead">Chat with your pet about your day, and it writes your diary for you. Its AI lives on your phone: no account, no cloud, and nothing leaves your device.</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8-.7 0-1.9-.8-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2-1.1 2.8-2.3.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-.9-2.5-3.6ZM14.2 5.5c.6-.8 1.1-1.8 1-2.9-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3Z"/></svg><span><small>Coming soon on the</small><b>App Store</b></span></span>
+      <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.5v17a1 1 0 0 0 1.5.86l14.4-8.5a1 1 0 0 0 0-1.72L6.5 2.64A1 1 0 0 0 5 3.5Z"/></svg><span><small>Coming soon on</small><b>Google Play</b></span></span>
+    </div>
+    <p class="soon">Coming soon to Android, iPhone, iPad, and Mac.</p>
+  </div>
+  <div class="phone"><img src="img/hero.webp" alt="Mochi, the pumpkin pet, in its cozy room, cheering about your day"></div>
+</div></header>
+
+<section class="pets"><div class="wrap center">
+  <p class="eyebrow reveal">Meet your new little friend</p>
+  <h2 class="reveal">Pick from 10 pets</h2>
+  <p class="sub reveal">Dress them up, and choose your colours.</p>
+  <div class="crew reveal" aria-label="The ten Ohaiyou pets">
+    <img src="img/pet-slime-pink.webp" alt="Pink slime"><img src="img/pet-cube.webp" alt="Cube robot"><img src="img/pet-ember.webp" alt="Ember"><img src="img/pet-slime-blue.webp" alt="Blue slime"><img src="img/pet-dino.webp" alt="Dino">
+    <img src="img/pet-milo.webp" alt="Milo"><img src="img/pet-bat.webp" alt="Bat"><img src="img/pet-bolt.webp" alt="Bolt robot"><img src="img/pet-sprout.webp" alt="Sprout"><img src="img/pet-slime-green.webp" alt="Green slime">
+  </div>
+</div></section>
+
+<section id="features" style="padding-top:20px"><div class="wrap">
+  <div class="tour">
+    <div class="stick" aria-hidden="true"><div class="phone">
+      <img class="on" src="img/hero.webp" alt="">
+      <img src="img/diary.webp" alt="">
+      <img src="img/private.webp" alt="">
+      <img src="img/alive.webp" alt="">
+      <img src="img/tricks.webp" alt="">
+      <img src="img/snow.webp" alt="">
+    </div></div>
+    <div>
+      <div class="step" data-i="0" style="--c:var(--orange)">
+        <span class="dot"></span><h3>A little pet who listens</h3><p class="tag">Chat about your day, any time.</p>
+        <p>Tell your pet about your day, vent after a rough one, or just say hi. No buttons, no menus, you just tell it things.</p>
+        <div class="phone"><img src="img/hero.webp" alt="Chatting with Mochi"></div>
+      </div>
+      <div class="step" data-i="1" style="--c:var(--pink)">
+        <span class="dot"></span><h3>It writes your diary for you</h3><p class="tag">Just chat. Your days get saved.</p>
+        <p>When you pause, it writes a short diary page about what you shared, so your days are saved without you having to write a thing. Want to write yourself? Add your own pages, moods, and up to 3 photos.</p>
+        <div class="phone"><img src="img/diary.webp" alt="The Journal with diary pages and a mood calendar"></div>
+      </div>
+      <div class="step" data-i="2" style="--c:var(--green)">
+        <span class="dot"></span><h3>100% private</h3><p class="tag">The AI lives on your phone. No account, no cloud.</p>
+        <p>Your pet's brain is a small AI that runs right on your phone. No ads, no tracking. Your chats, diary, and photos never leave your device. It even works on a plane.</p>
+        <div class="phone"><img src="img/private.webp" alt="The help page in Settings, answering what stays on your phone"></div>
+      </div>
+      <div class="step" data-i="3" style="--c:var(--purple)">
+        <span class="dot"></span><h3>It has a life of its own</h3><p class="tag">TV nights, naps, and garden adventures.</p>
+        <p>When you're busy, your pet naps, watches TV, reads, plays with its ball, and explores the garden. Ask it what it's been up to.</p>
+        <div class="phone"><img src="img/alive.webp" alt="Mochi watching TV at night"></div>
+      </div>
+      <div class="step" data-i="4" style="--c:var(--blue)">
+        <span class="dot"></span><h3>Ask it to do anything</h3><p class="tag">Lights, TV, music, games, and more.</p>
+        <p>"Turn off the lamp." "Put on a cooking show." "Make it snow!" Your pet can switch the lights, play the radio, read a book, play games, do tricks, and much more.</p>
+        <div class="phone"><img src="img/tricks.webp" alt="The list of things your pet can do"></div>
+      </div>
+      <div class="step" data-i="5" style="--c:var(--orange)">
+        <span class="dot"></span><h3>Cozy all year round</h3><p class="tag">Seasons, snow, and holidays.</p>
+        <p>Seasons, weather, snow days, and holiday decorations.</p>
+        <div class="phone"><img src="img/snow.webp" alt="Mochi in a Santa hat on a snowy day"></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="helpers"><div class="wrap center">
+  <h2 class="reveal">Some little extras I made for you</h2>
+  <div class="grid">
+    <div class="help reveal" style="--r:-2deg;--t:-4deg"><div class="paper"><img class="shot" src="img/help-mood.webp" alt="The month view with how you felt"><b>A mood calendar to see how your month felt</b></div><i></i></div>
+    <div class="help reveal" style="--r:1.5deg;--t:3deg"><div class="paper"><img class="shot" src="img/help-checkin.webp" alt="The evening check-in card"><b>An evening check-in, if you'd like one</b></div><i></i></div>
+    <div class="help reveal" style="--r:-1deg;--t:-2deg"><div class="paper"><img class="shot" src="img/help-focus.webp" alt="The focus timer running" style="--pos:0% 0%"><b>A focus timer that keeps you company while you work</b></div><i></i></div>
+    <div class="help reveal" style="--r:2deg;--t:4deg"><div class="paper"><img class="shot" src="img/help-lock.webp" alt="The PIN pad for the Journal lock"><b>A Journal lock with your own PIN</b></div><i></i></div>
+    <div class="help reveal" style="--r:-1.5deg;--t:-3deg"><div class="paper"><img class="shot" src="img/help-backup.webp" alt="The card offering a backup"><b>Backups you keep yourself</b></div><i></i></div>
+  </div>
+</div></section>
+
+<section><div class="wrap center">
+  <h2 class="reveal">Watch the trailer</h2>
+  <div class="video reveal"><video src="img/trailer.mp4" poster="img/trailer-poster.webp" controls playsinline preload="none"></video></div>
+</div></section>
+
+<section id="faq" style="padding-top:20px"><div class="wrap faq">
+  <div>
+    <p class="eyebrow reveal">FAQ</p>
+    <h2 class="reveal">Questions you might have</h2>
+  </div>
+  <div class="qa reveal">
+    <details open>
+      <summary>Does anything I say leave my phone?</summary>
+      <div class="a"><p>No. Your pet's brain runs right here on your phone, not in the cloud. Your chats, diary pages, and photos stay on your phone, and nothing is sent anywhere. Only you can read them, and you can lock the Journal too.</p></div>
+    </details>
+    <details>
+      <summary>Does it need the internet?</summary>
+      <div class="a"><p>Only once, to download your pet's brain (Wi-Fi is best). After that, it works offline, even in airplane mode.</p></div>
+    </details>
+    <details>
+      <summary>Is it ChatGPT?</summary>
+      <div class="a"><p>No. It's a small AI that lives on your phone. It may forget things or mix them up, but it's trying its very best.</p></div>
+    </details>
+    <details>
+      <summary>Do I need an account?</summary>
+      <div class="a"><p>No. There's no account, no ads, and no tracking.</p></div>
+    </details>
+    <details>
+      <summary>Can I back up my Journal?</summary>
+      <div class="a"><p>Yes. A backup is a single file that you save and keep wherever you like. It's yours, and nobody else ever sees it.</p></div>
+    </details>
+    <details>
+      <summary>What if I'm going through something heavy?</summary>
+      <div class="a"><p>Please also reach out to someone you trust or a local helpline. You matter.</p></div>
+    </details>
+    <details>
+      <summary>When can I get it?</summary>
+      <div class="a"><p>Soon! It's coming to Android, iPhone, iPad, and Mac.</p></div>
+    </details>
+  </div>
+</div></section>
+
+<section class="final" id="get"><div class="wrap">
+  <h2 class="reveal">The journal that keeps you company</h2>
+  <p class="sub reveal">Coming soon to Android, iPhone, iPad, and Mac.</p>
+  <div class="badges reveal">
+    <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8-.7 0-1.9-.8-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2-1.1 2.8-2.3.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-.9-2.5-3.6ZM14.2 5.5c.6-.8 1.1-1.8 1-2.9-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3Z"/></svg><span><small>Coming soon on the</small><b>App Store</b></span></span>
+    <span class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.5v17a1 1 0 0 0 1.5.86l14.4-8.5a1 1 0 0 0 0-1.72L6.5 2.64A1 1 0 0 0 5 3.5Z"/></svg><span><small>Coming soon on</small><b>Google Play</b></span></span>
+  </div>
+  <div class="crew small reveal" aria-hidden="true">
+    <img src="img/pet-slime-pink.webp" alt="Pink slime"><img src="img/pet-cube.webp" alt="Cube robot"><img src="img/pet-ember.webp" alt="Ember"><img src="img/pet-slime-blue.webp" alt="Blue slime"><img src="img/pet-dino.webp" alt="Dino">
+    <img src="img/pet-milo.webp" alt="Milo"><img src="img/pet-bat.webp" alt="Bat"><img src="img/pet-bolt.webp" alt="Bolt robot"><img src="img/pet-sprout.webp" alt="Sprout"><img src="img/pet-slime-green.webp" alt="Green slime">
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Made with love for all, by <a href="https://bunsoootchi.github.io/">bunsoootchi</a>.</span>
+  <div class="links">
+    <a href="privacy.html">Privacy policy</a>
+    <a href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Ko-fi</a>
+    <a href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div></footer>
+
+<script>
+  const nav = document.querySelector("nav");
+  const onScroll = () => nav.classList.toggle("scrolled", scrollY > 8);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // Tour: the sticky phone shows the screen for the part you're reading.
+  const shots = [...document.querySelectorAll(".tour .stick img")];
+  const stepper = new IntersectionObserver(entries => {
+    entries.filter(e => e.isIntersecting).forEach(e => {
+      const i = +e.target.dataset.i;
+      shots.forEach((s, j) => s.classList.toggle("on", j === i));
+    });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  document.querySelectorAll(".step").forEach(s => stepper.observe(s));
+
+  // Fade blocks in the first time they scroll into view.
+  window.revealReady = true;
+  document.querySelectorAll(".step > *:not(.dot)").forEach(el => el.classList.add("reveal"));
+  const revealer = new IntersectionObserver(entries => {
+    entries.filter(e => e.isIntersecting).forEach((e, i) => {
+      e.target.style.transitionDelay = Math.min(i * 80, 400) + "ms";
+      e.target.classList.add("in");
+      revealer.unobserve(e.target);
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll(".reveal").forEach(el => revealer.observe(el));
+</script>
+</body>
+</html>
