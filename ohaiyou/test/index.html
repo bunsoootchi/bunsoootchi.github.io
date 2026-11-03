@@ -12,6 +12,8 @@
   /* the Ohaiyou page's colors: white, soft gray, and the dark green it writes in */
   :root { --ink: #2F4A45; --ink-soft: #5B6F6B; --line: #E4E6E6; --bg: #FFFFFF; --mist: #F2F2F3; --orange: #F0824C; }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body { margin: 0; background: var(--bg); color: var(--ink); font: 500 17px/1.65 "M PLUS Rounded 1c", system-ui, sans-serif; -webkit-font-smoothing: antialiased; padding: 48px 20px 80px; }
   main { max-width: 640px; margin: 0 auto; }
   a { color: inherit; }
