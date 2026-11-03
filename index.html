@@ -115,6 +115,7 @@
   .chip.eink { background: #E3F7DD; color: #2E8A20; }
   .chip.soon { background: #FFF2CC; color: #9A6B00; }
   .chip.game { background: #FFE6D6; color: #B4501E; }
+  .chip.furby { background: #DDF3FC; color: #0E7BB0; }
   .card.featured, .card.wide { grid-column: span 2; }
   .card.wide .thumb img { object-position: right center; }
   .card.wide .body { right: auto; width: min(380px, 58%); }
@@ -134,6 +135,8 @@
   .redact { background: var(--ink); color: transparent; border-radius: 3px; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; user-select: none; -webkit-user-select: none; }
   .chip.secret { background: #FBE1DE; color: #B3261E; }
   .card img[src*="weddingotchi"] { object-position: left top; }
+  .card img[src*="roundedraff"] { object-position: left center; }
+  .card img[src*="furble"] { object-position: 80% center; }
   .card.featured .thumb img { object-position: center; }
   .card.featured .body { right: auto; width: min(380px, 58%); }
   .card.featured h3 { font-size: 32px; }
@@ -287,11 +290,15 @@
         </div>
         <div class="body"><div class="chips"><span class="chip secret">Top secret</span></div><h3>Secret project</h3><p>I can't say much yet. It's a <span class="redact">nice try</span> for <span class="redact">not telling</span>, and it <span class="redact">stop peeking</span>.</p></div>
       </a>
+      <a class="card" href="https://bunsoootchi.github.io/furble/" style="--accent:#29A9E0"><span class="go">Open →</span>
+        <div class="thumb"><img src="art/cards/furble.webp" alt="Three Furbys with glowing eyes" loading="lazy"></div>
+        <div class="body"><div class="chips"><span class="chip furby">Furby</span></div><h3>FurBLE</h3><p>A web app to control your Furby Connect over Bluetooth, right from Chrome.</p></div>
+      </a>
       <a class="card" href="https://ko-fi.com/s/458d6fbcbe" style="--accent:#6FB561"><span class="go">Open →</span>
         <div class="thumb"><img src="art/cards/faceplates.webp" alt="Paradise faceplates" loading="lazy"></div>
         <div class="body"><div class="chips"><span class="chip tama">Tamagotchi</span></div><h3>Paradise faceplates</h3><p>16 printable custom faceplates for Tamagotchi Paradise.</p></div>
       </a>
-      <a class="card wide panel-right" href="https://ko-fi.com/s/4d63b4fb76" style="--accent:#7C80A0"><span class="go">Open →</span>
+      <a class="card" href="https://ko-fi.com/s/4d63b4fb76" style="--accent:#7C80A0"><span class="go">Open →</span>
         <div class="thumb"><img src="art/cards/roundedraff.webp" alt="RoundedRaff" loading="lazy"></div>
         <div class="body"><div class="chips"><span class="chip eink">E-ink</span></div><h3>RoundedRaff</h3><p>A theme for CrossPoint on the Xteink X4 e-reader.</p></div>
       </a>
