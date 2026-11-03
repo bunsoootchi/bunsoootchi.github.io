@@ -113,6 +113,12 @@
   .stage .caption h3 { font-size: 34px; line-height: 1.05; margin: 0 0 10px; }
   .stage .caption p { margin: 0; }
 
+  /* TRAILER: the vertical trailer, framed like the phone screens */
+  .center-head { text-align: center; }
+  .center-head p { margin-inline: auto; }
+  .trailer-video { width: min(360px, 100%); margin: 30px auto 0; border-radius: 28px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line), 0 30px 60px -20px rgba(0,0,0,.35); }
+  .trailer-video video { display: block; width: 100%; aspect-ratio: 9 / 16; background: #000; }
+
   /* FEATURES: pick a reader type, see only what matters to you */
   .types { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 10px; margin: 30px 0 30px; scrollbar-width: none; }
   .types::-webkit-scrollbar { display: none; }
@@ -266,6 +272,14 @@
       <div data-for="view-out" hidden><h3 class="serif">Outside, the cover does the talking.</h3><p>Close the phone and it stays up, like a book you left on a café table. On purpose. Obviously.</p></div>
     </div>
   </div>
+</div></section>
+
+<section id="trailer"><div class="wrap">
+  <div class="section-head center-head">
+    <p class="eyebrow">Trailer</p>
+    <h2 class="serif">Watch the trailer</h2>
+  </div>
+  <div class="trailer-video"><video src="img/trailer.mp4" poster="img/trailer-poster.webp" controls playsinline preload="none"></video></div>
 </div></section>
 
 <section id="features"><div class="wrap">
@@ -520,7 +534,7 @@
 
   // Fade blocks in the first time they scroll into view. Blocks that arrive together come in one after another.
   window.revealReady = true;
-  const REVEAL = ".hero .eyebrow, .hero h1, .hero .dash, .hero .lead, .hero .cta-row, .hero .fine, .hero-art, .section-head > *, .seg, .stage .views, .stage .caption, .types, .panel, details.all, .qa details, .final h2, .final p, .final .cta-row, footer .wrap > *";
+  const REVEAL = ".hero .eyebrow, .hero h1, .hero .dash, .hero .lead, .hero .cta-row, .hero .fine, .hero-art, .section-head > *, .seg, .stage .views, .stage .caption, .trailer-video, .types, .panel, details.all, .qa details, .final h2, .final p, .final .cta-row, footer .wrap > *";
   const revealer = new IntersectionObserver(entries => {
     entries.filter(e => e.isIntersecting).forEach((e, i) => {
       const el = e.target;
