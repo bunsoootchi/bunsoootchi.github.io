@@ -69,11 +69,10 @@
   .hero .lead { font-size: 19px; max-width: 34ch; margin: 0 0 28px; }
   .fine { font-size: 14px; color: var(--faint); margin: 16px 0 0; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .play { display: inline-flex; align-items: center; gap: 12px; background: var(--ink); color: var(--on-ink); text-decoration: none; padding: 10px 22px 10px 16px; border-radius: 14px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  /* not Google's badge (that's only allowed once the app is live on Google Play): a plain pill until then */
+  .play { display: inline-block; background: var(--ink); color: var(--on-ink); text-decoration: none; padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: 17px; white-space: nowrap; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
   .play:hover { transform: translateY(-2px) rotate(-1deg); }
-  .play svg { width: 26px; height: 26px; flex: none; }
-  .play small { display: block; font-size: 11.5px; line-height: 1.2; opacity: .8; }
-  .play b { display: block; font-size: 19px; line-height: 1.15; font-weight: 600; }
+  @media (max-width: 380px) { .play { font-size: 14.5px; padding: 12px 16px; } }
   .btn-ghost { display: inline-block; padding: 12px 20px; border-radius: 14px; border: 1px solid var(--line); text-decoration: none; font-weight: 500; color: var(--ink); }
   .btn-ghost:hover { border-color: var(--ink); }
   .hero-art { position: relative; justify-self: center; width: min(300px, 70vw); }
@@ -186,6 +185,7 @@
   footer { border-top: 1px solid var(--line); padding: 36px 0 44px; font-size: 14px; color: var(--faint); }
   footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
   footer img { height: 22px; width: auto; }
+  footer .tm { margin: 6px 0 0; font-size: 12px; opacity: .8; }
   footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   footer .links a { text-decoration: none; }
   footer .links a:hover { color: var(--ink); }
@@ -237,9 +237,7 @@
     <div class="dash"></div>
     <p class="lead">You read on the big screen inside. Your book's cover shows on the outside, for the whole train to see. Reading was always cool. Now it's visible.</p>
     <div class="cta-row">
-      <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5v17a1 1 0 0 0 1.5.86l14.4-8.5a1 1 0 0 0 0-1.72L6.5 2.64A1 1 0 0 0 5 3.5Z" fill="currentColor"/></svg>
-        <span><small>Coming <i>really</i> soon on</small><b>Google Play</b></span>
+      <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">Coming <i>really</i> soon to Google Play
       </a>
       <a class="btn-ghost" href="#features">See what it does</a>
     </div>
@@ -458,9 +456,7 @@
   <h2 class="serif">Ready to be seen reading?</h2>
   <p>Your next book deserves an audience.</p>
   <div class="cta-row">
-    <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5v17a1 1 0 0 0 1.5.86l14.4-8.5a1 1 0 0 0 0-1.72L6.5 2.64A1 1 0 0 0 5 3.5Z" fill="currentColor"/></svg>
-      <span><small>Coming <i>really</i> soon on</small><b>Google Play</b></span>
+    <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">Coming <i>really</i> soon to Google Play
     </a>
   </div>
   <p class="tiny">Questions or bugs? <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a></p>
@@ -471,6 +467,7 @@
     <img class="wordmark-light" src="img/wordmark.png" alt="Performatively">
     <img class="wordmark-dark" src="img/wordmark-dark.png" alt="Performatively">
     <p style="margin:10px 0 0">Made with love for all, by <a href="https://bunsoootchi.github.io/">bunsoootchi</a>.</p>
+    <p class="tm">Google Play and Android are trademarks of Google LLC. Galaxy Z Fold is a trademark of Samsung Electronics Co., Ltd.</p>
   </div>
   <div class="links">
     <a href="privacy.html">Privacy policy</a>
