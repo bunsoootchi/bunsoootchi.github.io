@@ -24,16 +24,16 @@
 <body>
 <main>
   <h1>Performatively Privacy Policy</h1>
-  <p class="updated">Last updated: November 3, 2026</p>
+  <p class="updated">Last updated: November 5, 2026</p>
   <div class="rule"></div>
 
-  <p>Performatively is an e-reader app for Android by bunsoootchi. In short: <strong>the developer never gets any of your data.</strong> Everything stays on your phone, unless you turn on progress sync, which keeps your place in each book in your own Google Drive, or add a library server of your own.</p>
+  <p>Performatively is an e-reader app for Android by bunsoootchi. In short: <strong>the developer never gets any of your data.</strong> Everything stays on your phone, unless you turn on progress sync (your place in each book, kept in your own Google Drive), connect your hardcover.app profile, or add a library server of your own.</p>
 
   <h2>What the app doesn't do</h2>
   <ul>
-    <li>It only goes online if you turn on progress sync or add a library server. Without them, nothing leaves your phone.</li>
+    <li>It only goes online if you turn on progress sync, connect hardcover.app, or add a library server. Without them, nothing leaves your phone.</li>
     <li>It has no ads, no analytics, no tracking, and no account to sign up for.</li>
-    <li>It doesn't sell or share any information with anyone.</li>
+    <li>It never sells your information, and only sends it to the services you turn on yourself.</li>
   </ul>
 
   <h2>What stays on your phone</h2>
@@ -56,14 +56,25 @@
   </ul>
   <p>Google's own privacy policy covers how Google Drive stores files: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
 
-  <h2>Library servers</h2>
+  <h2>hardcover.app sync (optional)</h2>
+<p>This is off unless you paste your own Hardcover API key in Settings, under hardcover.app. If you do:</p>
+<ul>
+<li><strong>What's sent:</strong> to find each book you open on Hardcover, its ISBN, or the words you type when you search. Then how far you are in it (as a page number), and when you finish it.</li>
+<li><strong>What's never sent:</strong> your book files, highlights, notes, bookmarks, stickers, or anything about books you haven't opened.</li>
+<li><strong>Where it goes:</strong> only to Hardcover, into your own Hardcover profile. The developer has no server and never sees it.</li>
+<li><strong>Your key:</strong> stays on your phone, is sent only to Hardcover, and is left out of Android's cloud backups.</li>
+<li><strong>Stopping it:</strong> tap Disconnect in Settings, under hardcover.app. That removes the key from your phone. What's already on your Hardcover profile stays there, and you can change or delete it on hardcover.app, where you can also delete the key.</li>
+</ul>
+<p>Hardcover's own privacy policy covers what it does with your profile.</p>
+
+<h2>Library servers</h2>
   <p>If you add a library server (like Calibre-Web, Kavita, or Komga), the app connects only to that server, to show its books and download the ones you pick. Your username and password for it stay on your phone, are sent only to that server, and are left out of Android's cloud backups. Performatively has no server of its own and never sees any of this. Remove a server anytime in Settings, under Books folders.</p>
 
   <h2>Read aloud</h2>
   <p>Read aloud uses your phone's own text-to-speech voices. The text being read goes to that voice engine on your phone, which is a separate app with its own privacy policy. Performatively only lists voices that work offline.</p>
 
   <h2>Permissions</h2>
-  <p>The app asks you to choose your books folders, so it can find your books. To keep reading aloud with the screen off, Android gives the app permission to run a media service while it reads. It also has internet permission, which is only used for progress sync after you sign in, and for library servers you add. It asks for nothing else.</p>
+  <p>The app asks you to choose your books folders, so it can find your books. To keep reading aloud with the screen off, Android gives the app permission to run a media service while it reads. It also has internet permission, which is only used for progress sync after you sign in, hardcover.app sync after you connect, and library servers you add. It asks for nothing else.</p>
 
   <h2>Children</h2>
   <p>The app is not made for children under 13 and does not knowingly collect any information from anyone.</p>
