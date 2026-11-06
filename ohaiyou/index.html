@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://bunsoootchi.github.io/ohaiyou/">
 <meta property="og:image" content="https://bunsoootchi.github.io/ohaiyou/img/trailer-poster.webp">
 <meta name="theme-color" content="#F2F2F2">
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@800&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   /* Ohaiyou colors: the soft gray of its store art, white, and the dark green it writes in. The pets bring the color. */
   :root { --ink: #2F4A45; --ink-soft: #5B6F6B; --line: #E4E6E6; --bg: #FFFFFF; --mist: #F2F2F3; --mist-deep: #E3E3E5;
@@ -39,11 +39,11 @@
   nav .links .get:hover { color: #fff; background: #3C5F59; }
   @media (max-width: 640px) { nav .links .hide-sm { display: none; } }
 
-  /* bunsoootchi's own "Made by" badge, the same on every page of the site: "Made by" and the bunsoootchi logo, linking to the main website */
-  .maker { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; color: #23263F; font: 600 13px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap;
-    padding: 5px 12px 5px 14px; border-radius: 999px; box-shadow: 0 0 0 1px rgba(35,38,63,.12), 0 6px 14px -8px rgba(35,38,63,.35); margin: 0 0 22px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
-  .maker:hover { transform: rotate(-2deg) scale(1.04); }
-  .maker img { height: 34px; width: auto; display: block; }
+  /* "Made by bunsoootchi" with the bunsoootchi face, the same on every landing page: goes back to the main bunsoootchi website */
+  .maker { display: inline-flex; align-items: center; gap: 8px; color: #3049B8; font: 800 15px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap; margin: 0 0 22px; }
+  .maker img { height: 34px; width: auto; display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .maker:hover img { transform: rotate(-10deg); }
+  .maker:hover { text-decoration: underline; text-underline-offset: 4px; }
   .badges { display: flex; flex-wrap: wrap; gap: 12px; }
   /* not Apple's or Google's badges (those are only allowed once the app is live in each store): plain pills until then */
   .badge { display: inline-block; background: var(--ink); color: #fff; border-radius: 999px; padding: 12px 22px; font-weight: 800; font-size: 16px; white-space: nowrap; cursor: default; }
@@ -186,7 +186,7 @@
 
 <header class="hero" id="top"><div class="wrap">
   <div class="copy">
-    <a class="maker" href="../" aria-label="Made by bunsoootchi, go to the bunsoootchi website"><span>Made by</span><img src="../logo-sticker.webp" alt="bunsoootchi"></a>
+    <a class="maker" href="../">Made by bunsoootchi<img src="../logo-face.webp" alt=""></a>
     <img class="logo" src="img/logo.png" alt="Ohaiyou">
     <h1>A cozy journal with a pet who listens</h1>
     <p class="lead">Chat with your pet about your day, and it writes your diary for you. Its AI lives on your phone: no account, no cloud, and nothing leaves your device.</p>
