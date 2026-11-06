@@ -10,7 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   /* the Ohaiyou page's colors: white, soft gray, and the dark green it writes in */
-  :root { --ink: #2F4A45; --ink-soft: #5B6F6B; --line: #E4E6E6; --bg: #FFFFFF; --mist: #F2F2F3; --orange: #F0824C; }
+  :root { --ink: #2F4A45; --ink-soft: #5B6F6B; --line: #E4E6E6; --bg: #FFFFFF; --mist: #F2F2F3; --orange: #F0824C;
+    --screen-ink: #1F1F1F; --screen-faint: #5F6368; --screen-line: #E8EAED; --g-blue: #1A73E8; --g-green: #01875F; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 24px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -32,25 +33,62 @@
   .platform > h2 { font-size: 30px; margin-bottom: 6px; }
   .platform > .note { color: var(--ink-soft); }
 
-  .step { display: grid; grid-template-columns: 40px 1fr; gap: 18px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .step { display: grid; grid-template-columns: 40px 1fr; gap: 18px; padding: 32px 0; border-bottom: 1px solid var(--line); }
   .step:last-child { border-bottom: 0; }
+  .step > div { min-width: 0; }
   .num { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 800; }
   .step h3 { font-size: 21px; margin: 6px 0 8px; }
-  .step ol { margin: 0 0 12px; padding-left: 22px; }
-  .step li + li { margin-top: 4px; }
   .btn { display: inline-block; margin: 4px 0 12px; padding: 13px 24px; border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 800; }
   .btn:hover { background: #3C5F59; }
   .tip { color: var(--ink-soft); font-size: 15px; }
+  .warn { background: var(--mist); border-left: 4px solid var(--orange); border-radius: 12px; padding: 14px 16px; margin: 0 0 14px; }
 
-  .help { margin-top: 56px; background: var(--mist); border-radius: 24px; padding: 28px 26px; }
+  /* Simple drawings of each Google screen. The orange ring shows what to tap. */
+  .shots { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0 6px; }
+  .phone { width: 220px; border: 8px solid #1E2423; border-radius: 30px; background: #fff; color: var(--screen-ink); overflow: hidden; font: 13px/1.4 Roboto, system-ui, sans-serif; box-shadow: 0 14px 30px -14px rgba(47,74,69,.35); }
+  .phone .bar { height: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 10px; font-weight: 600; color: var(--screen-faint); }
+  .phone .body { padding: 12px 14px 20px; min-height: 230px; }
+  .top { display: flex; align-items: center; gap: 8px; padding: 0 14px 10px; border-bottom: 1px solid var(--screen-line); margin: 0 -14px 14px; }
+  .top b { font-size: 15px; font-weight: 500; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--g-blue); flex: none; }
+  .avatar { width: 22px; height: 22px; border-radius: 50%; background: #8CC6EC; margin-left: auto; flex: none; }
+  .gbtn { display: inline-block; border: 1px solid #DADCE0; color: var(--g-blue); border-radius: 6px; padding: 6px 11px; font-weight: 500; font-size: 12px; }
+  .gbtn.fill { background: var(--g-blue); border-color: var(--g-blue); color: #fff; }
+  .gbtn.play { background: var(--g-green); border-color: var(--g-green); color: #fff; border-radius: 999px; padding: 8px 0; width: 100%; text-align: center; font-size: 13px; }
+  .muted { color: var(--screen-faint); font-size: 11.5px; }
+  .dialog { border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,.16); padding: 14px; margin-top: 18px; }
+  .dialog .right { text-align: right; margin-top: 12px; }
+  .menu { border-radius: 14px; background: #F1F4F9; padding: 6px 0; }
+  .menu div { padding: 9px 12px; display: flex; align-items: center; gap: 10px; }
+  .menu i { width: 14px; height: 14px; border-radius: 4px; background: #C4C7C5; flex: none; }
+  .appinfo { display: flex; gap: 10px; align-items: center; margin: 4px 0 12px; }
+  .appinfo img { width: 46px; height: 46px; border-radius: 12px; border: 1px solid var(--screen-line); }
+  .appinfo b { display: block; font-size: 15px; font-weight: 600; }
+  .appinfo span { color: var(--g-green); font-size: 11.5px; font-weight: 500; }
+  .field { border: 1px solid #DADCE0; border-radius: 6px; padding: 9px 10px; color: var(--screen-faint); letter-spacing: .06em; margin: 10px 0 12px; font-size: 12px; }
+  .label { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .tap { position: relative; }
+  .tap::after { content: ""; position: absolute; inset: -6px; border: 3px solid var(--orange); border-radius: 12px; pointer-events: none; animation: pulse 1.6s ease-in-out infinite; }
+  .menu .tap::after { inset: 0 4px; }
+  .avatar.tap::after { border-radius: 50%; }
+  @keyframes pulse { 50% { transform: scale(1.05); opacity: .5; } }
+  @media (prefers-reduced-motion: reduce) { .tap::after { animation: none; } }
+
+  .help { margin-top: 56px; background: var(--mist); border-radius: 24px; padding: 30px 26px; }
   .help h2 { font-size: 24px; margin-bottom: 4px; }
-  .help h3 { font-size: 17px; margin: 20px 0 4px; }
+  .help h3 { font-size: 17px; margin: 22px 0 4px; }
   .help p { color: var(--ink-soft); margin: 0; }
 
   footer { margin-top: 48px; color: var(--ink-soft); font-size: 14px; text-align: center; }
+
+  /* an always-visible scroll bar, so people know there's more below (hidden when the page fits) */
+  .rail { position: fixed; top: 10px; bottom: 10px; right: 4px; width: 5px; border-radius: 3px; background: rgba(47,74,69,.10); z-index: 9; }
+  .rail i { position: absolute; left: 0; right: 0; border-radius: 3px; background: rgba(47,74,69,.45); }
+  .rail[hidden] { display: none; }
 </style>
 </head>
 <body>
+<div class="rail" hidden aria-hidden="true"><i></i></div>
 <main>
   <header>
     <img src="../img/logo.png" alt="Ohaiyou">
@@ -65,15 +103,37 @@
 
   <section class="platform" id="android">
     <h2>Android</h2>
-    <p class="note">Use the <strong>same Google account</strong> for every step, the one your Play Store uses.</p>
+    <p class="note">Use the <strong>same Google account</strong> for every step, the one your Play Store uses. Do the steps in order.</p>
 
     <div class="step">
       <span class="num">1</span>
       <div>
         <h3>Join the tester group</h3>
-        <p>Open the link and tap <strong>Join group</strong>, then <strong>Join group</strong> again.</p>
+        <p>Open the link and tap <strong>Join group</strong>. A small window pops up. Tap <strong>Join group</strong> again.</p>
         <a class="btn" href="https://groups.google.com/g/ohaiyou-testers" target="_blank" rel="noopener">Open the tester group</a>
-        <p class="tip">If it says you don't have permission to see the content, that's normal. Joining still works.</p>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot"></span><b>Groups</b><span class="avatar"></span></div>
+              <div style="font-size:15px;margin-bottom:12px">Ohaiyou testers</div>
+              <span class="gbtn tap">Join group</span>
+              <p class="muted" style="margin-top:26px;text-align:center">You don't have permission to access this content</p>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot"></span><b>Groups</b><span class="avatar"></span></div>
+              <div class="dialog">
+                <div class="label">Join this group?</div>
+                <div class="muted">Ohaiyou testers</div>
+                <div class="right"><span class="gbtn fill tap">Join group</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="tip">"You don't have permission to access this content" is normal. Only I can see the group's posts, and joining still works.</p>
       </div>
     </div>
 
@@ -81,8 +141,19 @@
       <span class="num">2</span>
       <div>
         <h3>Become a tester</h3>
-        <p>Open the link and tap <strong>Become a tester</strong>.</p>
+        <p>Open the link and tap <strong>Become a tester</strong>. The page then says you're a tester.</p>
         <a class="btn" href="https://play.google.com/apps/testing/com.bunsoootchi.ohaiyou" target="_blank" rel="noopener">Open the testing page</a>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot" style="background:var(--g-green)"></span><b>Google Play</b><span class="avatar"></span></div>
+              <div class="appinfo"><img src="face.png" alt=""><div><b>Ohaiyou</b><span>Closed test</span></div></div>
+              <p class="muted" style="margin:0 0 16px">Become a tester to get the app before it comes out.</p>
+              <span class="gbtn fill tap">BECOME A TESTER</span>
+            </div>
+          </div>
+        </div>
         <p class="tip">If it says the app isn't available, wait a few minutes after joining the group, then try again.</p>
       </div>
     </div>
@@ -91,10 +162,44 @@
       <span class="num">3</span>
       <div>
         <h3>Redeem your code</h3>
-        <p>Do steps 1 and 2 first, with the same Google account. If you redeem before that, Google Play shows error PRS-RPCPM-18.</p>
-        <p>I'll send you a code in a DM. Each code works once, so please don't share it.</p>
-        <a class="btn" href="https://play.google.com/redeem" target="_blank" rel="noopener">Redeem your code</a>
-        <p class="tip">Or in the Play Store app: tap your profile picture, then <strong>Payments &amp; subscriptions</strong>, then <strong>Redeem code</strong>.</p>
+        <p class="warn">Do steps 1 and 2 first. If you redeem the code before that, Google Play shows error PRS-RPCPM-18.</p>
+        <p>I'll send you a code in a DM. Each code works once, so please don't share it. On your phone, open the <strong>Play Store</strong> app, then:</p>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Google Play</b><span class="avatar tap"></span></div>
+              <p class="muted" style="margin:0 0 8px">Tap your profile picture, then:</p>
+              <div class="menu">
+                <div><i></i>Manage apps &amp; device</div>
+                <div class="tap"><i></i>Payments &amp; subscriptions</div>
+                <div><i></i>Play Protect</div>
+                <div><i></i>Settings</div>
+              </div>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Payments &amp; subscriptions</b></div>
+              <div class="menu">
+                <div><i></i>Payment methods</div>
+                <div><i></i>Subscriptions</div>
+                <div><i></i>Budget &amp; history</div>
+                <div class="tap"><i></i>Redeem code</div>
+              </div>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body" style="min-height:0">
+              <div class="label">Redeem code</div>
+              <div class="field">Type the code from my DM</div>
+              <div style="text-align:right"><span class="gbtn fill tap">Redeem</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="tip">On a computer, you can also redeem it at <a href="https://play.google.com/redeem" target="_blank" rel="noopener">play.google.com/redeem</a>, signed in with the same Google account.</p>
       </div>
     </div>
 
@@ -102,9 +207,20 @@
       <span class="num">4</span>
       <div>
         <h3>Install it</h3>
-        <p>Tap <strong>Install</strong>. It should be free.</p>
+        <p>Open Ohaiyou on Google Play and tap <strong>Install</strong>. It should be free.</p>
         <a class="btn" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.ohaiyou" target="_blank" rel="noopener">Open Ohaiyou on Google Play</a>
-        <p class="tip">If it still shows a price, don't pay. Message me and I'll help.</p>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Google Play</b><span class="avatar"></span></div>
+              <div class="appinfo"><img src="face.png" alt=""><div><b>Ohaiyou</b><span>bunsoootchi</span></div></div>
+              <p class="muted" style="margin:0 0 16px">You're a tester for this app.</p>
+              <span class="gbtn play tap">Install</span>
+            </div>
+          </div>
+        </div>
+        <p class="tip">If it still shows a price, don't pay. Message me and I'll help. If you tap Install and nothing happens, check that step 2 says you're a tester, wait 15 minutes, and try again.</p>
       </div>
     </div>
 
@@ -151,5 +267,21 @@
 
   <footer>Made by <a href="https://bunsoootchi.github.io">bunsoootchi</a>. Questions? Email <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a>.</footer>
 </main>
+<script>
+  // keeps the scroll bar in step with the page, and hides it when everything fits on one screen
+  const rail = document.querySelector('.rail'), thumb = rail.firstElementChild;
+  function place() {
+    const doc = document.documentElement, view = innerHeight, full = doc.scrollHeight;
+    rail.hidden = full <= view + 2;
+    if (rail.hidden) return;
+    const track = rail.clientHeight, h = Math.max(36, track * view / full);
+    thumb.style.height = h + 'px';
+    thumb.style.top = (track - h) * (scrollY / (full - view)) + 'px';
+  }
+  addEventListener('scroll', place, { passive: true });
+  addEventListener('resize', place);
+  addEventListener('load', place);
+  place();
+</script>
 </body>
 </html>
