@@ -41,8 +41,9 @@
 
   /* "Made by bunsoootchi" with the bunsoootchi face, the same on every landing page: goes back to the main bunsoootchi website */
   .maker { display: inline-flex; align-items: center; gap: 8px; color: #3049B8; font: 800 15px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap; margin: 0 0 22px; }
-  .maker img { height: 34px; width: auto; display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
-  .maker:hover img { transform: rotate(-10deg); }
+  .maker img { height: 34px; width: auto; display: block; translate: 0 -8px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  /* on hover the face lifts its chin, proudly */
+  .maker:hover img { transform: rotate(10deg); }
   .maker:hover { text-decoration: underline; text-underline-offset: 4px; }
   .badges { display: flex; flex-wrap: wrap; gap: 12px; }
   /* not Apple's or Google's badges (those are only allowed once the app is live in each store): plain pills until then */
