@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://bunsoootchi.github.io/art/cards/performatively.webp">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Literata:ital,opsz@0,7..72;1,7..72&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Literata:ital,opsz@0,7..72;1,7..72&display=swap" rel="stylesheet">
 <style>
   /* Performatively colors: plain white or pure black (like the app's dark mode), ink, and the bookmark red. No cream. */
   :root {
@@ -61,11 +61,13 @@
   nav .links .get:hover { color: var(--on-ink); }
   @media (max-width: 640px) { nav .links .hide-sm { display: none; } }
 
-  /* bunsoootchi's own "Made by" badge, the same on every page of the site: "Made by" and the bunsoootchi logo, linking to the main website */
-  .maker { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; color: #23263F; font: 600 13px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap;
-    padding: 5px 12px 5px 14px; border-radius: 999px; box-shadow: 0 0 0 1px rgba(35,38,63,.12), 0 6px 14px -8px rgba(35,38,63,.35); margin: 0 0 22px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
-  .maker:hover { transform: rotate(-2deg) scale(1.04); }
-  .maker img { height: 34px; width: auto; display: block; }
+  /* "Made by bunsoootchi" with the bunsoootchi face, the same on every landing page: goes back to the main bunsoootchi website */
+  .maker { display: inline-flex; align-items: center; gap: 8px; color: #3049B8; font: 800 15px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap; margin: 0 0 22px; }
+  .maker img { height: 34px; width: auto; display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .maker:hover img { transform: rotate(-10deg); }
+  .maker:hover { text-decoration: underline; text-underline-offset: 4px; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .maker { color: #FFFFFF; } :root:not([data-theme="light"]) .maker img { filter: brightness(0) invert(1); } }
+  :root[data-theme="dark"] .maker { color: #FFFFFF; } :root[data-theme="dark"] .maker img { filter: brightness(0) invert(1); }
   /* HERO */
   .hero { padding: 56px 0 40px; }
   .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
@@ -244,7 +246,7 @@
 
 <header class="hero" id="top"><div class="wrap">
   <div>
-    <a class="maker" href="../" aria-label="Made by bunsoootchi, go to the bunsoootchi website"><span>Made by</span><img src="../logo-sticker.webp" alt="bunsoootchi"></a>
+    <a class="maker" href="../">Made by bunsoootchi<img src="../logo-face.webp" alt=""></a>
     <p class="eyebrow">An e-reader for the Galaxy Z Fold 8</p>
     <h1 class="serif">Let the world know what you're <em>reading.</em></h1>
     <div class="dash"></div>
