@@ -23,7 +23,7 @@
     /* one rule for the whole page: only things you can click get the solid dark bottom edge (--press). Everything else floats on a soft shadow (--lift). */
     --press: 0 6px 0 var(--ink); --lift: 0 18px 36px -16px rgba(43,36,32,.5); }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-y: scroll; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   /* the page scroll bar always shows, so it's clear there's more below */
   html::-webkit-scrollbar { width: 12px; }

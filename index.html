@@ -42,16 +42,32 @@
   .nav-logo { display: flex; align-items: center; gap: 4px; }
   .nav-face { height: 44px; display: block; transition: transform .35s; }
   .nav-text { height: 46px; max-width: 0; opacity: 0; display: block; object-fit: contain; object-position: left center; transition: max-width .45s ease, opacity .3s ease; }
-  nav.scrolled .nav-text { max-width: 120px; opacity: 1; }
+  nav.scrolled .nav-text { max-width: 140px; opacity: 1; }
+  nav.scrolled .nav-face { display: none; }   /* the new logo already has the face */
   nav.scrolled .nav-face { height: 36px; }
   nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 80px; }
   .logo { font-family: "Lilita One"; font-size: 26px; color: var(--cobalt); text-decoration: none; }
   .logo span { color: var(--green); }
   .navlinks { display: flex; gap: 22px; align-items: center; font-weight: 800; font-size: 15px; }
-  .navlinks a { color: var(--ink); text-decoration: none; }
+  .navlinks a { color: #fff; text-decoration: none; transition: color .3s; }
+  nav.scrolled .navlinks a { color: var(--ink); }
   .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; }
   /* pills and buttons always stay on one line */
   .pill, .tag, .btn, .go, .chip { white-space: nowrap; }
+  /* phone menu: a round button opens a small popup in the middle of the screen; it closes only with its close button */
+  .menu-btn { display: none; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 999px; background: #fff; color: var(--cobalt); place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+  .phone-menu { position: fixed; inset: 0; z-index: 50; background: rgba(20,24,58,.45); display: grid; place-items: center; padding: 24px; }
+  .phone-menu[hidden] { display: none; }
+  .pm-card { width: 100%; max-width: 360px; background: var(--mint); background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px;
+    border-radius: 24px; padding: 22px 22px 24px; box-shadow: 8px 10px 0 var(--cobalt); }
+  .pm-head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 18px; }
+  .pm-head h2 { font: 400 24px "Lilita One"; color: var(--cobalt); margin: 0; }
+  .pm-close:focus:not(:focus-visible), .menu-btn:focus:not(:focus-visible) { outline: none; }
+  .pm-close { width: 44px; height: 44px; border: 0; padding: 0; border-radius: 999px; background: #fff; color: var(--cobalt); display: grid; place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+  .pm-item, .pm-kofi { display: flex; align-items: center; gap: 14px; border-radius: 16px; padding: 16px 18px; margin-bottom: 10px; font-weight: 800; font-size: 17px; text-decoration: none; }
+  .pm-item { background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--line); }
+  .pm-item svg { flex: none; color: var(--cobalt); }
+  .pm-kofi { justify-content: center; margin: 16px 0 0; background: var(--cobalt); color: #fff; border-radius: 999px; font: 400 18px "Lilita One"; box-shadow: 0 4px 0 var(--cobalt-deep); }
 
   /* HERO */
   .hero { position: relative; background: var(--mint); overflow: hidden;
@@ -206,7 +222,6 @@
   .foot-logo { height: 96px; display: block; }
   .foot-left p { margin: 8px 0 0; }
   .foot-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-  .privacy { margin: 0; }
   footer a { color: var(--cobalt); }
   footer .logo { color: var(--cobalt); }
   .socials { display: flex; gap: 12px; }
@@ -214,7 +229,8 @@
   .icon-btn:hover { transform: translateY(-4px) rotate(-6deg); background: var(--cobalt); color: #fff; box-shadow: 3px 4px 0 var(--ink); }
 
   @media (max-width: 760px) {
-    .navlinks a:not(.pill) { display: none; }
+    .navlinks { display: none; }
+    .menu-btn { display: grid; }
     footer .wrap { flex-direction: column; align-items: center; text-align: center; }
     .foot-right { align-items: center; }
     .hero { padding: 100px 0 120px; }
@@ -232,27 +248,65 @@
     .section-title { font-size: 42px; }
     .games h2 { font-size: 44px; }
   }
+
+  /* HERO: the live 3D battle scene fills the whole hero. The intro card sits on top, on the left. */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding: 120px 0 150px; background: #339BCA; }
+  .hero-scene { position: absolute; inset: 0; z-index: 0; background: #339BCA; }   /* plain sky until the 3D scene fades in */
+  .hero-scene canvas { display: block; position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
+  .hero-scene.ready canvas { opacity: 1; }
+  .hero .wrap { display: block; width: 100%; position: relative; z-index: 1; pointer-events: none; }   /* clicks pass through to the 3D scene */
+  a.hero-card { pointer-events: auto; }
+  .hero .scribble { display: none; }
+  /* the whole card is one link to the apps; it tilts a bit more on hover */
+  a.hero-card { display: block; max-width: 460px; color: inherit; text-decoration: none; cursor: pointer;
+    background: var(--mint); background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px;
+    border-radius: 22px; padding: 22px 26px 24px; transform: rotate(-2deg); box-shadow: 10px 14px 0 var(--cobalt);
+    transition: transform .3s cubic-bezier(.3,1.4,.5,1); }
+  a.hero-card:hover, a.hero-card:focus-visible { transform: rotate(-4deg); }
+  .hero-card .hi-row { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; }   /* "Hi, I'm" and the logo on one line */
+  .hero-card .hi-row .hi, .hero-card .hi-row .logo-h1 { margin: 0; }
+  .hero-card .logo-h1 img { width: 190px; }
+  .hero-card .hi { font-size: 20px; }
+  .hero .hero-card p.lead { max-width: none; font-size: 16px; line-height: 1.45; margin: 0 0 16px; }
+  .hero-card .btn { font-size: 16px; padding: 9px 20px; }
+  @media (max-width: 760px) {
+    /* phones: the scene fills the hero, and the card sits low, over the soil */
+    .hero { align-items: flex-end; min-height: 0; padding: calc(100svh - 150px) 0 120px; }
+    a.hero-card { max-width: none; text-align: center; padding: 28px 24px 32px; transform: rotate(-1.5deg); }
+    a.hero-card:hover { transform: rotate(-3deg); }
+    .hero-card .hi-row { justify-content: center; gap: 10px; }   /* phones: "Hi, I'm" and the logo fill the card's width */
+    .hero-card .hi-row .hi { font-size: 28px; flex: none; }
+    .hero-card .hi-row .logo-h1 { flex: 1; min-width: 0; }
+    .hero-card .logo-h1 img { margin: 0; width: 100%; max-width: none; }
+  }
 </style>
 <script>document.documentElement.classList.add("js"); setTimeout(() => { if (!window.revealReady) document.documentElement.classList.remove("js"); }, 3000);</script>
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-text.webp" alt=""><img class="nav-face" src="logo-face.webp" alt="bunsoootchi"></a>
+  <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-sticker.webp" alt=""><img class="nav-face" src="logo-face.webp" alt="bunsoootchi"></a>
   <div class="navlinks"><a href="#apps">Apps</a><a href="mailto:bunsoootchi@gmail.com">Email</a><a href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener">Instagram</a><a class="pill" href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Support on Ko-fi ♥</a></div>
+  <button class="menu-btn" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-controls="phone-menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div></nav>
+<div class="phone-menu" id="phone-menu" role="dialog" aria-modal="true" aria-labelledby="phone-menu-title" hidden>
+  <div class="pm-card">
+    <div class="pm-head"><h2 id="phone-menu-title">Menu</h2><button class="pm-close" type="button" aria-label="Close menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <a class="pm-item" href="#apps"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Apps</a>
+    <a class="pm-item" href="mailto:bunsoootchi@gmail.com"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>Email</a>
+    <a class="pm-item" href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+    <a class="pm-kofi" href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h14v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M10 15.5s-3-1.8-3-3.6c0-.9.7-1.6 1.5-1.6.6 0 1.1.3 1.5.9.4-.6.9-.9 1.5-.9.8 0 1.5.7 1.5 1.6 0 1.8-3 3.6-3 3.6z" fill="currentColor" stroke="none"/></svg>Support on Ko-fi</a>
+  </div>
+</div>
 
 <header class="hero">
+  <div class="hero-scene" id="hero-scene" aria-hidden="true"></div>
   <div class="wrap">
-    <div>
-      <p class="hi display">Hi, I'm</p>
-      <h1 class="logo-h1"><img src="logo-text.webp" alt="bunsoootchi, custom stufftchi"></h1>
+    <a class="hero-card" href="#apps" aria-label="Hi, I'm bunsoootchi. See my stuff">
+      <div class="hi-row"><p class="hi display">Hi, I'm</p>
+      <h1 class="logo-h1"><img src="logo-sticker.webp" alt="bunsoootchi"></h1></div>
       <p class="lead">I make art, apps, and custom software for different devices, even for Tamagotchis and mini eReaders. Everything here is a solo project, so if something looks cute, thank you! If something breaks, please give me a minute.</p>
-      <div class="btns"><a class="btn primary" href="#apps">See my stuff</a></div>
-    </div>
-    <div class="mascot">
-      <span class="spark" style="top:4%;left:4%">✦</span><span class="spark" style="top:70%;right:2%;font-size:24px">✦</span><span class="spark" style="bottom:2%;left:18%;font-size:20px;color:var(--green)">✦</span>
-      <img src="mascot.webp" alt="bunsoootchi floating in a space suit">
-    </div>
+      <div class="btns"><span class="btn primary">See my stuff</span></div>
+    </a>
   </div>
   <div class="wave"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,50 C180,95 360,5 540,40 C720,75 900,95 1080,45 C1260,0 1350,30 1440,45 L1440,90 L0,90 Z" fill="#FFFFFF"/></svg></div>
 </header>
@@ -337,14 +391,13 @@
 </section>
 
 <footer id="about"><div class="wrap">
-  <div class="foot-left"><a href="#"><img src="logo-flat.webp" alt="bunsoootchi" class="foot-logo"></a><p>Made with fun in mind, for all.</p></div>
+  <div class="foot-left"><a href="#"><img src="logo-sticker.webp" alt="bunsoootchi" class="foot-logo"></a></div>
   <div class="foot-right">
     <div class="socials">
       <a class="icon-btn" href="https://ko-fi.com/bunsoootchi" aria-label="Support on Ko-fi" title="Ko-fi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M10 15.5s-3-1.8-3-3.6c0-.9.7-1.6 1.5-1.6.6 0 1.1.3 1.5.9.4-.6.9-.9 1.5-.9.8 0 1.5.7 1.5 1.6 0 1.8-3 3.6-3 3.6z" fill="currentColor" stroke="none"/></svg></a>
       <a class="icon-btn" href="https://www.instagram.com/bunsoootchi/" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
       <a class="icon-btn" href="mailto:bunsoootchi@gmail.com" aria-label="Email bunsoootchi" title="Email"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a>
     </div>
-    <p class="privacy">Privacy policies: <a href="performatively/privacy.html">Performatively</a></p>
   </div>
 </div></footer>
 <script>
@@ -464,5 +517,23 @@
 </script>
 <!-- Visitor counts with GoatCounter: no cookies, no personal data. -->
 <script data-goatcounter="https://bunsoootchi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+  // phone menu: open with the menu button, close only with the close button (or after jumping to Apps on this page)
+  (() => {
+    const menu = document.getElementById('phone-menu'), open = document.querySelector('.menu-btn'), close = menu.querySelector('.pm-close');
+    const show = () => { menu.hidden = false; document.documentElement.style.overflow = 'hidden'; close.focus(); };
+    const hide = () => { menu.hidden = true; document.documentElement.style.overflow = ''; open.focus(); };
+    open.addEventListener('click', show); close.addEventListener('click', hide);
+    menu.querySelector('a[href="#apps"]').addEventListener('click', hide);
+  })();
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+  // live 3D hero; if WebGL or loading fails, the plain sky color stays
+  import {startHero} from './art/hero3d/hero3d.js?v=20';
+  const box = document.getElementById('hero-scene');
+  // on wide screens, push the fighters right of the card (share of the frame width)
+  startHero(box, {offsetForCard: w => w > 900 ? 0.25 : 0, raise: w => w <= 760 ? 0.12 : 0}).catch(() => {});
+</script>
 </body>
 </html>
