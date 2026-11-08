@@ -17,7 +17,7 @@ const SKY = 'rgb(51,155,202)';
 // dx, dy, dh = slow slide and zoom over the shot; yaw = slow camera turn around the subject, in degrees (from, to).
 // One continuous shot, no cuts (cuts made people dizzy). The camera slowly swings back and forth around the fighters.
 const SHOTS = [
-  {x: 0.25, y: -0.5, h: 3.0, minW: 3.4, dx: 0, dy: 0, dh: 0, t: Infinity, sway: 10, period: 40, wideH: 3.0},   // up to 10 degrees each way, 40 s per full swing
+  {x: 0.25, y: -0.5, h: 3.0, minW: 3.4, dx: 0, dy: 0, dh: 0, t: Infinity, sway: 10, period: 40, wideH: 3.0, phoneX: -0.14},   // up to 10 degrees each way, 40 s per full swing
 ];
 const ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
 
@@ -142,7 +142,8 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
     if (s.wideH && offsetForCard(W)) h = s.wideH;   // desktop: a bit closer, so the fighters can sit right of the card
     h = Math.min(h, (2 * EDGE) / a);             // never wider than the island
     const half = h * a / 2;
-    let x = s.x + s.dx * k - offsetForCard(W) * h * a;   // wide screens: push the subject right of the card
+    const cx = offsetForCard(W) ? s.x : (s.phoneX ?? s.x);   // phones and tablets: center on the midpoint between the two fighters
+    let x = cx + s.dx * k - offsetForCard(W) * h * a;   // wide screens: push the subject right of the card
     x = Math.max(-EDGE + half, Math.min(EDGE - half, x));
     const y = s.y + s.dy * k - raise(W, H) * h;            // phones: lift the fighters above the card
     const yaw = s.sway ? s.sway * Math.sin(clock * Math.PI * 2 / s.period) : s.yaw ? s.yaw[0] + (s.yaw[1] - s.yaw[0]) * k : 0;

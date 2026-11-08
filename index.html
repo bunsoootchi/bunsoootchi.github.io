@@ -284,7 +284,7 @@
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-sticker.webp" alt=""><img class="nav-face" src="logo-face.webp" alt="bunsoootchi"></a>
+  <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-sticker.webp" alt=""><img class="nav-face" src="logo-face-white.svg" alt="bunsoootchi"></a>
   <div class="navlinks"><a href="#apps">Apps</a><a href="mailto:bunsoootchi@gmail.com">Email</a><a href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener">Instagram</a><a class="pill" href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Support on Ko-fi ♥</a></div>
   <button class="menu-btn" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-controls="phone-menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div></nav>
@@ -530,7 +530,7 @@
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script type="module">
   // live 3D hero; if WebGL or loading fails, the plain sky color stays
-  import {startHero} from './art/hero3d/hero3d.js?v=20';
+  import {startHero} from './art/hero3d/hero3d.js?v=23';
   const box = document.getElementById('hero-scene');
   // on wide screens, push the fighters right of the card (share of the frame width)
   startHero(box, {offsetForCard: w => w > 900 ? 0.25 : 0, raise: w => w <= 760 ? 0.12 : 0}).catch(() => {});
