@@ -46,9 +46,13 @@
       const r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
       for (const [a, v] of [['x', 0], ['y', 0], ['width', w], ['height', h]]) { f.setAttribute(a, v); im.setAttribute(a, v); }
       im.setAttribute('href', lensMap(w, h, r, edge));
-      el.style.backdropFilter = `url(#${id}) blur(${blur}px) saturate(1.4)`;
+      el.style.setProperty('--lg', `url(#${id}) blur(${blur}px) saturate(1.4)`);   // CSS decides when it shows
     };
     build(); new ResizeObserver(build).observe(el);
   };
   document.querySelectorAll('[data-liquid-glass]').forEach(el => attach(el));
+  // "Things I made" cards: the text panel bends the picture behind it (keeps its own whiter, softer frost)
+  document.querySelectorAll('.card .body').forEach(el => attach(el, {edge: 18, scale: 34, blur: 10}));
+  // the white nav bar after scrolling down
+  const nav = document.querySelector('nav'); if (nav) attach(nav, {edge: 16, scale: 30, blur: 8});
 })();

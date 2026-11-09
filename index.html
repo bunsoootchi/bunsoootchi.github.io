@@ -56,6 +56,8 @@
     background: rgb(0 0 0 / 7%); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: background-color .3s, backdrop-filter .3s; }
   nav.scrolled .nav-glass { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none !important; box-shadow: none !important; }
   /* liquid glass (Chromium only, added by liquid-glass.js): a light rim like the edge of real glass */
+  .liquid-glass [data-liquid-glass], .liquid-glass .card .body { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
+  .liquid-glass nav.scrolled { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
   .liquid-glass [data-liquid-glass] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), inset 0 -1px 0 rgb(255 255 255 / 12%), inset 0 0 0 1px rgb(255 255 255 / 14%), 0 8px 24px rgb(20 24 58 / 12%); }
   .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; box-shadow: 0 3px 0 var(--cobalt-deep); display: inline-block; }
   /* pills and buttons always stay on one line */
@@ -552,7 +554,7 @@
     menu.querySelector('a[href="#apps"]').addEventListener('click', hide);
   })();
 </script>
-<script src="liquid-glass.js" defer></script>
+<script src="liquid-glass.js?v=3" defer></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script type="module">
   // live 3D hero; if WebGL or loading fails, the plain sky color stays
