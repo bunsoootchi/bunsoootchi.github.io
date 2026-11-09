@@ -57,6 +57,8 @@
   nav.scrolled .nav-glass { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none !important; box-shadow: none !important; }
   /* liquid glass (Chromium only, added by liquid-glass.js): a light rim like the edge of real glass */
   .liquid-glass [data-liquid-glass] { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
+  /* desktop: blue tint on the hero card and nav pill so white text stays readable (phones keep the clear glass) */
+  @media (min-width: 761px) { .hero-card, nav:not(.scrolled) .nav-glass { background: rgb(84 99 156 / 31%); } }
   .liquid-glass nav.scrolled { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
   .liquid-glass [data-liquid-glass] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), inset 0 -1px 0 rgb(255 255 255 / 12%), inset 0 0 0 1px rgb(255 255 255 / 14%), 0 8px 24px rgb(20 24 58 / 12%); }
   .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; box-shadow: 0 3px 0 var(--cobalt-deep); display: inline-block; }
