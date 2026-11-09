@@ -51,13 +51,37 @@
   .navlinks { display: flex; gap: 22px; align-items: center; font-weight: 800; font-size: 15px; }
   .navlinks a { color: #fff; text-decoration: none; transition: color .3s; }
   nav.scrolled .navlinks a { color: var(--ink); }
-  .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; }
+  /* nav text links sit in a frosted glass pill (same glass as the hero card); it fades away once the bar turns white */
+  .nav-glass { display: flex; gap: 22px; align-items: center; padding: 10px 22px; border-radius: 999px;
+    background: rgb(0 0 0 / 7%); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: background-color .3s, backdrop-filter .3s; }
+  nav.scrolled .nav-glass { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none !important; box-shadow: none !important; }
+  /* liquid glass (Chromium only, added by liquid-glass.js): a light rim like the edge of real glass */
+  .liquid-glass [data-liquid-glass] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), inset 0 -1px 0 rgb(255 255 255 / 12%), inset 0 0 0 1px rgb(255 255 255 / 14%), 0 8px 24px rgb(20 24 58 / 12%); }
+  .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; box-shadow: 0 3px 0 var(--cobalt-deep); display: inline-block; }
   /* pills and buttons always stay on one line */
   .pill, .tag, .btn, .go, .chip { white-space: nowrap; }
+  /* every button animates: lifts and tilts on hover, sinks when pressed */
+  .btn, .pill, .menu-btn, .pm-close, .pm-item, .pm-kofi, .nav-logo { transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .2s ease, color .3s, background-color .2s; }
+  .btn:hover, .btn:focus-visible, .pill:hover, .pill:focus-visible, .pm-kofi:hover, .pm-kofi:focus-visible { transform: translateY(-3px) rotate(-3deg); box-shadow: 0 7px 0 var(--cobalt-deep); }
+  .menu-btn:hover, .pm-close:hover, .menu-btn:focus-visible, .pm-close:focus-visible { transform: translateY(-2px) rotate(-8deg); box-shadow: 0 5px 0 var(--line); }
+  .pm-item:hover, .pm-item:focus-visible { transform: translateY(-2px) rotate(-1deg); box-shadow: 0 5px 0 var(--line); }
+  .btn:active, .pill:active, .pm-kofi:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--cobalt-deep); transition-duration: .08s; }
+  .menu-btn:active, .pm-close:active, .pm-item:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); transition-duration: .08s; }
+  .nav-logo:hover, .nav-logo:focus-visible { transform: rotate(-6deg) scale(1.05); }
+  /* nav text links: an underline grows in from the left */
+  .navlinks a:not(.pill) { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; padding-bottom: 2px; transition: color .3s, background-size .25s ease; }
+  .navlinks a:not(.pill):hover, .navlinks a:not(.pill):focus-visible { background-size: 100% 2px; }
+  @media (prefers-reduced-motion: reduce) { .btn, .pill, .menu-btn, .pm-close, .pm-item, .pm-kofi, .nav-logo, .navlinks a { transition: none; } }
   /* phone menu: a round button opens a small popup in the middle of the screen; it closes only with its close button */
   .menu-btn { display: none; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 999px; background: #fff; color: var(--cobalt); place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
   .phone-menu { position: fixed; inset: 0; z-index: 50; background: rgba(20,24,58,.45); display: grid; place-items: center; padding: 24px; }
   .phone-menu[hidden] { display: none; }
+  /* open and close smoothly: the dim fades, the card pops up */
+  .phone-menu { opacity: 0; transition: opacity .25s ease; }
+  .phone-menu .pm-card { transform: translateY(16px) scale(.96); transition: transform .3s cubic-bezier(.3,1.3,.5,1); }
+  .phone-menu.open { opacity: 1; }
+  .phone-menu.open .pm-card { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .phone-menu, .phone-menu .pm-card { transition: none; } }
   .pm-card { width: 100%; max-width: 360px; background: var(--mint); background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px;
     border-radius: 24px; padding: 22px 22px 24px; box-shadow: 8px 10px 0 var(--cobalt); }
   .pm-head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 18px; }
@@ -255,27 +279,26 @@
   .hero-scene canvas { display: block; position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
   .hero-scene.ready canvas { opacity: 1; }
   .hero .wrap { display: block; width: 100%; position: relative; z-index: 1; pointer-events: none; }   /* clicks pass through to the 3D scene */
-  a.hero-card { pointer-events: auto; }
+  /* wide screens: the nav and the hero card move out toward the sides, so the fighters keep the middle (other sections stay 1080px) */
+  @media (min-width: 1280px) { nav .wrap, .hero .wrap { max-width: none; padding-inline: max(116px, 5vw); } }
+  .hero-card .btn { pointer-events: auto; }
   .hero .scribble { display: none; }
-  /* the whole card is one link to the apps; it tilts a bit more on hover */
-  a.hero-card { display: block; max-width: 460px; color: inherit; text-decoration: none; cursor: pointer;
-    background: var(--mint); background-image: radial-gradient(var(--mint-dot) 14%, transparent 16%); background-size: 22px 22px;
-    border-radius: 22px; padding: 22px 26px 24px; transform: rotate(-2deg); box-shadow: 10px 14px 0 var(--cobalt);
-    transition: transform .3s cubic-bezier(.3,1.4,.5,1); }
-  a.hero-card:hover, a.hero-card:focus-visible { transform: rotate(-4deg); }
+  /* frosted navy glass: the 3D scene is the show; only the button is a link */
+  .hero-card { max-width: 460px; color: #fff; background: rgb(255 255 255 / 7%); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-radius: 22px; padding: 22px 26px 24px; margin-top: -20px; }
   .hero-card .hi-row { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; }   /* "Hi, I'm" and the logo on one line */
   .hero-card .hi-row .hi, .hero-card .hi-row .logo-h1 { margin: 0; }
   .hero-card .logo-h1 img { width: 190px; }
-  .hero-card .hi { font-size: 20px; }
-  .hero .hero-card p.lead { max-width: none; font-size: 16px; line-height: 1.45; margin: 0 0 16px; }
+  .hero-card .hi { font-size: 38px; color: #fff; }
+  .hero .hero-card p.lead { max-width: none; font-size: 16px; line-height: 1.45; margin: 0 0 16px; color: #fff; }
   .hero-card .btn { font-size: 16px; padding: 9px 20px; }
   @media (max-width: 760px) {
     /* phones: the scene fills the hero, and the card sits low, over the soil */
     .hero { align-items: flex-end; min-height: 0; padding: calc(100svh - 150px) 0 120px; }
-    a.hero-card { max-width: none; text-align: center; padding: 28px 24px 32px; transform: rotate(-1.5deg); }
-    a.hero-card:hover { transform: rotate(-3deg); }
+    .hero-card { max-width: none; text-align: center; padding: 28px 24px 32px; margin-top: -250px; }   /* phones: card sits higher so more text shows */
+    .hero-scene { margin-top: -60px; }   /* phones: scene moved up so the sky takes less space */
     .hero-card .hi-row { justify-content: center; gap: 10px; }   /* phones: "Hi, I'm" and the logo fill the card's width */
-    .hero-card .hi-row .hi { font-size: 28px; flex: none; }
+    .hero-card .hi-row .hi { font-size: 32px; flex: none; }
     .hero-card .hi-row .logo-h1 { flex: 1; min-width: 0; }
     .hero-card .logo-h1 img { margin: 0; width: 100%; max-width: none; }
   }
@@ -285,7 +308,7 @@
 <body>
 <nav><div class="wrap">
   <a class="logo nav-logo" href="#" aria-label="bunsoootchi home"><img class="nav-text" src="logo-sticker.webp" alt=""><img class="nav-face" src="logo-face-white.svg" alt="bunsoootchi"></a>
-  <div class="navlinks"><a href="#apps">Apps</a><a href="mailto:bunsoootchi@gmail.com">Email</a><a href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener">Instagram</a><a class="pill" href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Support on Ko-fi ♥</a></div>
+  <div class="navlinks"><span class="nav-glass" data-liquid-glass><a href="#apps">Apps</a><a href="mailto:bunsoootchi@gmail.com">Email</a><a href="https://www.instagram.com/bunsoootchi/" target="_blank" rel="noopener">Instagram</a></span><a class="pill" href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Support on Ko-fi ♥</a></div>
   <button class="menu-btn" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-controls="phone-menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div></nav>
 <div class="phone-menu" id="phone-menu" role="dialog" aria-modal="true" aria-labelledby="phone-menu-title" hidden>
@@ -301,12 +324,12 @@
 <header class="hero">
   <div class="hero-scene" id="hero-scene" aria-hidden="true"></div>
   <div class="wrap">
-    <a class="hero-card" href="#apps" aria-label="Hi, I'm bunsoootchi. See my stuff">
+    <div class="hero-card" data-liquid-glass>
       <div class="hi-row"><p class="hi display">Hi, I'm</p>
       <h1 class="logo-h1"><img src="logo-sticker.webp" alt="bunsoootchi"></h1></div>
       <p class="lead">I make art, apps, and custom software for different devices, even for Tamagotchis and mini eReaders. Everything here is a solo project, so if something looks cute, thank you! If something breaks, please give me a minute.</p>
-      <div class="btns"><span class="btn primary">See my stuff</span></div>
-    </a>
+      <div class="btns"><a class="btn primary" href="#apps">See my stuff</a></div>
+    </div>
   </div>
   <div class="wave"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,50 C180,95 360,5 540,40 C720,75 900,95 1080,45 C1260,0 1350,30 1440,45 L1440,90 L0,90 Z" fill="#FFFFFF"/></svg></div>
 </header>
@@ -521,19 +544,26 @@
   // phone menu: open with the menu button, close only with the close button (or after jumping to Apps on this page)
   (() => {
     const menu = document.getElementById('phone-menu'), open = document.querySelector('.menu-btn'), close = menu.querySelector('.pm-close');
-    const show = () => { menu.hidden = false; document.documentElement.style.overflow = 'hidden'; close.focus(); };
-    const hide = () => { menu.hidden = true; document.documentElement.style.overflow = ''; open.focus(); };
+    const show = () => { menu.hidden = false; document.documentElement.style.overflow = 'hidden';
+      requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('open'))); close.focus(); };
+    const hide = () => { menu.classList.remove('open'); document.documentElement.style.overflow = ''; open.focus();
+      setTimeout(() => { if (!menu.classList.contains('open')) menu.hidden = true; }, 300); };
     open.addEventListener('click', show); close.addEventListener('click', hide);
     menu.querySelector('a[href="#apps"]').addEventListener('click', hide);
   })();
 </script>
+<script src="liquid-glass.js" defer></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script type="module">
   // live 3D hero; if WebGL or loading fails, the plain sky color stays
   import {startHero} from './art/hero3d/hero3d.js?v=23';
   const box = document.getElementById('hero-scene');
   // on wide screens, push the fighters right of the card (share of the frame width)
-  startHero(box, {offsetForCard: w => w > 900 ? 0.25 : 0, raise: w => w <= 760 ? 0.12 : 0}).catch(() => {});
+  // how far to push the fighters right of the card: grows with the card's right edge, so on ultra-wide screens they sit in the middle
+  const card = document.querySelector('.hero-card'); let cardShift = 0;
+  const measure = () => { const w = innerWidth; cardShift = w > 900 ? Math.max(0, card.getBoundingClientRect().right / w - 0.21) : 0; };
+  measure(); addEventListener('resize', measure);
+  startHero(box, {offsetForCard: () => cardShift, raise: w => w <= 760 ? 0.12 : 0}).catch(() => {});
 </script>
 </body>
 </html>
