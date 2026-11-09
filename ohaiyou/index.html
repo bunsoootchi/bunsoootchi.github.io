@@ -141,6 +141,35 @@
   .final .sub { max-width: 66ch; }
   .final .badges { justify-content: center; margin: 28px 0 0; }
 
+  /* WAITLIST: one email box, pick Android or iPhone, one button */
+  .join { display: inline-block; margin: 22px 0 0; background: var(--orange); color: #fff; text-decoration: none; border-radius: 999px; padding: 13px 26px; font-weight: 800; font-size: 17px; white-space: nowrap;
+    box-shadow: 0 4px 0 #C9622F; transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .2s; }
+  .join:hover, .join:focus-visible { transform: translateY(-3px) rotate(-2deg); box-shadow: 0 7px 0 #C9622F; }
+  .join:active { transform: translateY(3px); box-shadow: 0 1px 0 #C9622F; transition-duration: .08s; }
+  .waitlist { max-width: 520px; margin: 34px auto 0; background: #fff; border-radius: 28px; padding: 30px 28px 28px; box-shadow: 0 18px 40px -22px rgba(47,74,69,.35), 0 0 0 1px var(--line); text-align: left; scroll-margin-top: 90px; }
+  .waitlist h3 { font-size: 24px; margin: 0 0 6px; }
+  .waitlist .note { color: var(--ink-soft); font-size: 15px; margin: 0 0 20px; }
+  .waitlist label.field { display: block; font-weight: 800; font-size: 15px; margin: 0 0 8px; }
+  .waitlist input[type=email] { width: 100%; font: inherit; color: var(--ink); padding: 14px 18px; border-radius: 16px; border: 2px solid var(--line); background: var(--mist); transition: border-color .2s, background .2s; }
+  .waitlist input[type=email]:focus { outline: none; border-color: var(--ink); background: #fff; }
+  .waitlist fieldset { border: 0; padding: 0; margin: 20px 0 0; }
+  .waitlist legend { font-weight: 800; font-size: 15px; padding: 0; margin: 0 0 8px; }
+  .waitlist .pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .waitlist .pick input { position: absolute; opacity: 0; pointer-events: none; }
+  .waitlist .pick span { display: block; text-align: center; padding: 13px 12px; border-radius: 16px; border: 2px solid var(--line); font-weight: 800; cursor: pointer; white-space: nowrap; transition: border-color .2s, background .2s, color .2s, transform .2s; }
+  .waitlist .pick span:hover { transform: translateY(-2px); }
+  .waitlist .pick input:checked + span { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .waitlist .pick input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .waitlist button { width: 100%; margin: 24px 0 0; font: inherit; font-weight: 800; font-size: 17px; color: #fff; background: var(--orange); border: 0; border-radius: 999px; padding: 14px 20px; cursor: pointer;
+    box-shadow: 0 4px 0 #C9622F; transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .2s, opacity .2s; }
+  .waitlist button:hover, .waitlist button:focus-visible { transform: translateY(-3px); box-shadow: 0 7px 0 #C9622F; }
+  .waitlist button:active { transform: translateY(3px); box-shadow: 0 1px 0 #C9622F; transition-duration: .08s; }
+  .waitlist button:disabled { opacity: .6; cursor: default; transform: none; }
+  .waitlist .msg { margin: 14px 0 0; font-weight: 700; font-size: 15px; min-height: 1.6em; opacity: 0; transition: opacity .3s; }
+  .waitlist .msg.show { opacity: 1; }
+  .waitlist .msg.err { color: #C0392B; }
+  @media (prefers-reduced-motion: reduce) { .join, .waitlist button, .waitlist .pick span, .waitlist .msg { transition: none; } }
+
   footer { padding: 30px 0 40px; font-size: 15px; color: var(--ink-soft); }
   footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
   footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
@@ -196,6 +225,7 @@
       <span class="badge">Coming soon to Google Play</span>
     </div>
     <p class="soon">Coming soon to Android, iPhone, iPad, and Mac.</p>
+    <a class="join" href="#waitlist">Join the waitlist</a>
   </div>
   <div class="phone"><img src="img/hero.webp" alt="Mochi, the pumpkin pet, in its cozy room, cheering about your day"></div>
 </div></header>
@@ -315,6 +345,21 @@
     <span class="badge">Coming soon to the App Store</span>
     <span class="badge">Coming soon to Google Play</span>
   </div>
+  <form class="waitlist reveal" id="waitlist" novalidate>
+    <h3>Join the waitlist</h3>
+    <p class="note">I'll email you once when Ohaiyou is out. No spam, just that one email.</p>
+    <label class="field" for="wl-email">Your email</label>
+    <input id="wl-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+    <fieldset>
+      <legend>Which phone do you use?</legend>
+      <div class="pick">
+        <label><input type="radio" name="phone" value="Android" required><span>Android</span></label>
+        <label><input type="radio" name="phone" value="iPhone"><span>iPhone</span></label>
+      </div>
+    </fieldset>
+    <button type="submit">Join the waitlist</button>
+    <p class="msg" role="status" aria-live="polite"></p>
+  </form>
   <div class="crew small reveal" aria-hidden="true">
     <img src="img/pet-slime-pink.webp" alt="Pink slime"><img src="img/pet-cube.webp" alt="Cube robot"><img src="img/pet-ember.webp" alt="Ember"><img src="img/pet-slime-blue.webp" alt="Blue slime"><img src="img/pet-dino.webp" alt="Dino">
     <img src="img/pet-milo.webp" alt="Milo"><img src="img/pet-bat.webp" alt="Bat"><img src="img/pet-bolt.webp" alt="Bolt robot"><img src="img/pet-sprout.webp" alt="Sprout"><img src="img/pet-slime-green.webp" alt="Green slime">
@@ -357,6 +402,30 @@
     });
   }, { threshold: .12 });
   document.querySelectorAll(".reveal").forEach(el => revealer.observe(el));
+</script>
+<script>
+  // waitlist: each signup is emailed to bunsoootchi (and a copy to Jessa) through FormSubmit
+  (() => {
+    const TO = 'bunsoootchi@gmail.com', CC = 'jtorrepedrola@gmail.com';
+    const f = document.getElementById('waitlist'), msg = f.querySelector('.msg'), btn = f.querySelector('button');
+    const say = (t, err) => { msg.textContent = t; msg.classList.toggle('err', !!err); msg.classList.add('show'); };
+    const email = f.querySelector('#wl-email');
+    email.addEventListener('focus', () => setTimeout(() => email.scrollIntoView({block: 'center', behavior: 'smooth'}), 300));   // keep the box above the phone keyboard
+    f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const phone = f.querySelector('input[name=phone]:checked');
+      if (!email.value || !email.checkValidity()) return say('Please type a real email address.', true);
+      if (!phone) return say('Please pick Android or iPhone.', true);
+      btn.disabled = true; say('Sending...');
+      try {
+        const r = await fetch('https://formsubmit.co/ajax/' + TO, { method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/json'},
+          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value, _cc: CC, _template: 'table', _captcha: 'false' }) });
+        if (!r.ok) throw new Error();
+        f.reset(); say("You're on the list! I'll email you when Ohaiyou is out.");
+      } catch { say("That didn't go through. Please try again in a minute.", true); }
+      btn.disabled = false;
+    });
+  })();
 </script>
 </body>
 </html>
