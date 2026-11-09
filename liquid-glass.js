@@ -51,8 +51,6 @@
     build(); new ResizeObserver(build).observe(el);
   };
   document.querySelectorAll('[data-liquid-glass]').forEach(el => attach(el));
-  // "Things I made" cards: the text panel bends the picture behind it (keeps its own whiter, softer frost)
-  document.querySelectorAll('.card .body').forEach(el => attach(el, {edge: 18, scale: 34, blur: 10}));
   // the white nav bar after scrolling down
   const nav = document.querySelector('nav'); if (nav) attach(nav, {edge: 16, scale: 30, blur: 8});
 })();

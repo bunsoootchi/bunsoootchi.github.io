@@ -56,7 +56,7 @@
     background: rgb(0 0 0 / 7%); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: background-color .3s, backdrop-filter .3s; }
   nav.scrolled .nav-glass { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none !important; box-shadow: none !important; }
   /* liquid glass (Chromium only, added by liquid-glass.js): a light rim like the edge of real glass */
-  .liquid-glass [data-liquid-glass], .liquid-glass .card .body { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
+  .liquid-glass [data-liquid-glass] { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
   .liquid-glass nav.scrolled { -webkit-backdrop-filter: var(--lg); backdrop-filter: var(--lg); }
   .liquid-glass [data-liquid-glass] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), inset 0 -1px 0 rgb(255 255 255 / 12%), inset 0 0 0 1px rgb(255 255 255 / 14%), 0 8px 24px rgb(20 24 58 / 12%); }
   .pill { background: var(--cobalt); color: #fff !important; padding: 9px 18px; border-radius: 999px; box-shadow: 0 3px 0 var(--cobalt-deep); display: inline-block; }
@@ -296,9 +296,11 @@
   .hero-card .btn { font-size: 16px; padding: 9px 20px; }
   @media (max-width: 760px) {
     /* phones: the scene fills the hero, and the card sits low, over the soil */
-    .hero { align-items: flex-end; min-height: 0; padding: calc(100svh - 150px) 0 120px; }
-    .hero-card { max-width: none; text-align: center; padding: 28px 24px 32px; margin-top: -250px; }   /* phones: card sits higher so more text shows */
-    .hero-scene { margin-top: -60px; }   /* phones: scene moved up so the sky takes less space */
+    /* phones: the scene keeps one screen of height; the card always starts on the soil, just below the grass edge,
+       and the hero grows longer when the screen is short (the soil color continues below the scene) */
+    .hero { display: block; min-height: 0; padding: calc(var(--ground, 60svh) + 40px) 0 120px; background: #B57E3E; }
+    .hero-card { max-width: none; text-align: center; padding: 28px 24px 32px; }
+    .hero-scene { margin-top: -60px; bottom: auto; height: calc(100svh + 60px); }   /* scene moved up so the sky takes less space */
     .hero-card .hi-row { justify-content: center; gap: 10px; }   /* phones: "Hi, I'm" and the logo fill the card's width */
     .hero-card .hi-row .hi { font-size: 32px; flex: none; }
     .hero-card .hi-row .logo-h1 { flex: 1; min-width: 0; }
@@ -554,11 +556,11 @@
     menu.querySelector('a[href="#apps"]').addEventListener('click', hide);
   })();
 </script>
-<script src="liquid-glass.js?v=3" defer></script>
+<script src="liquid-glass.js?v=4" defer></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script type="module">
   // live 3D hero; if WebGL or loading fails, the plain sky color stays
-  import {startHero} from './art/hero3d/hero3d.js?v=23';
+  import {startHero} from './art/hero3d/hero3d.js?v=26';
   const box = document.getElementById('hero-scene');
   // on wide screens, push the fighters right of the card (share of the frame width)
   // how far to push the fighters right of the card: grows with the card's right edge, so on ultra-wide screens they sit in the middle

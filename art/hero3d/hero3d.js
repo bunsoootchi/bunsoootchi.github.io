@@ -133,7 +133,7 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
     rtA.setSize(bw, bh); rtB.setSize(bw, bh);
     hb.uniforms.h.value = 2.4 / bw; vb.uniforms.v.value = 2.4 / bh;   // background blur strength
   };
-  resize(); new ResizeObserver(resize).observe(box);
+  resize(); new ResizeObserver(() => { resize(); reportGround(); }).observe(box);
 
   const view = (s, p) => {
     const a = W / H, k = ease(p);
@@ -174,6 +174,17 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
     scene.background = rtA.texture; cam.layers.set(0); r.render(scene, cam); scene.background = sky;
   };
 
+  // tell the page where the front edge of the grass lands on screen (px from the top of the scene),
+  // so on phones the intro card can start on the soil, below the fighters
+  const groundPt = new THREE.Vector3();
+  function reportGround() {
+    const lx = lean.x, ly = lean.y, nx = lean.nx, ny = lean.ny; lean.x = lean.y = lean.nx = lean.ny = 0;
+    frame(SHOTS[shot] || SHOTS[0], 0.5, 0);
+    groundPt.set(0, -1.14, 0.5).project(cam);   // bottom edge of the green strip, where the brown soil starts
+    lean.x = lx; lean.y = ly; lean.nx = nx; lean.ny = ny;
+    const px = Math.round((1 - groundPt.y) / 2 * H);
+    box.parentElement.style.setProperty('--ground', (box.offsetTop + px) + 'px');
+  }
   const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), tmp = new THREE.Vector3();
   const hit = (cx, cy) => {
@@ -234,5 +245,5 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
     if (!still) loop();
   }
   function loop() { if (!running) { running = true; requestAnimationFrame(tick); } }
-  frame(SHOTS[0], 0, 0); draw(); box.classList.add('ready'); loop();
+  frame(SHOTS[0], 0, 0); draw(); reportGround(); box.classList.add('ready'); loop();
 }
