@@ -3,7 +3,7 @@
 // Every frame is clamped so the land always runs past both edges (no blank sides).
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 import {HorizontalBlurShader} from 'three/addons/shaders/HorizontalBlurShader.js';
@@ -38,10 +38,9 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
   sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005;
   scene.add(sun, sun.target);
 
-  const draco = new DRACOLoader().setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/');
   const [hdr, gltf] = await Promise.all([
     new RGBELoader().loadAsync(BASE + 'wooden_lounge_512.hdr'),
-    new GLTFLoader().setDRACOLoader(draco).loadAsync(BASE + 'scene.glb')]);
+    new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(BASE + 'scene.glb?v=2')]);
   hdr.mapping = THREE.EquirectangularReflectionMapping;
   const pm = new THREE.PMREMGenerator(r);
   scene.environment = pm.fromEquirectangular(hdr).texture; hdr.dispose(); pm.dispose();
@@ -245,5 +244,7 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
     if (!still) loop();
   }
   function loop() { if (!running) { running = true; requestAnimationFrame(tick); } }
-  frame(SHOTS[0], 0, 0); draw(); reportGround(); box.classList.add('ready'); loop();
+  frame(SHOTS[0], 0, 0);
+  await r.compileAsync(scene, cam);   // prepare shaders in the background so the page doesn't freeze
+  draw(); reportGround(); box.classList.add('ready'); loop();
 }
