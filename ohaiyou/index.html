@@ -165,6 +165,7 @@
   .waitlist button:hover, .waitlist button:focus-visible { transform: translateY(-3px); box-shadow: 0 7px 0 #C9622F; }
   .waitlist button:active { transform: translateY(3px); box-shadow: 0 1px 0 #C9622F; transition-duration: .08s; }
   .waitlist button:disabled { opacity: .6; cursor: default; transform: none; }
+  .waitlist .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .waitlist .msg { margin: 14px 0 0; font-weight: 700; font-size: 15px; min-height: 1.6em; opacity: 0; transition: opacity .3s; }
   .waitlist .msg.show { opacity: 1; }
   .waitlist .msg.err { color: #C0392B; }
@@ -353,6 +354,8 @@
         <label><input type="radio" name="phone" value="iPhone"><span>iPhone</span></label>
       </div>
     </fieldset>
+    <!-- honeypot: hidden from people; bots that fill it get ignored -->
+    <div class="hp" aria-hidden="true"><label for="wl-web">Leave this empty</label><input id="wl-web" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
     <button type="submit">Join the waitlist</button>
     <p class="msg" role="status" aria-live="polite"></p>
   </form>
@@ -410,12 +413,14 @@
     f.addEventListener('submit', async e => {
       e.preventDefault();
       const phone = f.querySelector('input[name=phone]:checked');
+      const honey = f.querySelector('#wl-web').value;
+      if (honey) { f.reset(); return say("You're on the list! I'll email you when Ohaiyou is out."); }   // a bot filled the hidden box: act like it worked, send nothing
       if (!email.value || !email.checkValidity()) return say('Please type a real email address.', true);
       if (!phone) return say('Please pick Android or iPhone.', true);
       btn.disabled = true; say('Sending...');
       try {
         const r = await fetch('https://formsubmit.co/ajax/' + TO, { method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value, _cc: CC, _template: 'table', _captcha: 'false' }) });
+          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value, _cc: CC, _template: 'table', _captcha: 'false', _honey: honey }) });
         if (!r.ok) throw new Error();
         f.reset(); say("You're on the list! I'll email you when Ohaiyou is out.");
       } catch { say("That didn't go through. Please try again in a minute.", true); }
