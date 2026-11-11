@@ -420,7 +420,7 @@
       btn.disabled = true; say('Sending...');
       try {
         const r = await fetch('https://formsubmit.co/ajax/' + TO, { method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value, _cc: CC, _template: 'table', _captcha: 'false', _honey: honey }) });
+          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value + ', ' + email.value, _cc: CC, _template: 'table', _captcha: 'false', _honey: honey }) });
         if (!r.ok) throw new Error();
         f.reset(); say("You're on the list! I'll email you when Ohaiyou is out.");
       } catch { say("That didn't go through. Please try again in a minute.", true); }
