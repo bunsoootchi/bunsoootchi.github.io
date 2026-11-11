@@ -45,9 +45,6 @@
   /* on hover the face lifts its chin, proudly */
   .maker:hover img { transform: rotate(10deg); }
   .maker:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 12px; }
-  /* not Apple's or Google's badges (those are only allowed once the app is live in each store): plain pills until then */
-  .badge { display: inline-block; background: var(--ink); color: #fff; border-radius: 999px; padding: 12px 22px; font-weight: 800; font-size: 16px; white-space: nowrap; cursor: default; }
 
   /* HERO: the soft gray room from the store art */
   .hero { background: linear-gradient(to bottom, transparent 62%, #FFFFFF 100%), radial-gradient(120% 90% at 50% 0%, #FBFBFB 0%, var(--mist) 55%, var(--mist-deep) 100%); padding: 56px 0 40px; }
@@ -139,28 +136,30 @@
   .final { background: linear-gradient(to bottom, #FFFFFF 0%, transparent 40%), linear-gradient(to top, #FFFFFF 0%, transparent 35%), radial-gradient(120% 100% at 50% 100%, var(--mist-deep) 0%, var(--mist) 45%, #FFFFFF 100%); text-align: center; padding: 90px 0 0; overflow: hidden; }
   .final h2 { margin-bottom: 12px; }
   .final .sub { max-width: 66ch; }
-  .final .badges { justify-content: center; margin: 28px 0 0; }
 
-  /* WAITLIST: one email box, pick Android or iPhone, one button */
-  .join { display: inline-block; margin: 22px 0 0; background: var(--orange); color: #fff; text-decoration: none; border-radius: 999px; padding: 13px 26px; font-weight: 800; font-size: 17px; white-space: nowrap;
-    box-shadow: 0 4px 0 #C9622F; transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .2s; }
-  .join:hover, .join:focus-visible { transform: translateY(-3px) rotate(-2deg); box-shadow: 0 7px 0 #C9622F; }
-  .join:active { transform: translateY(3px); box-shadow: 0 1px 0 #C9622F; transition-duration: .08s; }
+  /* HERO: Apple's App Store badge, and a text link down to the Android waitlist */
+  .ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin: 22px 0 0; }
+  .store { display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .store:hover, .store:focus-visible { transform: translateY(-3px); }
+  .store img { display: block; height: 54px; width: auto; }
+  .to-wait { font-weight: 800; font-size: 16px; color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; white-space: nowrap; }
+  .to-wait:hover { color: var(--orange); }
+
+  /* WAITLIST: the App Store badge for iPhone, then one email box for Android */
   .waitlist { max-width: 520px; margin: 34px auto 0; background: #fff; border-radius: 28px; padding: 30px 28px 28px; box-shadow: 0 18px 40px -22px rgba(47,74,69,.35), 0 0 0 1px var(--line); text-align: left; scroll-margin-top: 90px; }
   .waitlist h3 { font-size: 24px; margin: 0 0 6px; }
   .waitlist .note { color: var(--ink-soft); font-size: 15px; margin: 0 0 20px; }
   .waitlist label.field { display: block; font-weight: 800; font-size: 15px; margin: 0 0 8px; }
   .waitlist input[type=email] { width: 100%; font: inherit; color: var(--ink); padding: 14px 18px; border-radius: 16px; border: 2px solid var(--line); background: var(--mist); transition: border-color .2s, background .2s; }
   .waitlist input[type=email]:focus { outline: none; border-color: var(--ink); background: #fff; }
-  .waitlist fieldset { border: 0; padding: 0; margin: 20px 0 0; }
-  .waitlist legend { font-weight: 800; font-size: 15px; padding: 0; margin: 0 0 8px; }
-  .waitlist .pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .waitlist .pick input { position: absolute; opacity: 0; pointer-events: none; }
-  .waitlist .pick span { display: block; text-align: center; padding: 13px 12px; border-radius: 16px; border: 2px solid var(--line); font-weight: 800; cursor: pointer; white-space: nowrap; transition: border-color .2s, background .2s, color .2s, transform .2s; }
-  .waitlist .pick span:hover { transform: translateY(-2px); }
-  .waitlist .pick input:checked + span { border-color: var(--ink); background: var(--ink); color: #fff; }
-  .waitlist .pick input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
-  .waitlist button { width: 100%; margin: 24px 0 0; font: inherit; font-weight: 800; font-size: 17px; color: #fff; background: var(--orange); border: 0; border-radius: 999px; padding: 14px 20px; cursor: pointer;
+  .waitlist .ios { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; padding: 0 0 24px; margin: 0 0 24px; border-bottom: 1px solid var(--line); }
+  .waitlist .ios p { margin: 0; font-weight: 800; font-size: 17px; line-height: 1.35; }
+  .waitlist .ios p span { display: block; font-weight: 500; font-size: 15px; color: var(--ink-soft); }
+  .waitlist .ios a { display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .waitlist .ios a:hover { transform: translateY(-2px); }
+  .waitlist .ios img { display: block; height: 48px; width: auto; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .waitlist button { width: 100%; margin: 14px 0 0; font: inherit; font-weight: 800; font-size: 17px; color: #fff; background: var(--orange); border: 0; border-radius: 999px; padding: 14px 20px; cursor: pointer;
     box-shadow: 0 4px 0 #C9622F; transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .2s, opacity .2s; }
   .waitlist button:hover, .waitlist button:focus-visible { transform: translateY(-3px); box-shadow: 0 7px 0 #C9622F; }
   .waitlist button:active { transform: translateY(3px); box-shadow: 0 1px 0 #C9622F; transition-duration: .08s; }
@@ -169,7 +168,7 @@
   .waitlist .msg { margin: 14px 0 0; font-weight: 700; font-size: 15px; min-height: 1.6em; opacity: 0; transition: opacity .3s; }
   .waitlist .msg.show { opacity: 1; }
   .waitlist .msg.err { color: #C0392B; }
-  @media (prefers-reduced-motion: reduce) { .join, .waitlist button, .waitlist .pick span, .waitlist .msg { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .store, .waitlist button, .waitlist .ios a, .waitlist .msg { transition: none; } }
 
   footer { padding: 30px 0 40px; font-size: 15px; color: var(--ink-soft); }
   footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
@@ -187,7 +186,7 @@
     .hero .copy { padding-bottom: 20px; }
     .hero .logo { margin-inline: auto; }
     .hero .lead { margin-inline: auto; }
-    .hero .badges { justify-content: center; }
+    .hero .ctas { justify-content: center; }
     .hero .phone { width: min(250px, 66vw); }
     .tour { grid-template-columns: 1fr; gap: 0; }
     .tour .stick { display: none; }
@@ -221,8 +220,11 @@
     <img class="logo" src="img/logo.png" alt="Ohaiyou">
     <h1>A cozy journal with a pet who listens</h1>
     <p class="lead">Chat with your pet about your day, and it writes your diary for you. Its AI lives on your phone: no account, no cloud, and nothing leaves your device.</p>
-    <p class="soon">Coming soon to the App Store and Google Play.</p>
-    <a class="join" href="#waitlist">Join the waitlist</a>
+    <p class="soon">Out now on the App Store for iPhone and iPad. Coming soon to Google Play.</p>
+    <div class="ctas">
+      <a class="store" href="https://apps.apple.com/app/ohaiyou-pet-journal/id6824580115" target="_blank" rel="noopener"><img src="img/app-store-badge.svg" alt="Download on the App Store"></a>
+      <a class="to-wait" href="#waitlist">Join the Android waitlist</a>
+    </div>
   </div>
   <div class="phone"><img src="img/hero.webp" alt="Mochi, the pumpkin pet, in its cozy room, cheering about your day"></div>
 </div></header>
@@ -330,30 +332,23 @@
     </details>
     <details>
       <summary>When can I get it?</summary>
-      <div class="a"><p>Soon! It's coming to Android, iPhone, iPad, and Mac.</p></div>
+      <div class="a"><p>It's out now on the <a href="https://apps.apple.com/app/ohaiyou-pet-journal/id6824580115" target="_blank" rel="noopener">App Store</a> for iPhone and iPad. Android and Mac are coming soon, and you can <a href="#waitlist">join the Android waitlist</a> to hear when it's on Google Play.</p></div>
     </details>
   </div>
 </div></section>
 
 <section class="final" id="get"><div class="wrap">
   <h2 class="reveal">The journal that keeps you company</h2>
-  <p class="sub reveal">I've been working on Ohaiyou for over 2 years now, and it's almost ready! It's coming soon to Android, iPhone, iPad, and Mac.</p>
-  <div class="badges reveal">
-    <span class="badge">Coming soon to the App Store</span>
-    <span class="badge">Coming soon to Google Play</span>
-  </div>
+  <p class="sub reveal">I've been working on Ohaiyou for over 2 years now, and it's finally here! It's out now for iPhone and iPad, and it's coming soon to Android and Mac.</p>
   <form class="waitlist reveal" id="waitlist" novalidate>
-    <h3>Join the waitlist</h3>
-    <p class="note">I'll email you once when Ohaiyou is out. No spam, just that one email.</p>
-    <label class="field" for="wl-email">Your email</label>
+    <div class="ios">
+      <p>On iPhone or iPad?<span>Ohaiyou is out now.</span></p>
+      <a href="https://apps.apple.com/app/ohaiyou-pet-journal/id6824580115" target="_blank" rel="noopener"><img src="img/app-store-badge.svg" alt="Download on the App Store"></a>
+    </div>
+    <h3>On Android?</h3>
+    <p class="note">Ohaiyou is coming to Google Play soon. Leave your email, and I'll let you know when it's out. A few people from the list will also get picked at random to test it early and get the app for free.</p>
+    <label class="sr" for="wl-email">Your email</label>
     <input id="wl-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
-    <fieldset>
-      <legend>Which phone do you use?</legend>
-      <div class="pick">
-        <label><input type="radio" name="phone" value="Android" required><span>Android</span></label>
-        <label><input type="radio" name="phone" value="iPhone"><span>iPhone</span></label>
-      </div>
-    </fieldset>
     <!-- honeypot: hidden from people; bots that fill it get ignored -->
     <div class="hp" aria-hidden="true"><label for="wl-web">Leave this empty</label><input id="wl-web" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
     <button type="submit">Join the waitlist</button>
@@ -403,7 +398,7 @@
   document.querySelectorAll(".reveal").forEach(el => revealer.observe(el));
 </script>
 <script>
-  // waitlist: each signup is emailed to bunsoootchi (and a copy to Jessa) through FormSubmit
+  // Android waitlist: each signup is emailed to bunsoootchi (and a copy to Jessa) through FormSubmit
   (() => {
     const TO = 'bunsoootchi@gmail.com', CC = 'jtorrepedrola@gmail.com';
     const f = document.getElementById('waitlist'), msg = f.querySelector('.msg'), btn = f.querySelector('button');
@@ -412,17 +407,15 @@
     email.addEventListener('focus', () => setTimeout(() => email.scrollIntoView({block: 'center', behavior: 'smooth'}), 300));   // keep the box above the phone keyboard
     f.addEventListener('submit', async e => {
       e.preventDefault();
-      const phone = f.querySelector('input[name=phone]:checked');
       const honey = f.querySelector('#wl-web').value;
-      if (honey) { f.reset(); return say("You're on the list! I'll email you when Ohaiyou is out."); }   // a bot filled the hidden box: act like it worked, send nothing
+      if (honey) { f.reset(); return say("You're on the list! I'll email you when Ohaiyou is on Google Play."); }   // a bot filled the hidden box: act like it worked, send nothing
       if (!email.value || !email.checkValidity()) return say('Please type a real email address.', true);
-      if (!phone) return say('Please pick Android or iPhone.', true);
       btn.disabled = true; say('Sending...');
       try {
         const r = await fetch('https://formsubmit.co/ajax/' + TO, { method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/json'},
-          body: JSON.stringify({ email: email.value, phone: phone.value, _subject: 'Ohaiyou waitlist: ' + phone.value + ', ' + email.value, _cc: CC, _template: 'table', _captcha: 'false', _honey: honey }) });
+          body: JSON.stringify({ email: email.value, phone: 'Android', _subject: 'Ohaiyou waitlist: Android, ' + email.value, _cc: CC, _template: 'table', _captcha: 'false', _honey: honey }) });
         if (!r.ok) throw new Error();
-        f.reset(); say("You're on the list! I'll email you when Ohaiyou is out.");
+        f.reset(); say("You're on the list! I'll email you when Ohaiyou is on Google Play.");
       } catch { say("That didn't go through. Please try again in a minute.", true); }
       btn.disabled = false;
     });
