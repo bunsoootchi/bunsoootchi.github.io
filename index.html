@@ -21,6 +21,20 @@
 <meta name="twitter:title" content="bunsoootchi">
 <meta name="twitter:description" content="Custom apps, games, and art for Tamagotchis, mini e-readers, and other niche devices.">
 <meta name="twitter:image" content="https://bunsoootchi.github.io/og-image.jpg">
+<!-- 3D hero: start every download right away, all at once, instead of one after another -->
+<script type="importmap">{"imports":{"three":"./art/hero3d/three/build/three.module.min.js","three/addons/":"./art/hero3d/three/examples/jsm/"}}</script>
+<link rel="preload" href="art/hero3d/scene.glb?v=2" as="fetch" crossorigin>
+<link rel="preload" href="art/hero3d/wooden_lounge_512.hdr" as="fetch" crossorigin>
+<link rel="modulepreload" href="art/hero3d/hero3d.js?v=29">
+<link rel="modulepreload" href="art/hero3d/three/build/three.module.min.js">
+<link rel="modulepreload" href="art/hero3d/three/build/three.core.min.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/loaders/GLTFLoader.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/utils/BufferGeometryUtils.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/libs/meshopt_decoder.module.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/loaders/RGBELoader.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/postprocessing/Pass.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/shaders/HorizontalBlurShader.js">
+<link rel="modulepreload" href="art/hero3d/three/examples/jsm/shaders/VerticalBlurShader.js">
 <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lilita+One&family=Figtree:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -561,10 +575,9 @@
   })();
 </script>
 <script src="liquid-glass.js?v=4" defer></script>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script type="module">
   // live 3D hero; if WebGL or loading fails, the plain sky color stays
-  import {startHero} from './art/hero3d/hero3d.js?v=28';
+  import {startHero} from './art/hero3d/hero3d.js?v=29';
   const box = document.getElementById('hero-scene');
   // on wide screens, push the fighters right of the card (share of the frame width)
   // how far to push the fighters right of the card: grows with the card's right edge, so on ultra-wide screens they sit in the middle

@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 import {HorizontalBlurShader} from 'three/addons/shaders/HorizontalBlurShader.js';
 import {VerticalBlurShader} from 'three/addons/shaders/VerticalBlurShader.js';
@@ -25,6 +26,7 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
   const r = new THREE.WebGLRenderer({antialias: true, alpha: false, powerPreference: 'high-performance'});
   r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   r.toneMapping = THREE.NeutralToneMapping; r.toneMappingExposure = 0.8147;   // Nomad: Neutral, exposure 0.8147
+  r.transmissionResolutionScale = 0.5;   // the slime's jelly refraction drawn at half size: same look, far less GPU work
   r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
   box.appendChild(r.domElement);
 
@@ -92,6 +94,41 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
   const tufts = ['UV Sphere 40','UV Sphere 41','UV Sphere 42','UV Sphere 43','UV Sphere 44','UV Sphere.003']
     .map(n => named(n, n.replace(/ /g, '_'), n.replace(/[ .]/g, '_'), n.replace(/ /g, '_').replace('.', ''))[0]).filter(Boolean)
     .map(o => makePivot(pivotFor([o]), true));
+  // speed: merge every part that never moves and looks the same into one mesh (about 110 draw calls per pass down to a few dozen).
+  // Each draw call costs main-thread time, so this is what keeps the page smooth. Looks, colors, and positions stay exactly the same.
+  gltf.scene.updateMatrixWorld(true);
+  const moving = new Set([buns, slime, ...tufts].filter(Boolean));
+  const isMoving = o => { for (let p = o; p; p = p.parent) if (moving.has(p)) return true; return false; };
+  // same look = same settings once tiny export noise is rounded off (roughness 0.73333 vs 0.73335 look identical)
+  const lookKey = m => { const j = m.toJSON(); delete j.uuid; delete j.name; delete j.metadata;
+    return JSON.stringify(j, (k, v) => typeof v === 'number' && !Number.isInteger(v) ? Math.round(v * 1000) / 1000 : v); };
+  const attrKey = g => Object.entries(g.attributes).map(([n, a]) => n + a.itemSize + a.array.constructor.name + a.normalized).sort().join() + !!g.index;
+  const groups = new Map();
+  gltf.scene.traverse(o => {
+    if (!o.isMesh || o.children.length || o.renderOrder || o.material.transparent || isMoving(o)) return;   // skip the helmet, its shine, and anything animated
+    const k = o.layers.mask + '|' + lookKey(o.material) + '|' + attrKey(o.geometry);
+    if (!groups.has(k)) groups.set(k, []); groups.get(k).push(o);
+  });
+  for (const list of groups.values()) {
+    if (list.length < 2) continue;
+    // the compressed model stores positions and normals as small integers (-1..1); turn them into floats first,
+    // or moving them into world space clips them
+    const toWorld = o => {
+      const g = o.geometry.clone();
+      for (const n of ['position', 'normal']) {
+        const a = g.attributes[n], f = new Float32Array(a.count * 3);
+        for (let i = 0; i < a.count; i++) { f[i * 3] = a.getX(i); f[i * 3 + 1] = a.getY(i); f[i * 3 + 2] = a.getZ(i); }
+        g.setAttribute(n, new THREE.BufferAttribute(f, 3));
+      }
+      return g.applyMatrix4(o.matrixWorld);
+    };
+    const geo = mergeGeometries(list.map(toWorld));
+    if (!geo) continue;
+    const m = new THREE.Mesh(geo, list[0].material);
+    m.castShadow = m.receiveShadow = true; m.layers.mask = list[0].layers.mask;
+    list.forEach(o => { o.removeFromParent(); o.geometry.dispose(); });
+    scene.add(m);
+  }
   box.dataset.anim = (buns ? 'breathing' : 'no-breath') + ' ' + (slime ? 'floating' : 'no-float') + ' grass ' + tufts.length;
   const bunsX = buns ? buns.position.x : 0, slimeX = slime ? slime.position.x : 0;
   // interaction state (set by the pointer code further down)
@@ -246,5 +283,7 @@ export async function startHero(box, {offsetForCard = () => 0, raise = () => 0} 
   function loop() { if (!running) { running = true; requestAnimationFrame(tick); } }
   frame(SHOTS[0], 0, 0);
   await r.compileAsync(scene, cam);   // prepare shaders in the background so the page doesn't freeze
+  // the blurred background and the glass pass draw into an offscreen buffer, which needs its own shader versions: prepare those too
+  r.setRenderTarget(rtA); await r.compileAsync(scene, cam); r.setRenderTarget(null);
   draw(); reportGround(); box.classList.add('ready'); loop();
 }
