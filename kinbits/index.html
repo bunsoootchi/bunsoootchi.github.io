@@ -231,12 +231,13 @@
 
   @media (max-width: 900px) {
     section { padding: 88px 0; }
-    .hero { padding: 40px 0 88px; }
+    .hero { padding: 40px 0 24px; }
     .hero .wrap, .join .wrap { grid-template-columns: 1fr; gap: 44px; }
     .hero .copy { text-align: center; }
-    .show { max-width: 640px; margin: 0 auto; width: 100%; padding: 0 0 8% 14%; }
+    /* phones: the game scene runs the full width, and the playing phone is big, in front of its lower left */
+    .show { max-width: 640px; margin: 0 auto; width: 100%; padding: 0 0 min(44%, 210px) 0; }
     .show .scene { border-radius: 32px; }
-    .hero-phone { width: 30%; }
+    .hero-phone { width: min(44%, 200px); left: 5%; }
     .reel { justify-content: flex-start; }
     .reel figure { flex-basis: 220px; }
     .hero .logo { margin: 24px auto 28px; }
