@@ -86,8 +86,8 @@
   .hero .when { margin: 0 0 20px; font-weight: 700; font-size: 16px; color: var(--ink-soft); }
   .hero .scene { border-radius: 36px; overflow: hidden; aspect-ratio: 5 / 4; background: #7BC25A; }
   .hero .scene img { width: 100%; height: 100%; object-fit: cover; }
-  .show { position: relative; padding: 0 0 7% 12%; margin-right: calc(-1 * max(24px, (100vw - 1160px) / 2 + 24px)); }
-  .show .scene { border-radius: 40px 0 0 40px; }
+  .hero-art { position: relative; padding: 0 0 7% 12%; margin-right: calc(-1 * max(24px, (100vw - 1160px) / 2 + 24px)); }
+  .hero-art .scene { border-radius: 40px 0 0 40px; }
   .phone { position: relative; border-radius: 34px; background: var(--ink); padding: 7px; aspect-ratio: 430 / 932; }
   .phone video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 27px; background: #2A3150; }
   .hero-phone { position: absolute; left: 0; bottom: 0; width: 27%; }
@@ -236,8 +236,8 @@
     .hero .copy { text-align: center; }
     /* phones: the game scene runs the full width, and the playing phone is big, in front of its lower left */
     /* the box keeps one shape at every width: the phone always sits over the scene's lower right, clear of the Kinbit, and ends 12% below it */
-    .show { max-width: 640px; margin: 0 auto; width: 100%; padding: 0; aspect-ratio: 50 / 46; }
-    .show .scene { border-radius: 32px; }
+    .hero-art { max-width: 640px; margin: 0 auto; width: 100%; padding: 0; aspect-ratio: 50 / 46; }
+    .hero-art .scene { border-radius: 32px; }
     .hero-phone { width: 40%; left: auto; right: 5%; }
     .reel { justify-content: flex-start; }
     .reel figure { flex-basis: 220px; }
@@ -288,7 +288,7 @@
       <p class="when rise" style="--d:.24s">Coming soon to iOS and Android</p>
       <a class="btn rise" style="--d:.3s" id="hero-btn" href="#waitlist">Join the waitlist</a>
     </div>
-    <div class="show rise" style="--d:.1s">
+    <div class="hero-art rise" style="--d:.1s">
       <div class="scene"><img src="img/room-home.webp?v=2" alt="A yellow Kinbit at home in its sunny room, with a red sofa, a pool, and a garden outside" width="1230" height="984"></div>
       <div class="phone hero-phone"><video src="img/clip-homes.mp4" poster="img/clip-homes.webp" muted loop playsinline autoplay preload="auto" aria-label="The game playing on a phone: a Kinbit at home, then in a treehouse, an arcade, a home under the sea, a space station, a greenhouse, a playground, and a workshop"></video></div>
     </div>
