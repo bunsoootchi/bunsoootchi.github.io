@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Test Kinbits</title>
+<link rel="icon" type="image/png" href="../img/icon.png">
+<link rel="apple-touch-icon" href="../img/icon.png">
+<meta name="theme-color" content="#CF4F42">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* the Kinbits page's look: coral graph paper, white cards, the pixel font for titles, and the solid dark edge only on things you can tap */
+  :root { --coral: #CF4F42; --coral-dark: #BB3C2A; --ink: #2B2420; --muted: #645A46; --gold: #FFCF5C; --white: #FFFFFF; --line: #ECE6E4; --mist: #F5F3F2;
+    --press: 0 6px 0 var(--ink); --lift: 0 18px 36px -16px rgba(43,36,32,.5);
+    --screen-ink: #1F1F1F; --screen-faint: #5F6368; --screen-line: #E8EAED; --g-blue: #1A73E8; --g-green: #01875F; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  /* the page scroll bar always shows, so it's clear there's more below */
+  html::-webkit-scrollbar { width: 12px; }
+  html::-webkit-scrollbar-track { background: var(--coral-dark); }
+  html::-webkit-scrollbar-thumb { background: var(--gold); border: 3px solid var(--coral-dark); }
+  html { scrollbar-color: var(--gold) var(--coral-dark); }
+  body { margin: 0; color: var(--white); font: 500 17px/1.6 Fredoka, system-ui, sans-serif; -webkit-font-smoothing: antialiased; padding: 48px 20px 64px;
+    background: var(--coral); background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 28px 28px; }
+  main { max-width: 760px; margin: 0 auto; }
+  a { color: inherit; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  p { margin: 0 0 12px; text-wrap: pretty; }
+  .px { font-family: Silkscreen, monospace; font-weight: 400; letter-spacing: .04em; }
+
+  header .logo { width: min(300px, 80%); display: block; margin: 0 0 28px; filter: drop-shadow(0 10px 18px rgba(43,36,32,.35)); }
+  h1 { font-family: Silkscreen, monospace; font-weight: 400; font-size: clamp(28px, 6.4vw, 40px); line-height: 1.2; margin-bottom: 16px; }
+  .lede { font-size: 19px; opacity: .95; }
+
+  .platform { padding-top: 56px; }
+  .tag { display: inline-block; background: var(--ink); color: var(--gold); font-family: Silkscreen, monospace; font-size: 14px; padding: 8px 14px 7px; rotate: -3deg; margin-bottom: 18px; }
+  .platform > h2 { font-family: Silkscreen, monospace; font-weight: 400; font-size: clamp(24px, 5vw, 30px); line-height: 1.2; margin-bottom: 8px; }
+  .platform > .note { opacity: .95; margin-bottom: 26px; }
+
+  /* each step is a white card */
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 18px; background: var(--white); color: var(--ink); padding: 30px 28px 26px; box-shadow: var(--lift); margin-bottom: 22px; }
+  .step > div { min-width: 0; }
+  .num { width: 44px; height: 44px; background: var(--coral); color: var(--white); display: grid; place-items: center; font-family: Silkscreen, monospace; font-size: 20px; }
+  .step h3 { font-family: Silkscreen, monospace; font-weight: 400; font-size: 20px; line-height: 1.25; color: var(--coral-dark); margin: 9px 0 10px; }
+  .step p { color: var(--muted); }
+  .step strong { color: var(--ink); }
+  .btn { display: inline-block; margin: 6px 0 14px; padding: 13px 22px 12px; background: var(--coral); color: var(--white); text-decoration: none; font-weight: 600; font-size: 17px; line-height: 1.3;
+    box-shadow: var(--press); border: 0; font-family: inherit; cursor: pointer; transition: translate .15s, box-shadow .15s; }
+  .btn:hover { translate: 0 3px; box-shadow: 0 3px 0 var(--ink); }
+  .btn.light { background: var(--white); color: var(--coral-dark); box-shadow: inset 0 0 0 3px var(--ink), var(--press); }
+  .btn.light:hover { box-shadow: inset 0 0 0 3px var(--ink), 0 3px 0 var(--ink); }
+  .tip { font-size: 15px; }
+  .warn { background: var(--mist); border-left: 5px solid var(--coral); padding: 14px 16px; margin: 0 0 14px; color: var(--ink) !important; }
+
+  /* Simple drawings of each Google screen. The coral ring shows what to tap. */
+  .shots { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0 8px; }
+  .phone { width: 200px; border: 8px solid var(--ink); border-radius: 30px; background: #fff; color: var(--screen-ink); overflow: hidden; font: 13px/1.4 Roboto, system-ui, sans-serif; box-shadow: var(--lift); }
+  .phone .bar { height: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 10px; font-weight: 600; color: var(--screen-faint); }
+  .phone .body { padding: 12px 14px 20px; min-height: 230px; }
+  .top { display: flex; align-items: center; gap: 8px; padding: 0 14px 10px; border-bottom: 1px solid var(--screen-line); margin: 0 -14px 14px; }
+  .top b { font-size: 15px; font-weight: 500; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--g-blue); flex: none; }
+  .avatar { width: 22px; height: 22px; border-radius: 50%; background: #8CC6EC; margin-left: auto; flex: none; }
+  .gbtn { display: inline-block; border: 1px solid #DADCE0; color: var(--g-blue); border-radius: 6px; padding: 6px 11px; font-weight: 500; font-size: 12px; }
+  .gbtn.fill { background: var(--g-blue); border-color: var(--g-blue); color: #fff; }
+  .gbtn.play { background: var(--g-green); border-color: var(--g-green); color: #fff; border-radius: 999px; padding: 8px 0; width: 100%; text-align: center; font-size: 13px; }
+  .muted { color: var(--screen-faint); font-size: 11.5px; }
+  .dialog { border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,.16); padding: 14px; margin-top: 18px; }
+  .dialog .right { text-align: right; margin-top: 12px; }
+  .menu { border-radius: 14px; background: #F1F4F9; padding: 6px 0; }
+  .menu div { padding: 9px 12px; display: flex; align-items: center; gap: 10px; }
+  .menu i { width: 14px; height: 14px; border-radius: 4px; background: #C4C7C5; flex: none; }
+  .appinfo { display: flex; gap: 10px; align-items: center; margin: 4px 0 12px; }
+  .appinfo img { width: 46px; height: 46px; border-radius: 12px; border: 1px solid var(--screen-line); }
+  .appinfo b { display: block; font-size: 15px; font-weight: 600; }
+  .appinfo span { color: var(--g-green); font-size: 11.5px; font-weight: 500; }
+  .field { border: 1px solid #DADCE0; border-radius: 6px; padding: 9px 10px; color: var(--screen-faint); letter-spacing: .06em; margin: 10px 0 12px; font-size: 12px; }
+  .label { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .tap { position: relative; }
+  .tap::after { content: ""; position: absolute; inset: -6px; border: 3px solid var(--coral); border-radius: 12px; pointer-events: none; animation: pulse 1.6s ease-in-out infinite; }
+  .menu .tap::after { inset: 0 4px; }
+  .avatar.tap::after { border-radius: 50%; }
+  @keyframes pulse { 50% { transform: scale(1.05); opacity: .5; } }
+  @media (prefers-reduced-motion: reduce) { .tap::after { animation: none; } }
+
+  /* a tester's own code (from their personal link) and the "I've redeemed it" button */
+  .mycode { background: var(--mist); padding: 20px 20px 22px; margin: 4px 0 16px; }
+  .mycode .lbl { font-size: 14px; margin: 0 0 6px; }
+  .mycode .code { font: 700 20px/1.3 ui-monospace, Menlo, monospace; letter-spacing: .06em; word-break: break-all; margin: 0 0 16px; color: var(--ink); }
+  .mycode .row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .mycode .btn { margin: 0 0 6px; }
+  .done { background: var(--mist); padding: 20px 20px 22px; margin-top: 8px; }
+  .done p { margin: 0 0 14px; }
+  .done .btn { margin: 0 0 6px; }
+  .done .msg { margin: 12px 0 0; }
+
+  .help { margin-top: 56px; background: var(--white); color: var(--ink); padding: 32px 28px 30px; box-shadow: var(--lift); }
+  .help h2 { font-family: Silkscreen, monospace; font-weight: 400; font-size: 22px; line-height: 1.25; color: var(--coral-dark); margin-bottom: 4px; }
+  .help h3 { font-size: 18px; font-weight: 600; line-height: 1.3; margin: 22px 0 4px; }
+  .help p { color: var(--muted); margin: 0; }
+  footer { margin-top: 44px; font-size: 15px; text-align: center; opacity: .95; }
+
+  @media (max-width: 520px) {
+    body { padding-top: 36px; }
+    .step { grid-template-columns: 1fr; gap: 6px; padding: 24px 20px 22px; }
+    .step h3 { margin-top: 10px; }
+    .help { padding: 26px 20px 24px; }
+    .shots { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img class="logo" src="../img/logo.png" alt="Kinbits">
+    <h1>Help test Kinbits</h1>
+    <p class="lede">Thank you for helping! Kinbits is a cozy pet game where you hatch a tiny pet, raise it, and grow a whole family. Google needs testers to keep it for 1 month before it can go on the Play Store.</p>
+  </header>
+
+  <section class="platform" id="android">
+    <span class="tag">Android</span>
+    <h2>Get it on Google Play</h2>
+    <p class="note">Use the <strong>same Google account</strong> for every step, the one your Play Store uses. Do the steps in order.</p>
+
+    <div class="step">
+      <span class="num">1</span>
+      <div>
+        <h3>Join the tester group</h3>
+        <p>Open the link and tap <strong>Join group</strong>. A small window pops up. Tap <strong>Join group</strong> again.</p>
+        <a class="btn" href="https://groups.google.com/g/kinbits-testers" target="_blank" rel="noopener">Open the tester group</a>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot"></span><b>Groups</b><span class="avatar"></span></div>
+              <div style="font-size:15px;margin-bottom:12px">Kinbits testers</div>
+              <span class="gbtn tap">Join group</span>
+              <p class="muted" style="margin-top:26px;text-align:center">You don't have permission to access this content</p>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot"></span><b>Groups</b><span class="avatar"></span></div>
+              <div class="dialog">
+                <div class="label">Join this group?</div>
+                <div class="muted">Kinbits testers</div>
+                <div class="right"><span class="gbtn fill tap">Join group</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="tip">"You don't have permission to access this content" is normal. Only I can see the group's posts, and joining still works.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">2</span>
+      <div>
+        <h3>Become a tester</h3>
+        <p>Open the link and tap <strong>Become a tester</strong>. The page then says you're a tester.</p>
+        <a class="btn" href="https://play.google.com/apps/testing/com.bunsoootchi.kinbits" target="_blank" rel="noopener">Open the testing page</a>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><span class="dot" style="background:var(--g-green)"></span><b>Google Play</b><span class="avatar"></span></div>
+              <div class="appinfo"><img src="../img/icon.png" alt=""><div><b>Kinbits</b><span>Closed test</span></div></div>
+              <p class="muted" style="margin:0 0 16px">Become a tester to get the app before it comes out.</p>
+              <span class="gbtn fill tap">BECOME A TESTER</span>
+            </div>
+          </div>
+        </div>
+        <p class="tip">If it says the app isn't available, wait a few minutes after joining the group, then try again.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">3</span>
+      <div>
+        <h3>Redeem your code</h3>
+        <p class="warn">Do steps 1 and 2 first. If you redeem the code before that, Google Play shows error <span style="white-space:nowrap">PRS-RPCPM-18</span>.</p>
+        <p class="no-code">Kinbits costs money on Google Play, so I'll send you a free code in a DM. Each code works once, so please don't share it. On your phone, open the <strong>Play Store</strong> app, then:</p>
+        <div class="mycode" hidden>
+          <p class="lbl">Your free code (it works once, so please don't share it)</p>
+          <p class="code" id="my-code"></p>
+          <div class="row">
+            <a class="btn" id="redeem-link" href="https://play.google.com/redeem" target="_blank" rel="noopener">Redeem this code</a>
+            <button class="btn light" id="copy-code" type="button">Copy code</button>
+          </div>
+        </div>
+        <p class="has-code" hidden>Or redeem it in the <strong>Play Store</strong> app:</p>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Google Play</b><span class="avatar tap"></span></div>
+              <p class="muted" style="margin:0 0 8px">Tap your profile picture, then:</p>
+              <div class="menu">
+                <div><i></i>Manage apps &amp; device</div>
+                <div class="tap"><i></i>Payments &amp; subscriptions</div>
+                <div><i></i>Play Protect</div>
+                <div><i></i>Settings</div>
+              </div>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Payments &amp; subscriptions</b></div>
+              <div class="menu">
+                <div><i></i>Payment methods</div>
+                <div><i></i>Subscriptions</div>
+                <div><i></i>Budget &amp; history</div>
+                <div class="tap"><i></i>Redeem code</div>
+              </div>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body" style="min-height:0">
+              <div class="label">Redeem code</div>
+              <div class="field">Type the code from my DM</div>
+              <div style="text-align:right"><span class="gbtn fill tap">Redeem</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="tip">On a computer, you can also redeem it at <a href="https://play.google.com/redeem" target="_blank" rel="noopener">play.google.com/redeem</a>, signed in with the same Google account.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">4</span>
+      <div>
+        <h3>Install it</h3>
+        <p>Open Kinbits on Google Play and tap <strong>Install</strong>. It should be free.</p>
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.kinbits" target="_blank" rel="noopener">Open Kinbits on Google Play</a>
+        <div class="shots" aria-hidden="true">
+          <div class="phone">
+            <div class="bar"><span>9:41</span><span>●●●</span></div>
+            <div class="body">
+              <div class="top"><b>Google Play</b><span class="avatar"></span></div>
+              <div class="appinfo"><img src="../img/icon.png" alt=""><div><b>Kinbits</b><span>bunsoootchi</span></div></div>
+              <p class="muted" style="margin:0 0 16px">You're a tester for this app.</p>
+              <span class="gbtn play tap">Install</span>
+            </div>
+          </div>
+        </div>
+        <p class="tip">If it still shows a price, don't pay. Message me and I'll help. If you tap Install and nothing happens, check that step 2 says you're a tester, wait 15 minutes, and try again.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">5</span>
+      <div>
+        <h3>Keep it for 1 month</h3>
+        <p>Keep Kinbits installed, stay in the group, and check on your Kinbit now and then for at least 1 month. That's all I need.</p>
+        <div class="done" hidden>
+          <p>Redeemed your code and installed the game? Tap the button so I know you're all set.</p>
+          <button class="btn" id="redeemed" type="button">I've redeemed my code</button>
+          <p class="msg" id="redeemed-msg" hidden></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="platform" id="iphone">
+    <span class="tag">iPhone</span>
+    <h2>Get it on TestFlight</h2>
+    <p class="note">On an iPhone, you test with Apple's TestFlight app. No code needed.</p>
+
+    <div class="step">
+      <span class="num">1</span>
+      <div>
+        <h3>Get TestFlight</h3>
+        <p>Install <strong>TestFlight</strong> from the App Store. It's free and made by Apple.</p>
+        <a class="btn" href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener">Get TestFlight</a>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">2</span>
+      <div>
+        <h3>Join the test</h3>
+        <p>Open the link on your iPhone, tap <strong>Accept</strong>, then <strong>Install</strong>.</p>
+        <a class="btn" href="https://testflight.apple.com/join/Yq2krQby" target="_blank" rel="noopener">Join the Kinbits test</a>
+        <p class="tip">New versions show up in TestFlight by themselves. Turn on automatic updates there to always have the newest one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="help">
+    <h2>Good to know</h2>
+    <h3>Found a bug, or have an idea?</h3>
+    <p>Tell me anytime, just message me. A screenshot or a screen recording helps a lot.</p>
+    <h3>I have more than one Google account</h3>
+    <p>In the Play Store, tap your profile picture and switch to the account you used for the group before you redeem and install.</p>
+    <h3>I already have Kinbits from a download link</h3>
+    <p>The Google Play version is a separate app, so you can keep both. Your Kinbits family doesn't move over, so you'll start fresh.</p>
+  </section>
+
+  <footer>Made by <a href="https://bunsoootchi.github.io">bunsoootchi</a>. Questions? Email <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a>.</footer>
+</main>
+<script>
+  // Personal links: ?code=XXXX&name=Name shows that tester's code and the "I've redeemed my code" button.
+  const q = new URLSearchParams(location.search);
+  const code = (q.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const who = (q.get('name') || '').slice(0, 60);
+  if (code.length >= 10) {
+    document.getElementById('my-code').textContent = code;
+    document.getElementById('redeem-link').href = 'https://play.google.com/redeem?code=' + code;
+    document.querySelector('.mycode').hidden = false;
+    document.querySelector('.has-code').hidden = false;
+    document.querySelector('.no-code').hidden = true;
+    document.querySelector('.done').hidden = false;
+    document.getElementById('copy-code').onclick = async (e) => {
+      try { await navigator.clipboard.writeText(code); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Press and hold the code to copy it'; }
+    };
+    const btn = document.getElementById('redeemed'), msg = document.getElementById('redeemed-msg');
+    const show = (t) => { msg.textContent = t; msg.hidden = false; };
+    let sent = false; try { sent = localStorage.getItem('kinbits-redeemed-' + code) === '1'; } catch {}
+    if (sent) { btn.hidden = true; show("Thank you! I already got your message."); }
+    btn.onclick = async () => {
+      btn.disabled = true; btn.textContent = 'Sending...';
+      try {
+        const r = await fetch('https://formsubmit.co/ajax/bunsoootchi@gmail.com', { method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ tester: who || '(no name)', code, _subject: 'Kinbits tester redeemed: ' + (who || code), _template: 'table', _captcha: 'false' }) });
+        if (!r.ok) throw 0;
+        try { localStorage.setItem('kinbits-redeemed-' + code, '1'); } catch {}
+        btn.hidden = true; show("Thank you! I got it. Please keep Kinbits installed.");
+      } catch { btn.disabled = false; btn.textContent = "I've redeemed my code"; show("That didn't send. Please try again, or just message me."); }
+    };
+  }
+</script>
+</body>
+</html>
