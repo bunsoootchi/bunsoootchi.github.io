@@ -4,338 +4,480 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kinbits</title>
-<meta name="description" content="Hatch a tiny pet, dress it up, go on trips, get married, and grow a family. A virtual pet family that grows across generations.">
+<meta name="description" content="Raise a tiny family. Hatch a Kinbit, dress it up, take it on day trips, and watch it start a family of its own. Coming soon to iOS and Android.">
 <link rel="icon" type="image/png" href="img/icon.png">
-<link rel="apple-touch-icon" href="img/icon.png">
-<link rel="preload" as="image" href="img/walk-mochi-purple.webp">
-<link rel="preload" as="image" href="img/walk-baby-orb-pink.webp">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" as="image" href="img/room-home.webp">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Kinbits">
-<meta property="og:description" content="Hatch, raise, and grow a family.">
+<meta property="og:description" content="Raise a tiny family. Hatch a Kinbit, dress it up, and watch it start a family of its own.">
 <meta property="og:url" content="https://bunsoootchi.github.io/kinbits/">
-<meta property="og:image" content="https://bunsoootchi.github.io/art/cards/kinbits.webp">
-<meta name="theme-color" content="#CF4F42">
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@800&family=Silkscreen:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<meta property="og:image" content="https://bunsoootchi.github.io/kinbits/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FFFFFF">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Kinbits colors: the coral graph paper from its store art, white cards, and the meter colors from the game. */
-  :root { --coral: #CF4F42; --coral-dark: #BB3C2A; --ink: #2B2420; --muted: #645A46; --gold: #FFCF5C;
-    --hunger: #FF7B6B; --energy: #5CC6FF; --joy: #FFCF5C; --hygiene: #6FD69A; --white: #FFFFFF; --line: #ECE6E4;
-    /* one rule for the whole page: only things you can click get the solid dark bottom edge (--press). Everything else floats on a soft shadow (--lift). */
-    --press: 0 6px 0 var(--ink); --lift: 0 18px 36px -16px rgba(43,36,32,.5); }
+  /* One calm palette: white, a cool mist, and the game's navy for words and buttons.
+     The Kinbits and their worlds bring all the color. */
+  :root {
+    --ink: #1B2138; --ink-soft: #4B5373; --edge: #0A0E1C;
+    --white: #FFFFFF; --mist: #F1F4F9; --line: #E1E6EF; --chip: #E8EDF5;
+    --ease: cubic-bezier(.22,.8,.3,1); --spring: cubic-bezier(.3,1.5,.5,1);
+  }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; background: var(--white); }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   /* the page scroll bar always shows, so it's clear there's more below */
+  html { overflow-y: scroll; scrollbar-color: #9AA3BC var(--mist); }
   html::-webkit-scrollbar { width: 12px; }
-  html::-webkit-scrollbar-track { background: var(--coral-dark); }
-  html::-webkit-scrollbar-thumb { background: var(--gold); border: 3px solid var(--coral-dark); }
-  html { scrollbar-color: var(--gold) var(--coral-dark); }
-  body { margin: 0; color: var(--white); font: 500 18px/1.6 Fredoka, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
-    background: var(--coral); background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 28px 28px; }
-  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  html::-webkit-scrollbar-track { background: var(--mist); }
+  html::-webkit-scrollbar-thumb { background: #9AA3BC; border: 3px solid var(--mist); border-radius: 999px; }
+  body { margin: 0; color: var(--ink); background: var(--white); font: 500 18px/1.55 "Gotham Rounded", "M PLUS Rounded 1c", system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 400; }
   p { margin: 0; text-wrap: pretty; }
   a { color: inherit; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-  .px { font-family: Silkscreen, monospace; font-weight: 400; letter-spacing: .04em; }
-  section { padding: 130px 0; }
-  /* a section with Kinbits walking under it gets their strip added at the bottom, so the gap above the next section stays the same */
-  section:has(> .ground) { padding-bottom: 340px; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .pixel { font-family: Silkscreen, monospace; letter-spacing: .04em; line-height: 1.2; text-wrap: balance; }
+  section { padding: 112px 0; }
+  section.mist { background: var(--mist); }
+  .head { max-width: 720px; margin: 0 auto 48px; text-align: center; }
+  .head h2 { font-size: clamp(30px, 4vw, 44px); }
 
-  /* pixel art drawn with tiny squares, like the hearts and sparkles that pop over a Kinbit's head */
-  .pix { position: absolute; width: 4px; height: 4px; pointer-events: none; transform: scale(var(--s, 4)); transform-origin: 0 0; }
-  .heart { color: #FF8FB0; box-shadow: 4px 0 0, 8px 0 0, 16px 0 0, 20px 0 0, 0 4px 0, 4px 4px 0, 8px 4px 0, 12px 4px 0, 16px 4px 0, 20px 4px 0, 24px 4px 0, 0 8px 0, 4px 8px 0, 8px 8px 0, 12px 8px 0, 16px 8px 0, 20px 8px 0, 24px 8px 0, 4px 12px 0, 8px 12px 0, 12px 12px 0, 16px 12px 0, 20px 12px 0, 8px 16px 0, 12px 16px 0, 16px 16px 0, 12px 20px 0; }
-  .spark { color: var(--gold); box-shadow: 8px 0 0, 8px 4px 0, 0 8px 0, 4px 8px 0, 8px 8px 0, 12px 8px 0, 16px 8px 0, 8px 12px 0, 8px 16px 0; }
-  .float { animation: drift 5s ease-in-out infinite; }
-  .float:nth-of-type(2n) { animation-duration: 6.5s; animation-delay: -2s; }
-  .float:nth-of-type(3n) { animation-duration: 4.2s; animation-delay: -3.5s; }
-  @keyframes drift { 50% { translate: 0 -14px; } }
-  @media (prefers-reduced-motion: reduce) { .float { animation: none; } }
+  /* buttons: solid dark bottom edge = you can press it */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; cursor: pointer; text-decoration: none; white-space: nowrap;
+    font-weight: 800; font-size: 18px; line-height: 1; padding: 19px 30px 16px; border-radius: 999px; background: var(--ink); color: var(--white);
+    box-shadow: 0 5px 0 var(--edge); transition: translate .18s var(--ease), box-shadow .18s var(--ease), opacity .2s; }
+  .btn:hover, .btn:focus-visible { translate: 0 -2px; box-shadow: 0 7px 0 var(--edge); }
+  .btn:active { translate: 0 4px; box-shadow: 0 1px 0 var(--edge); transition-duration: .08s; }
+  .btn:focus-visible { outline: 3px solid #8FB4FF; outline-offset: 4px; }
 
-  /* NAV */
-  nav { position: sticky; top: 0; z-index: 20; background: rgba(187,60,42,.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  nav img { height: 26px; display: block; }
-  nav .links { display: flex; gap: 22px; align-items: center; font-size: 15px; }
-  nav .links a { text-decoration: none; white-space: nowrap; }
-  nav .links .get { background: var(--white); color: var(--coral-dark); padding: 9px 16px 8px; box-shadow: var(--press); transition: translate .15s, box-shadow .15s; }
-  nav .links .get:hover { translate: 0 3px; box-shadow: 0 3px 0 var(--ink); color: var(--coral-dark); }
-  @media (max-width: 640px) { nav .links .hide-sm { display: none; } }
+  /* the Kinbit cutouts: no shadows. Each one bobs as one solid piece and hops when you tap it. */
+  .kin { cursor: pointer; animation: bob var(--bob, 3.6s) ease-in-out infinite; animation-delay: var(--bd, 0s); }
+  .kin img { width: 100%; height: auto; transition: transform .35s var(--spring); user-select: none; -webkit-user-drag: none; }
+  .kin:hover img { transform: translateY(-10px); }
+  .kin.hop img { transform: translateY(-30px); transition-duration: .18s; }
+  @keyframes bob { 50% { translate: 0 -8px; } }
 
-  /* "Made by bunsoootchi" with the bunsoootchi face, the same on every landing page: goes back to the main bunsoootchi website */
-  .maker { display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF; font: 800 15px/1 Figtree, system-ui, sans-serif; text-decoration: none; white-space: nowrap; margin: 0 0 22px; }
-  .maker img { height: 34px; width: auto; display: block; translate: 0 -8px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
-  /* on hover the face lifts its chin, proudly */
-  .maker:hover img { transform: rotate(10deg); }
-  .maker:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .maker img { filter: brightness(0) invert(1); }
-  /* the store pills: not clickable until the app is out, so they float instead of having the button edge */
-  .btn { display: inline-block; font-family: Silkscreen, monospace; font-size: 17px; text-decoration: none; white-space: nowrap; padding: 15px 22px 14px;
-    background: var(--white); color: var(--coral-dark); box-shadow: var(--lift); cursor: default; }
-  .btns { display: flex; flex-wrap: wrap; gap: 18px; }
+  /* NAV: shows up once the hero's button scrolls away, so the two never sit on screen together */
+  nav { position: fixed; inset: 0 0 auto; z-index: 50; background: rgba(255,255,255,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line); translate: 0 -100%; transition: translate .4s var(--ease); }
+  nav.show { translate: 0 0; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+  nav .brand img { height: 26px; width: auto; }
+  nav .links { display: flex; align-items: center; gap: 28px; }
+  nav .links a:not(.btn) { text-decoration: none; font-weight: 700; font-size: 16px; color: var(--ink-soft); transition: color .2s; }
+  nav .links a:not(.btn):hover { color: var(--ink); }
+  nav .btn { font-size: 16px; padding: 14px 22px 11px; box-shadow: 0 4px 0 var(--edge); }
+  nav .btn:hover { box-shadow: 0 6px 0 var(--edge); }
 
-  /* HERO */
-  /* the top section fills the first screen, so the Kinbits walking along its bottom are seen right away */
-  .hero { position: relative; padding: 40px 0 230px; overflow: hidden; min-height: calc(100svh - 64px); display: flex; align-items: center; }
-  .hero > .wrap { width: 100%; }
-  .hero .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-  .hero .wrap > * { min-width: 0; }
-  .hero .logo { width: min(440px, 100%); display: block; margin: 0 0 30px; filter: drop-shadow(0 10px 18px rgba(43,36,32,.35)); }
-  .hero h1 { font-size: clamp(24px, 3vw, 32px); line-height: 1.3; margin: 0 0 18px; }
-  .hero .lead { font-size: 20px; max-width: 34ch; margin: 0 0 34px; }
-  .hero .soon { margin-top: 22px; font-size: 15px; opacity: .85; }
-  .fan { position: relative; height: min(560px, calc(100svh - 340px)); min-height: 400px; }
-  .fan .phone { position: absolute; top: 50%; left: 50%; width: 230px; }
-  .fan .phone:nth-child(1) { translate: -112% -46%; rotate: -8deg; }
-  .fan .phone:nth-child(2) { translate: -50% -54%; z-index: 2; width: 250px; }
-  .fan .phone:nth-child(3) { translate: 12% -46%; rotate: 8deg; }
-  @media (max-width: 1200px) and (min-width: 861px) { .fan .phone { width: 200px; } .fan .phone:nth-child(2) { width: 218px; } }
+  /* HERO: the game's own home room is the picture. Words stay few. */
+  .hero { padding: 56px 0 24px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .maker { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink-soft); transition: color .2s; }
+  .maker:hover { color: var(--ink); }
+  .maker img { width: 24px; height: 24px; border-radius: 50%; }
+  .hero .logo { width: min(340px, 82%); height: auto; margin: 28px 0 32px; }
+  .hero h1 { font-size: clamp(30px, 3.6vw, 42px); }
+  .hero .lead { margin: 16px 0 36px; font-size: 20px; line-height: 1.5; color: var(--ink-soft); max-width: 30ch; }
+  .hero .when { margin: 0 0 20px; font-weight: 700; font-size: 16px; color: var(--ink-soft); }
+  .hero .scene { border-radius: 36px; overflow: hidden; aspect-ratio: 5 / 4; background: #7BC25A; }
+  .hero .scene img { width: 100%; height: 100%; object-fit: cover; }
+  .show { position: relative; padding: 0 0 7% 12%; margin-right: calc(-1 * max(24px, (100vw - 1160px) / 2 + 24px)); }
+  .show .scene { border-radius: 40px 0 0 40px; }
+  .phone { position: relative; border-radius: 34px; background: var(--ink); padding: 7px; aspect-ratio: 430 / 932; }
+  .phone video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 27px; background: #2A3150; }
+  .hero-phone { position: absolute; left: 0; bottom: 0; width: 27%; }
+  .rise { animation: rise .9s var(--ease) both; animation-delay: var(--d, 0s); }
+  @keyframes rise { from { opacity: 0; translate: 0 22px; } }
 
-  .phone { background: var(--ink); border-radius: 34px; padding: 9px; box-shadow: var(--lift); }
-  .phone img { display: block; width: 100%; aspect-ratio: 9 / 18.5; object-fit: cover; border-radius: 26px; }
+  /* MOTION: real clips from the game, on phones, in one row */
+  .motion { padding: 96px 0 104px; }
+  .head p { margin: 14px auto 0; font-size: 19px; color: var(--ink-soft); }
+  .reel { display: flex; justify-content: center; gap: 28px; max-width: 1160px; margin: 0 auto; padding: 0 24px 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-color: #9AA3BC var(--mist); }
+  .reel::-webkit-scrollbar { height: 10px; }
+  .reel::-webkit-scrollbar-track { background: var(--mist); border-radius: 999px; }
+  .reel::-webkit-scrollbar-thumb { background: #9AA3BC; border-radius: 999px; }
+  .reel:focus-visible { outline: 3px solid #8FB4FF; outline-offset: 4px; border-radius: 12px; }
+  .reel figure { flex: 0 0 248px; margin: 0; scroll-snap-align: center; }
+  .reel figcaption { margin: 18px 0 0; text-align: center; font-weight: 800; font-size: 17px; line-height: 1.35; }
 
-  /* section titles: a pixel label stuck on like a sticker */
-  .head { text-align: center; margin-bottom: 70px; }
-  .tag { display: inline-block; background: var(--ink); color: var(--gold); font-family: Silkscreen, monospace; font-size: 14px; padding: 8px 14px 7px; rotate: -3deg; margin-bottom: 22px; white-space: nowrap; }
-  .head h2 { font-family: Silkscreen, monospace; font-weight: 400; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.15; }
-  .head p { margin: 18px auto 0; max-width: 46ch; font-size: 19px; opacity: .92; }
+  /* FEATURES: one tab at a time keeps the page short */
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 auto 40px; max-width: 860px; }
+  .tab { border: 0; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 16px; line-height: 1; padding: 13px 20px 12px; border-radius: 999px;
+    background: var(--white); color: var(--ink-soft); box-shadow: inset 0 0 0 1.5px var(--line); transition: background .25s, color .25s, box-shadow .25s, translate .18s var(--ease); }
+  .tab:hover { color: var(--ink); translate: 0 -1px; }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--white); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .tab:focus-visible { outline: 3px solid #8FB4FF; outline-offset: 3px; }
 
-  /* LIFE: one Kinbit's whole life, as a winding path of stops */
-  .life { position: relative; max-width: 940px; margin: 0 auto; }
-  .life::before { content: ""; position: absolute; left: 50%; top: 40px; bottom: 40px; width: 8px; translate: -50% 0;
-    background: repeating-linear-gradient(to bottom, var(--white) 0 16px, transparent 16px 28px); opacity: .55; }
-  .stop { position: relative; display: grid; grid-template-columns: 1fr 120px 1fr; align-items: center; margin-bottom: 80px; }
-  .stop:last-child { margin-bottom: 0; }
-  .stop .phone { width: 250px; justify-self: end; rotate: -3deg; transition: rotate .35s cubic-bezier(.3,1.6,.5,1); }
-  .stop:nth-child(even) .phone { grid-column: 3; justify-self: start; rotate: 3deg; }
-  .stop:hover .phone { rotate: 0deg; }
-  .stop .lv { grid-column: 2; grid-row: 1; justify-self: center; width: 64px; height: 64px; display: grid; place-items: center; background: var(--white); color: var(--coral-dark);
-    font-family: Silkscreen, monospace; font-size: 22px; box-shadow: var(--lift); z-index: 1; }
-  .stop .card { grid-row: 1; grid-column: 3; background: var(--white); color: var(--ink); padding: 32px 30px; box-shadow: var(--lift); max-width: 340px; }
-  .stop:nth-child(even) .card { grid-column: 1; justify-self: end; }
-  .stop:nth-child(odd) .phone { grid-column: 1; grid-row: 1; }
-  .stop:nth-child(even) .phone { grid-row: 1; }
-  .card h3 { font-family: Silkscreen, monospace; font-weight: 400; font-size: 21px; line-height: 1.25; color: var(--coral-dark); margin-bottom: 12px; }
-  .card p { font-size: 17px; color: var(--muted); }
-  .meter { display: flex; gap: 6px; margin-top: 20px; }
-  .meter i { height: 8px; flex: 1; background: var(--c); }
+  .stage { display: grid; }
+  .panel { grid-area: 1 / 1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: center;
+    opacity: 0; visibility: hidden; translate: 0 14px; transition: opacity .4s var(--ease), translate .5s var(--ease), visibility 0s .4s; }
+  .panel.on { opacity: 1; visibility: visible; translate: 0 0; transition-delay: 0s; }
+  .panel h3 { font-size: clamp(24px, 2.6vw, 30px); }
+  .panel .copy p { margin: 16px 0 0; font-size: 19px; color: var(--ink-soft); line-height: 1.55; }
+  .art { position: relative; border-radius: 32px; overflow: hidden; aspect-ratio: 5 / 4; background: var(--white); }
+  .art.night { background: var(--ink); }
+  .art > img.fill { width: 100%; height: 100%; object-fit: cover; transition: opacity .35s var(--ease); }
+  .art > img.fill.fade { opacity: 0; }
 
-  /* THINGS TO DO: a pixel checklist that ticks itself as you scroll */
-  .list { background: var(--white); color: var(--ink); max-width: 760px; margin: 0 auto; padding: 46px 48px; box-shadow: var(--lift); }
-  .list ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 34px; }
-  .list li { display: flex; gap: 14px; align-items: flex-start; font-size: 17px; line-height: 1.45; }
-  .box { flex: none; width: 22px; height: 22px; margin-top: 1px; border: 3px solid var(--ink); position: relative; }
-  .box::after { content: ""; position: absolute; left: 3px; top: -2px; width: 7px; height: 13px; border: solid var(--coral); border-width: 0 4px 4px 0; rotate: 40deg; scale: 0; transition: scale .3s cubic-bezier(.3,1.8,.5,1); }
-  .list li.done .box::after { scale: 1; }
+  /* small picker buttons under a panel's words */
+  .picks { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 0; }
+  .pick { border: 0; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 15px; line-height: 1; padding: 12px 18px 11px; border-radius: 999px;
+    background: var(--chip); color: var(--ink-soft); transition: background .25s, color .25s, translate .18s var(--ease); }
+  .pick:hover { color: var(--ink); translate: 0 -1px; }
+  .pick[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+  .pick:focus-visible { outline: 3px solid #8FB4FF; outline-offset: 3px; }
+  .pick.go { background: var(--white); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); display: inline-flex; align-items: center; gap: 8px; }
+  .pick.go svg { width: 16px; height: 16px; }
+  .note-more { margin: 18px 0 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
+
+  /* babies: mum + dad = baby */
+  .mixer { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: end; gap: 2%; padding: 10% 7% 13%; }
+  .mixer .op { font: 400 clamp(26px, 3vw, 40px)/1 Silkscreen, monospace; color: #A4ACC2; align-self: center; }
+  .mixer .child img { transition: opacity .25s, transform .35s var(--spring); }
+  .mixer .child.swap img { opacity: 0; transform: scale(.85); }
+
+  /* dress up: one Kinbit, and a rail of looks to try on */
+  .closet { position: absolute; inset: 0; display: grid; place-items: end center; padding: 8% 0 10%; }
+  .closet .kin { width: 38%; }
+  .closet .kin img { transition: opacity .2s, transform .35s var(--spring); }
+  .closet .kin.swap img { opacity: 0; transform: scale(.92); }
+  .looks { display: grid; grid-template-columns: repeat(4, 64px); gap: 10px; margin: 28px 0 0; }
+  .look { width: 64px; height: 64px; padding: 6px 10px 0; border: 0; border-radius: 18px; cursor: pointer; background: var(--chip); overflow: hidden;
+    transition: background .25s, box-shadow .25s, translate .18s var(--ease); }
+  .look img { width: 100%; height: auto; }
+  .look:hover { translate: 0 -2px; }
+  .look[aria-pressed="true"] { background: var(--white); box-shadow: inset 0 0 0 2.5px var(--ink); }
+  .look:focus-visible { outline: 3px solid #8FB4FF; outline-offset: 3px; }
+
+  /* marriage and Blessed: Kinbits standing on their own */
+  .duo { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-end; gap: 6%; padding: 0 8% 10%; }
+  .duo .kin.couple { width: 62%; }
+  .duo .kin.bl { width: 27%; }
+  .art.night .glow { position: absolute; inset: 0; background: radial-gradient(60% 55% at 50% 62%, rgba(140,160,255,.28), transparent 70%); }
+
+  /* care: two real screens from the game */
+  .phones { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 5%; padding: 6% 0; }
+  .phones img { height: 88%; width: auto; border-radius: 22px; box-shadow: 0 0 0 5px var(--ink); }
+  .phones img:last-child { translate: 0 6%; }
+
+  /* everything else, folded up like Performatively's full features list */
+  details.all { margin: 72px auto 0; max-width: 960px; background: var(--white); border-radius: 28px; }
+  details.all summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 26px 30px; font-weight: 800; font-size: 19px; }
+  details.all summary::-webkit-details-marker { display: none; }
+  .chev { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--chip); display: grid; place-items: center; transition: transform .35s var(--ease), background .25s; }
+  .chev svg { width: 16px; height: 16px; }
+  details[open] > summary .chev { transform: rotate(180deg); }
+  summary:hover .chev { background: var(--line); }
+  summary:focus-visible { outline: 3px solid #8FB4FF; outline-offset: -3px; border-radius: 28px; }
+  details::details-content { block-size: 0; overflow: hidden; transition: block-size .45s var(--ease), content-visibility .45s allow-discrete; }
+  details[open]::details-content { block-size: auto; }
+  :root { interpolate-size: allow-keywords; }
+  .everything { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; padding: 6px 30px 34px; }
+  .everything h4 { font-weight: 800; font-size: 17px; }
+  .everything p { margin: 4px 0 0; font-size: 16px; color: var(--ink-soft); line-height: 1.5; }
 
   /* FAQ */
-  .faq { max-width: 760px; margin: 0 auto; display: grid; gap: 18px; }
-  .faq details { background: var(--white); color: var(--ink); box-shadow: var(--press); transition: translate .15s, box-shadow .15s; }
-  .faq summary:hover { color: var(--coral-dark); }
-  .faq summary { cursor: pointer; list-style: none; padding: 24px 64px 24px 28px; position: relative; font-weight: 600; font-size: 19px; }
+  .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1000px; margin: 0 auto; align-items: start; }
+  .faq details { background: var(--mist); border-radius: 24px; }
+  .faq summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 24px; font-weight: 800; font-size: 18px; line-height: 1.35; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: ""; position: absolute; right: 28px; top: 50%; width: 14px; height: 14px; translate: 0 -70%; border: solid var(--coral); border-width: 0 4px 4px 0; rotate: 45deg; transition: rotate .2s, translate .2s; }
-  .faq details[open] summary::after { rotate: 225deg; translate: 0 -20%; }
-  .faq .a { padding: 0 28px 26px; color: var(--muted); font-size: 17px; }
+  .faq summary .chev { width: 30px; height: 30px; background: var(--white); }
+  .faq summary:focus-visible { border-radius: 24px; }
+  .faq .a { padding: 0 24px 24px; font-size: 16px; color: var(--ink-soft); line-height: 1.55; }
 
-  /* FINAL */
-  .final { text-align: center; position: relative; overflow: hidden; }
-  .final .btns { justify-content: center; margin-top: 38px; }
-  .final .row { display: flex; justify-content: center; gap: 20px; margin-top: 70px; }
-  .final .row .phone { width: 190px; }
-  .final .row .phone:nth-child(odd) { rotate: -4deg; } .final .row .phone:nth-child(even) { rotate: 4deg; translate: 0 22px; }
+  /* WAITLIST: the last section */
+  .join .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 64px; align-items: center; }
+  .join h2 { font-size: clamp(30px, 4vw, 44px); }
+  .join .sub { margin: 18px 0 0; font-size: 19px; color: var(--ink-soft); max-width: 34ch; }
+  .join .family { width: min(380px, 80%); margin: 36px 0 0; }
+  .waitlist { background: var(--white); border-radius: 32px; padding: 36px 32px 32px; }
+  .waitlist .note { font-size: 17px; line-height: 1.5; margin: 0 0 26px; }
+  .field { display: block; font-weight: 800; font-size: 15px; margin: 0 0 10px; }
+  .waitlist input[type=email] { width: 100%; font: inherit; font-size: 17px; color: var(--ink); padding: 15px 18px; border-radius: 16px; border: 2px solid var(--line);
+    background: var(--mist); transition: border-color .2s, background .2s; }
+  .waitlist input[type=email]:focus { outline: none; border-color: var(--ink); background: var(--white); }
+  .waitlist fieldset { border: 0; padding: 0; margin: 24px 0 0; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; border-radius: 18px; background: var(--mist); }
+  .seg label { position: relative; cursor: pointer; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg span { display: block; text-align: center; font-weight: 800; font-size: 16px; line-height: 1; padding: 14px 10px 13px; border-radius: 13px; color: var(--ink-soft); transition: background .25s, color .25s; }
+  .seg input:checked + span { background: var(--ink); color: var(--white); }
+  .seg input:focus-visible + span { outline: 3px solid #8FB4FF; outline-offset: 2px; }
+  .waitlist .btn { width: 100%; margin: 28px 0 0; }
+  .waitlist .btn:disabled { opacity: .6; cursor: default; translate: none; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .msg { margin: 16px 0 0; font-weight: 700; font-size: 15px; min-height: 1.5em; opacity: 0; transition: opacity .3s; }
+  .msg.show { opacity: 1; }
+  .msg.err { color: #C0392B; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-  footer { background: var(--coral-dark); padding: 40px 0 46px; font-size: 15px; }
-  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
-  footer .links { display: flex; gap: 20px; }
-  footer .links a { text-decoration: none; font-weight: 600; }
-  footer .tm { margin-top: 8px; font-size: 13px; opacity: .8; max-width: 62ch; }
+  footer { padding: 40px 0 48px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-soft); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; }
+  footer .tm { margin: 8px 0 0; font-size: 13px; max-width: 62ch; }
+  footer .links { display: flex; gap: 24px; }
+  footer a { font-weight: 700; color: var(--ink); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
 
-  /* WALKERS: little Kinbits strolling along the bottom of a few sections. They stay in the empty space under the content. */
-  section, header { position: relative; }
-  section { overflow-x: clip; }
-  .ground { position: absolute; left: 0; right: 0; bottom: 16px; height: 190px; pointer-events: none; z-index: 3; }
-  .ground.phone-only { display: none; }
-  .walker { position: absolute; bottom: 0; left: 0; height: 160px; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
-  .walker .sprite { display: block; height: 160px; background-repeat: no-repeat; background-size: auto 160px; transition: translate .22s cubic-bezier(.3,1.6,.5,1); }
-  .walker.left .sprite { scale: -1 1; }
-  .walker.hop .sprite { translate: 0 -28px; }
-  .walker::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -3px; height: 9px; border-radius: 50%; background: rgba(43,36,32,.22); filter: blur(2px); z-index: -1; }
-  .walker .pix.heart { left: 50%; top: -30px; --s: 1.1; margin-left: -10px; opacity: 0; }
-  .walker.love .pix.heart { animation: love 1.1s ease-out; }
-  @keyframes love { 0% { opacity: 0; translate: 0 6px; } 20% { opacity: 1; } 100% { opacity: 0; translate: 0 -26px; } }
+  /* fade blocks in the first time they scroll into view */
+  .js .reveal { opacity: 0; translate: 0 24px; transition: opacity .8s var(--ease), translate .8s var(--ease); }
+  .js .reveal.in { opacity: 1; translate: 0 0; }
 
-  /* fade in on scroll, once */
-  .js .reveal:not(.in) { opacity: 0; translate: 0 26px; }
-  .reveal { transition: opacity .7s ease, translate .7s cubic-bezier(.2,.7,.2,1); }
-  @media (prefers-reduced-motion: reduce) { .js .reveal:not(.in) { opacity: 1; translate: none; } .reveal { transition: none; } .box::after { transition: none; } }
-
-  @media (max-width: 860px) {
-    /* on phones only one Kinbit walks by, at the top, so the screen doesn't get busy */
-    .ground.desk-only { display: none; }
-    .hero { min-height: 0; display: block; }
-    .ground.phone-only { display: block; position: relative; bottom: auto; height: 140px; margin: 0 -20px; }
-    .ground { height: 140px; bottom: 8px; } .walker, .walker .sprite { height: 124px; } .walker .sprite { background-size: auto 124px; }
-    section, section:has(> .ground) { padding: 110px 0; }
-    .hero { padding: 40px 0 110px; }
-    .hero .wrap { grid-template-columns: 1fr; text-align: center; gap: 30px; }
-    .hero .logo { margin-inline: auto; }
-    .hero .lead { margin-inline: auto; }
-    .hero .btns { justify-content: center; }
-    .fan { height: 420px; }
-    .fan .phone { width: 170px; } .fan .phone:nth-child(2) { width: 186px; }
-    .head { margin-bottom: 50px; }
-    .life::before { left: 32px; }
-    .stop, .stop:nth-child(even) { grid-template-columns: 64px 1fr; gap: 0 20px; margin-bottom: 60px; }
-    .stop .lv, .stop:nth-child(odd) .lv, .stop:nth-child(even) .lv { grid-column: 1; grid-row: 1 / span 2; align-self: start; }
-    .stop .card, .stop:nth-child(odd) .card, .stop:nth-child(even) .card { grid-column: 2; grid-row: 1; justify-self: stretch; max-width: none; padding: 26px 22px; }
-    .stop .phone, .stop:nth-child(odd) .phone, .stop:nth-child(even) .phone { grid-column: 2; grid-row: 2; justify-self: center; width: min(230px, 64vw); margin-top: 26px; }
-    .list { padding: 34px 26px; }
-    .list ul { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 20px; }
-    .head h2 { font-size: 26px; }
-    .btns { flex-direction: column; align-items: center; gap: 16px; }
-    /* the pixel font is too wide for phone screens, so the store pills use the rounded font there */
-    .btn { font-family: Fredoka, system-ui, sans-serif; font-weight: 600; font-size: 16px; padding: 14px 20px 13px; }
-    .final .row .phone { width: 120px; } .final .row .phone:nth-child(n+4) { display: none; }
-    .js .reveal:not(.in) { translate: 0 14px; }
+  @media (max-width: 900px) {
+    section { padding: 88px 0; }
+    .hero { padding: 40px 0 88px; }
+    .hero .wrap, .join .wrap { grid-template-columns: 1fr; gap: 44px; }
+    .hero .copy { text-align: center; }
+    .show { max-width: 640px; margin: 0 auto; width: 100%; padding: 0 0 8% 14%; }
+    .show .scene { border-radius: 32px; }
+    .hero-phone { width: 30%; }
+    .reel { justify-content: flex-start; }
+    .reel figure { flex-basis: 220px; }
+    .hero .logo { margin: 24px auto 28px; }
+    .hero .lead { margin-left: auto; margin-right: auto; }
+    .panel { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+    .join .copy { text-align: center; }
+    .join .sub { margin-left: auto; margin-right: auto; }
+    .join .family { margin: 32px auto 0; }
+    .faq, .everything { grid-template-columns: 1fr; }
+    nav .links a.hide-sm { display: none; }
   }
-  @media (max-width: 380px) { .btn { font-size: 15px; padding: 13px 16px 12px; } .tag { font-size: 12px; padding: 8px 12px 7px; } .hero h1 { font-size: 18px; } .fan .phone { width: 140px; } .fan .phone:nth-child(2) { width: 154px; } .fan { height: 350px; } }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 16px; }
+    .hero .scene, .art { border-radius: 26px; }
+    .tabs { gap: 8px; }
+    .tab { font-size: 15px; padding: 12px 16px 11px; }
+    details.all summary { padding: 22px 22px; font-size: 17px; }
+    .everything { padding: 4px 22px 28px; gap: 22px; }
+    .waitlist { padding: 30px 22px 26px; border-radius: 28px; }
+    .looks { grid-template-columns: repeat(4, 1fr); }
+    .look { width: auto; height: auto; aspect-ratio: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  }
 </style>
-<script>document.documentElement.classList.add("js"); setTimeout(() => { if (!window.revealReady) document.documentElement.classList.remove("js"); }, 3000);</script>
 </head>
 <body>
+<script>document.documentElement.classList.add("js");</script>
 
-<nav><div class="wrap">
-  <a href="#top" aria-label="Kinbits, back to top"><img src="img/logo.png" alt="Kinbits"></a>
-  <div class="links px">
-    <a class="hide-sm" href="#life">Features</a>
+<nav aria-label="Kinbits"><div class="wrap">
+  <a class="brand" href="#top" aria-label="Kinbits, back to top"><img src="img/logo-navy.png" alt="Kinbits"></a>
+  <div class="links">
+    <a class="hide-sm" href="#features">Features</a>
     <a class="hide-sm" href="#faq">FAQ</a>
-    <a class="get" href="#get">Get it</a>
+    <a class="btn" href="#waitlist">Join the waitlist</a>
   </div>
 </div></nav>
 
 <header class="hero" id="top">
-  <span class="pix heart float" style="left:47%;top:13%;--s:1.4" aria-hidden="true"></span>
-  <span class="pix spark float" style="left:44%;top:8%;--s:1.6" aria-hidden="true"></span>
-  <span class="pix spark float" style="right:5%;top:78%;--s:1.3" aria-hidden="true"></span>
-  <span class="pix heart float" style="right:9%;top:10%;--s:1.1" aria-hidden="true"></span>
   <div class="wrap">
-    <div>
-      <a class="maker" href="../">Made by bunsoootchi<img src="../logo-face.webp" alt=""></a>
-      <img class="logo" src="img/logo.png" alt="Kinbits">
-      <h1 class="px">Hatch, raise, and grow a family</h1>
-      <p class="lead">Hatch a tiny pet, dress it up, go on trips, get married, and grow a family.</p>
-      <div class="btns">
-        <span class="btn">Coming soon to the App Store</span>
-        <span class="btn">Coming soon to Google Play</span>
-      </div>
-      <p class="soon">Coming soon to iPhone and Android.</p>
+    <div class="copy">
+      <a class="maker rise" href="../">Made by bunsoootchi<img src="../logo-face.webp" alt=""></a>
+      <img class="logo rise" style="--d:.06s" src="img/logo-navy.png" alt="Kinbits" width="1000" height="170">
+      <h1 class="pixel rise" style="--d:.12s">Raise a tiny family</h1>
+      <p class="lead rise" style="--d:.18s">Hatch a Kinbit, dress it up, take it on day trips, and watch it start a family of its own.</p>
+      <p class="when rise" style="--d:.24s">Coming soon to iOS and Android</p>
+      <a class="btn rise" style="--d:.3s" id="hero-btn" href="#waitlist">Join the waitlist</a>
     </div>
-    <div class="ground phone-only" data-walkers="mochi-purple baby-orb-pink"></div>
-    <div class="fan" aria-hidden="true">
-      <div class="phone"><img src="img/hatch.webp" alt=""></div>
-      <div class="phone"><img src="img/home.webp" alt=""></div>
-      <div class="phone"><img src="img/twins.webp" alt=""></div>
+    <div class="show rise" style="--d:.1s">
+      <div class="scene"><img src="img/room-home.webp" alt="A yellow Kinbit at home in its sunny room, with a red sofa, a pool, and a garden outside" width="1320" height="1056"></div>
+      <div class="phone hero-phone"><video src="img/clip-homes.mp4" poster="img/clip-homes.webp" muted loop playsinline autoplay preload="auto" aria-label="The game playing on a phone: a Kinbit at home, then in a treehouse, an arcade, a home under the sea, a space station, a greenhouse, a playground, and a workshop"></video></div>
     </div>
   </div>
-  <div class="ground desk-only" data-walkers="mochi-purple baby-orb-pink"></div>
 </header>
 
-<section id="life"><div class="wrap">
-  <div class="head">
-    <span class="tag reveal">Watch your Kinbit grow up</span>
-    <h2 class="reveal">From a tiny egg to a big family</h2>
-    <p class="reveal">Your Kinbit lives in its own little 3D home. Even when the app is closed, its day keeps going.</p>
-  </div>
-  <div class="life">
-    <div class="stop">
-      <div class="phone reveal"><img src="img/hatch.webp" alt="A new Kinbit just hatched, with a heart and sparkles over its head"></div>
-      <span class="lv reveal">1</span>
-      <div class="card reveal"><h3>Hatch your own Kinbit</h3><p>Hatch an egg and give your Kinbit a name. Every one has its own look and personality.</p></div>
-    </div>
-    <div class="stop">
-      <div class="phone reveal"><img src="img/care.webp" alt="A Kinbit drinking its milk"></div>
-      <span class="lv reveal">2</span>
-      <div class="card reveal"><h3>Feed it and watch it grow</h3><p>Feed it, wash it, and play with it every day, from a tiny egg all the way to a grown-up.</p>
-        <div class="meter" aria-hidden="true"><i style="--c:var(--hunger)"></i><i style="--c:var(--energy)"></i><i style="--c:var(--joy)"></i><i style="--c:var(--hygiene)"></i></div></div>
-    </div>
-    <div class="stop">
-      <div class="phone reveal"><img src="img/trip.webp" alt="Two Kinbits on a day trip to the beach"></div>
-      <span class="lv reveal">3</span>
-      <div class="card reveal"><h3>Dress it up and go on day trips</h3><p>Pick hats and glasses, then visit the Beach, the Funfair, Snow Hill, and the Museum. Make friends with the locals who live there. Each local has a head you won't find anywhere else.</p></div>
-    </div>
-    <div class="stop">
-      <div class="phone reveal"><img src="img/wedding.webp" alt="Two Kinbits getting married on a rainbow stage"></div>
-      <span class="lv reveal">4</span>
-      <div class="card reveal"><h3>Fall in love and get married</h3><p>When it grows up, buy a ring and propose.</p></div>
-    </div>
-    <div class="stop">
-      <div class="phone reveal"><img src="img/twins.webp" alt="Twin babies snuggling at home"></div>
-      <span class="lv reveal">5</span>
-      <div class="card reveal"><h3>Babies take after both parents</h3><p>Every baby is one of a kind. It can even get a local's special head, and sometimes there are twins!</p></div>
-    </div>
-    <div class="stop">
-      <div class="phone reveal"><img src="img/lineage.webp" alt="The Lineage page with three generations and your records"></div>
-      <span class="lv reveal">6</span>
-      <div class="card reveal"><h3>Grow a family across generations</h3><p>Watch your family grow, with grandparents coming home to visit. The Lineage page keeps every generation, plus your records.</p></div>
-    </div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head">
-    <span class="tag reveal">Here's what else you can do</span>
-    <h2 class="reveal">Games, school, shopping, and more</h2>
-  </div>
-  <div class="list reveal"><ul>
-    <li><span class="box"></span>Send babies to school to grow their talents</li>
-    <li><span class="box"></span>Play mini games and the VR game to earn coins</li>
-    <li><span class="box"></span>Buy new rooms, toys, and special treats in the shop</li>
-    <li><span class="box"></span>Collect badges and every look in the Album</li>
-    <li><span class="box"></span>Meet other Kinbits nearby with Bluetooth</li>
-    <li><span class="box"></span>Take perfect care of it, and its baby may be Blessed, with a shimmering rainbow skin</li>
-  </ul></div>
-</div><div class="ground desk-only" data-walkers="retro-tv-blue" data-from="right"></div></section>
-
-<section id="faq"><div class="wrap">
-  <div class="head">
-    <span class="tag reveal">Here are some answers</span>
-    <h2 class="reveal">Questions you might have</h2>
-  </div>
-  <div class="faq">
-    <details class="reveal" open><summary>Does it need the internet or an account?</summary><div class="a">No. Kinbits works offline, there's no account, and your save stays on your phone.</div></details>
-    <details class="reveal"><summary>What does Bluetooth do?</summary><div class="a">It lets your Kinbit meet other Kinbits close by. You only use it if you want to.</div></details>
-    <details class="reveal"><summary>Will it bother me with notifications?</summary><div class="a">Only if you turn them on. Then your Kinbit calls you when something big happens, like a hatch, a visitor, or a proposal.</div></details>
-    <details class="reveal"><summary>When can I get it?</summary><div class="a">Soon! It's coming to the App Store and Google Play.</div></details>
-  </div>
-</div><div class="ground desk-only" data-walkers="headphones-teal" data-from="right"></div></section>
-
-<section class="final" id="get">
-  <span class="pix heart float" style="left:8%;top:60px;--s:1.2" aria-hidden="true"></span>
-  <span class="pix spark float" style="right:9%;top:80px;--s:1.5" aria-hidden="true"></span>
+<section class="motion" id="motion">
   <div class="wrap">
-    <div class="head" style="margin-bottom:0">
-      <span class="tag reveal">Kinbits is coming soon</span>
-      <h2 class="reveal">Hatch your own Kinbit and raise a family across generations</h2>
+    <div class="head reveal"><h2 class="pixel">Kinbits come alive in stop motion</h2><p>Real moments, straight from the game.</p></div>
+  </div>
+  <div class="reel" tabindex="0" aria-label="Game clips">
+    <figure class="reveal"><div class="phone"><video data-src="img/clip-home.mp4" poster="img/clip-home.webp" muted loop playsinline preload="none" aria-label="A Kinbit going about its day at home"></video></div><figcaption>A day at home with your Kinbit</figcaption></figure>
+    <figure class="reveal"><div class="phone"><video data-src="img/clip-beach.mp4" poster="img/clip-beach.webp" muted loop playsinline preload="none" aria-label="A Kinbit on a day trip to the beach, meeting the locals"></video></div><figcaption>Day trips to the beach</figcaption></figure>
+    <figure class="reveal"><div class="phone"><video data-src="img/clip-funfair.mp4" poster="img/clip-funfair.webp" muted loop playsinline preload="none" aria-label="A Kinbit at the funfair with new friends"></video></div><figcaption>New friends at the funfair</figcaption></figure>
+    <figure class="reveal"><div class="phone"><video data-src="img/clip-evening.mp4" poster="img/clip-evening.webp" muted loop playsinline preload="none" aria-label="A Kinbit at home in the evening, with the lamps on"></video></div><figcaption>Cozy evenings at home</figcaption></figure>
+  </div>
+</section>
+
+<section class="mist" id="features">
+  <div class="wrap">
+    <div class="head reveal"><h2 class="pixel">What you'll do in Kinbits</h2></div>
+    <div class="tabs reveal" role="tablist" aria-label="Kinbits features">
+      <button class="tab" role="tab" aria-controls="p-homes" id="t-homes">Homes</button>
+      <button class="tab" role="tab" aria-controls="p-trips" id="t-trips">Day trips</button>
+      <button class="tab" role="tab" aria-controls="p-care" id="t-care">Care</button>
+      <button class="tab" role="tab" aria-controls="p-babies" id="t-babies">Babies</button>
+      <button class="tab" role="tab" aria-controls="p-dress" id="t-dress">Dress up</button>
+      <button class="tab" role="tab" aria-controls="p-marry" id="t-marry">Marriage</button>
+      <button class="tab" role="tab" aria-controls="p-blessed" id="t-blessed">Blessed</button>
     </div>
-    <div class="btns reveal">
-      <span class="btn">Coming soon to the App Store</span>
-      <span class="btn">Coming soon to Google Play</span>
+
+    <div class="stage reveal">
+      <div class="panel" id="p-babies" role="tabpanel" aria-labelledby="t-babies">
+        <div class="art"><div class="mixer">
+          <div class="kin"><img src="img/hero-12-l.webp" alt="Mum: a yellow Kinbit with antennas" loading="lazy"></div>
+          <span class="op" aria-hidden="true">+</span>
+          <div class="kin dadpick" style="--bd:-1.2s"><img src="img/hero-19-r.webp" alt="Dad: a teal Kinbit with pink headphones" loading="lazy"></div>
+          <span class="op" aria-hidden="true">=</span>
+          <div class="kin child" style="--bd:-2.1s"><img src="img/kid-12x19-6.webp" alt="Their baby" loading="lazy"></div>
+        </div></div>
+        <div class="copy">
+          <h3 class="pixel">Kinbit babies take after both parents</h3>
+          <p>Every baby gets a mix of its mum's and dad's looks, so each one is one of a kind.</p>
+          <div class="picks" role="group" aria-label="Pick a dad, then mix a baby">
+            <button class="pick" data-dad="19" aria-pressed="true">Headphones dad</button>
+            <button class="pick" data-dad="03" aria-pressed="false">Bear dad</button>
+            <button class="pick go" data-mix><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2v3.5H10"/></svg>Mix a baby</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p-homes" role="tabpanel" aria-labelledby="t-homes">
+        <div class="art"><img class="fill" data-show="homes" src="img/room-treehouse.webp" alt="A Kinbit in the treehouse home" loading="lazy"></div>
+        <div class="copy">
+          <h3 class="pixel">Move into a treehouse, an arcade, or a home under the sea</h3>
+          <p>Buy new homes for your Kinbits in the Shop, from a space station to a greenhouse, and more.</p>
+          <div class="picks" role="group" aria-label="Pick a home" data-for="homes">
+            <button class="pick" aria-pressed="true" data-img="room-treehouse" data-alt="A Kinbit in the treehouse home">Treehouse</button>
+            <button class="pick" aria-pressed="false" data-img="room-arcade" data-alt="A Kinbit in the arcade home">Arcade</button>
+            <button class="pick" aria-pressed="false" data-img="room-underwater" data-alt="A Kinbit in the home under the sea">Under the sea</button>
+            <button class="pick" aria-pressed="false" data-img="room-space-station" data-alt="A Kinbit in the space station home">Space station</button>
+            <button class="pick" aria-pressed="false" data-img="room-greenhouse" data-alt="A Kinbit in the greenhouse home">Greenhouse</button>
+            <button class="pick" aria-pressed="false" data-img="room-playground" data-alt="A Kinbit in the playground home">Playground</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p-trips" role="tabpanel" aria-labelledby="t-trips">
+        <div class="art"><img class="fill" data-show="trips" src="img/place-beach.webp" alt="Kinbits meeting a local at the beach" loading="lazy"></div>
+        <div class="copy">
+          <h3 class="pixel">Take your Kinbit to the beach, the funfair, and more</h3>
+          <p>Make friends with the locals who live there. Marry one, and their special head joins your family.</p>
+          <div class="picks" role="group" aria-label="Pick a place" data-for="trips">
+            <button class="pick" aria-pressed="true" data-img="place-beach" data-alt="Kinbits meeting a local at the beach">Beach</button>
+            <button class="pick" aria-pressed="false" data-img="place-funfair" data-alt="Kinbits meeting a local at the funfair">Funfair</button>
+            <button class="pick" aria-pressed="false" data-img="place-museum" data-alt="Kinbits meeting a local at the museum">Museum</button>
+            <button class="pick" aria-pressed="false" data-img="place-snowhill" data-alt="Kinbits meeting a local on Snow Hill">Snow Hill</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p-dress" role="tabpanel" aria-labelledby="t-dress">
+        <div class="art"><div class="closet"><div class="kin model"><img src="img/wear-party.webp" alt="A Kinbit wearing a party hat" loading="lazy"></div></div></div>
+        <div class="copy">
+          <h3 class="pixel">Dress your Kinbit in hats, glasses, wings, and capes</h3>
+          <p>Find more looks in the Shop, and watch it show them off.</p>
+          <div class="looks" role="group" aria-label="Try on a look">
+            <button class="look" aria-pressed="true" data-look="party" aria-label="Party hat"><img src="img/wear-party.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="frog" aria-label="Frog hat"><img src="img/wear-frog.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="tophat" aria-label="Top hat"><img src="img/wear-tophat.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="pirate" aria-label="Pirate hat and sunglasses"><img src="img/wear-pirate.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="flowers" aria-label="Flower crown and heart glasses"><img src="img/wear-flowers.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="explorer" aria-label="Explorer hat"><img src="img/wear-explorer.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="mouseears" aria-label="Mouse ears"><img src="img/wear-mouseears.webp" alt="" loading="lazy"></button>
+            <button class="look" aria-pressed="false" data-look="snorkel" aria-label="Snorkel mask"><img src="img/wear-snorkel.webp" alt="" loading="lazy"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p-marry" role="tabpanel" aria-labelledby="t-marry">
+        <div class="art"><div class="duo"><div class="kin couple"><img src="img/couple-12x19.webp" alt="Two Kinbits holding hands" loading="lazy"></div></div></div>
+        <div class="copy">
+          <h3 class="pixel">Propose to the Kinbit you love</h3>
+          <p>Buy a ring in the Shop, pop the question, and start a family of your own.</p>
+        </div>
+      </div>
+
+      <div class="panel" id="p-care" role="tabpanel" aria-labelledby="t-care">
+        <div class="art"><div class="phones">
+          <img src="img/ui-care.webp" alt="A Kinbit at home, with its care buttons" loading="lazy">
+          <img src="img/ui-feed.webp" alt="Picking a snack to feed a Kinbit" loading="lazy">
+        </div></div>
+        <div class="copy">
+          <h3 class="pixel">Feed, wash, and play with your Kinbit every day</h3>
+          <p>It keeps living while the app is closed, and catches up on everything when you're back.</p>
+        </div>
+      </div>
+
+      <div class="panel" id="p-blessed" role="tabpanel" aria-labelledby="t-blessed">
+        <div class="art night"><span class="glow" aria-hidden="true"></span><div class="duo">
+          <div class="kin bl"><img src="img/blessed-02.webp" alt="A shimmering Blessed Kinbit with bunny ears" loading="lazy"></div>
+          <div class="kin bl" style="--bd:-1.6s"><img src="img/blessed-06.webp" alt="A shimmering Blessed Kinbit with a rainbow screen" loading="lazy"></div>
+        </div></div>
+        <div class="copy">
+          <h3 class="pixel">Raise a rare, shimmering Blessed Kinbit</h3>
+          <p>Take perfect care of it, and its baby may be born shimmering.</p>
+        </div>
+      </div>
     </div>
-    <div class="row reveal" aria-hidden="true">
-      <div class="phone"><img src="img/love.webp" alt=""></div>
-      <div class="phone"><img src="img/vr.webp" alt=""></div>
-      <div class="phone"><img src="img/elder.webp" alt=""></div>
-      <div class="phone"><img src="img/home.webp" alt=""></div>
-      <div class="phone"><img src="img/hatch.webp" alt=""></div>
+
+    <details class="all reveal">
+      <summary>See everything else you can do in Kinbits<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary>
+      <div class="everything">
+        <div><h4>Play mini games for coins</h4><p>Win coins for your Kinbit in games like Snack Stack, Hop Up, Paper Plane, and Dance Party.</p></div>
+        <div><h4>Run in the VR headset</h4><p>Your Kinbit's VR headset at home has an endless runner, and you keep every coin you grab.</p></div>
+        <div><h4>Send grown-up Kinbits to work</h4><p>Grown-ups can work to earn coins for the family.</p></div>
+        <div><h4>Shop for homes, toys, and treats</h4><p>Find clothes, halos, and capes for your Kinbit too, plus special treats like potions, a Big Meal, and rings.</p></div>
+        <div><h4>Meet Kinbits from nearby players</h4><p>While yours is outside, it meets theirs over Bluetooth, and they come to visit later.</p></div>
+        <div><h4>Invite friends' Kinbits over</h4><p>Use Invite Nearby to bring them over to your place.</p></div>
+        <div><h4>Get surprise Kinbit twins</h4><p>Sometimes you get two babies at once. You name both, they share their bars, and they go everywhere together.</p></div>
+        <div><h4>Live with the whole Kinbit family</h4><p>From the second generation, the parents live with your egg and baby, then move out once it grows up. Grandparents drop by to visit too.</p></div>
+        <div><h4>Look back on every generation</h4><p>Lineage keeps your whole Kinbit family tree, and a records card shows up when a family line ends.</p></div>
+        <div><h4>Fill your Collection</h4><p>Keep your badges and every Kinbit look you've found in one place.</p></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="head reveal"><h2 class="pixel">Questions you might have</h2></div>
+    <div class="faq">
+      <details class="reveal"><summary>Does Kinbits need the internet or an account?<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary><div class="a">No. It plays offline, there's no account, and your save stays on your phone. Even meeting nearby Kinbits goes straight from phone to phone.</div></details>
+      <details class="reveal"><summary>What does Bluetooth do?<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary><div class="a">It lets your Kinbit meet other players close by. It's up to you: you can turn Nearby off in Settings anytime.</div></details>
+      <details class="reveal"><summary>Will Kinbits send me notifications?<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary><div class="a">Only if you turn them on. Then you'll hear about the big moments, like a hatch, a visitor, or a proposal.</div></details>
+      <details class="reveal"><summary>How much will Kinbits cost?<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary><div class="a">US$2.99 on both the App Store and Google Play.</div></details>
+      <details class="reveal"><summary>When can I get Kinbits?<span class="chev" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></span></summary><div class="a">Really soon! It's coming to iOS and Android. <a href="#waitlist">Join the waitlist</a>, and I'll email you the day it's out.</div></details>
     </div>
+  </div>
+</section>
+
+<section class="mist join" id="join">
+  <div class="wrap">
+    <div class="copy reveal">
+      <h2 class="pixel">Be the first to hatch a Kinbit</h2>
+      <p class="sub">It's coming soon to iOS and Android. Leave your email, and I'll let you know the day it's out.</p>
+      <div class="kin family"><img src="img/couple-12x19.webp" alt="" loading="lazy"></div>
+    </div>
+    <form class="waitlist reveal" id="waitlist" novalidate>
+      <p class="note">You might get picked to test Kinbits early, and if you do, you get the game for free!</p>
+      <label class="field" for="wl-email">Your email</label>
+      <input id="wl-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+      <fieldset>
+        <legend class="field">Your phone</legend>
+        <div class="seg">
+          <label><input type="radio" name="phone" value="Android" required><span>Android</span></label>
+          <label><input type="radio" name="phone" value="iPhone"><span>iPhone</span></label>
+        </div>
+      </fieldset>
+      <!-- honeypot: hidden from people; bots that fill it get ignored -->
+      <div class="hp" aria-hidden="true"><label for="wl-web">Leave this empty</label><input id="wl-web" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
+      <button class="btn" type="submit">Join the waitlist</button>
+      <p class="msg" role="status" aria-live="polite"></p>
+    </form>
   </div>
 </section>
 
 <footer><div class="wrap">
   <div>
     <span>Made with love for all, by <a href="https://bunsoootchi.github.io/">bunsoootchi</a>.</span>
-    <p class="tm">Apple and iPhone are trademarks of Apple Inc. App Store is a service mark of Apple Inc. Google Play and Android are trademarks of Google LLC. Bluetooth is a trademark of Bluetooth SIG, Inc.</p>
+    <p class="tm">iOS is a trademark or registered trademark of Cisco in the U.S. and other countries, used under license. Apple and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. Bluetooth is a trademark of Bluetooth SIG, Inc.</p>
   </div>
   <div class="links">
     <a href="privacy.html">Privacy policy</a>
@@ -345,86 +487,110 @@
 </div></footer>
 
 <script>
-  // Fade blocks in the first time they scroll into view, a little apart.
-  window.revealReady = true;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Nav: slides in once the hero's button has scrolled away.
+  const nav = document.querySelector("nav");
+  new IntersectionObserver(([e]) => nav.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(document.getElementById("hero-btn"));
+
+  // Fade blocks in the first time they scroll into view.
   const revealer = new IntersectionObserver(entries => {
     entries.filter(e => e.isIntersecting).forEach((e, i) => {
-      e.target.style.transitionDelay = Math.min(i * 80, 400) + "ms";
+      e.target.style.transitionDelay = Math.min(i * 80, 320) + "ms";
       e.target.classList.add("in");
       revealer.unobserve(e.target);
     });
-  }, { threshold: .12 });
+  }, { threshold: .1 });
   document.querySelectorAll(".reveal").forEach(el => revealer.observe(el));
 
-  // Walkers: each one strolls back and forth, stops now and then for a happy hop, and hops when tapped.
-  // Sheets hold 8 walking frames, then the hop frame, side by side, with an empty gap between frames.
-  // Sizes are the sheet's own pixels (320px tall); everything is scaled from them, so frames never drift.
-  const SHEET_H = 320, GAP = 24;
-  const FRAME_W = { "mochi-purple": 214, "retro-tv-blue": 214, "headphones-teal": 177, "baby-orb-pink": 249 };
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  document.querySelectorAll(".ground").forEach(ground => {
-    const walkers = ground.dataset.walkers.split(" ").map((name, i) => {
-      const el = document.createElement("button");
-      el.type = "button"; el.className = "walker";
-      el.setAttribute("aria-label", "Tap this Kinbit to make it hop");
-      el.innerHTML = '<span class="sprite" style="background-image:url(img/walk-' + name + '.webp)"></span><span class="pix heart" aria-hidden="true"></span>';
-      ground.appendChild(el);
-      // the second one in a group is the baby, trotting a little behind its parent
-      const w = { el, sprite: el.firstChild, name, i, x: 0, dir: 1, frame: 0, t: 0, rest: 3 + Math.random() * 5, hopUntil: 0 };
-      el.addEventListener("click", () => hop(w, performance.now()));
-      return w;
-    });
-    function size(w) { const k = (w.sprite.offsetHeight || 160) / SHEET_H; return { fw: FRAME_W[w.name] * k, step: (FRAME_W[w.name] + GAP) * k }; }
-    function draw(w) {
-      const { fw, step } = size(w);
-      w.sprite.style.width = fw + "px";
-      const f = w.hopUntil > performance.now() ? 8 : w.frame;
-      w.sprite.style.backgroundPosition = (-f * step) + "px 0";
-      w.el.style.translate = Math.round(w.x) + "px 0";
-      w.el.classList.toggle("left", w.dir < 0);
-    }
-    function hop(w, now) {
-      w.hopUntil = now + 700;
-      w.el.classList.add("hop", "love");
-      setTimeout(() => w.el.classList.remove("hop"), 450);
-      setTimeout(() => w.el.classList.remove("love"), 1100);
-      draw(w);
-    }
+  // Game clips: load and play only while on screen, pause when scrolled away.
+  const vids = new IntersectionObserver(entries => entries.forEach(e => {
+    const v = e.target;
+    if (e.isIntersecting) { if (v.dataset.src && !v.src) v.src = v.dataset.src; if (!still) v.play().catch(() => {}); }
+    else v.pause();
+  }), { threshold: .25 });
+  document.querySelectorAll("video").forEach(v => vids.observe(v));
 
-    // start already on screen, so they're there as soon as you see the section
-    const fromRight = ground.dataset.from === "right";
-    const start = ground.offsetWidth * (fromRight ? .68 + Math.random() * .2 : .12 + Math.random() * .2);
-    walkers.forEach(w => { w.dir = fromRight ? -1 : 1; w.x = start - w.dir * w.i * 170; draw(w); });
-    if (still) return;
-    let on = false, last = 0;
-    new IntersectionObserver(e => { on = e[0].isIntersecting; if (on) { last = performance.now(); requestAnimationFrame(step); } }).observe(ground);
-    function step(now) {
-      if (!on) return;
-      const dt = Math.min(.05, (now - last) / 1000); last = now;
-      const width = ground.offsetWidth;
-      walkers.forEach(w => {
-        if (w.hopUntil > now) { draw(w); return; }
-        w.rest -= dt;
-        if (w.rest <= 0) { hop(w, now); w.rest = 6 + Math.random() * 7; return; }
-        w.x += w.dir * 46 * dt;
-        w.t += dt;
-        if (w.t > .095) { w.t = 0; w.frame = (w.frame + 1) % 8; }
-        // turn around once fully off the edge, so they come back the other way
-        if (w.dir > 0 && w.x > width + 40) w.dir = -1;
-        if (w.dir < 0 && w.x < -240) w.dir = 1;
-        draw(w);
-      });
-      requestAnimationFrame(step);
-    }
+  // Tap a Kinbit and it hops.
+  function hop(k) { k.classList.add("hop"); setTimeout(() => k.classList.remove("hop"), 200); }
+  document.addEventListener("click", e => { const k = e.target.closest(".kin"); if (k) hop(k); });
+
+  // Tabs: one feature at a time.
+  const tabs = [...document.querySelectorAll(".tab")];
+  function show(i) {
+    tabs.forEach((t, j) => { const on = j === i; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).classList.toggle("on", on); });
+  }
+  tabs.forEach((t, i) => t.addEventListener("click", () => show(i)));
+  document.querySelector(".tabs").addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const i = (tabs.findIndex(t => t.getAttribute("aria-selected") === "true") + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+    show(i); tabs[i].focus(); e.preventDefault();
+  });
+  show(0);
+
+  // Homes and places: tap a name to see it.
+  document.querySelectorAll(".picks[data-for]").forEach(group => {
+    const img = document.querySelector('img[data-show="' + group.dataset.for + '"]');
+    group.querySelectorAll(".pick").forEach(b => b.addEventListener("click", () => {
+      group.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", x === b));
+      const next = new Image(); next.src = "img/" + b.dataset.img + ".webp";
+      img.classList.add("fade");
+      const swap = () => setTimeout(() => { img.src = next.src; img.alt = b.dataset.alt; img.classList.remove("fade"); }, 200);
+      next.complete ? swap() : next.onload = swap;
+    }));
   });
 
-  // The checklist ticks its boxes one by one once it's on screen.
-  const list = document.querySelector(".list");
-  new IntersectionObserver((entries, obs) => {
-    if (!entries[0].isIntersecting) return;
-    list.querySelectorAll("li").forEach((li, i) => setTimeout(() => li.classList.add("done"), 400 + i * 260));
-    obs.disconnect();
-  }, { threshold: .4 }).observe(list);
+  // Babies: pick a dad, then mix. Each pair has its own real babies from the game.
+  const KIDS = { "19": ["kid-12x19-6", "kid-12x19-1", "kid-12x19-4"], "03": ["kid-12x03-1", "kid-12x03-6", "kid-12x03-2"] };
+  let dad = "19", kid = 0;
+  const dadImg = document.querySelector(".dadpick img"), child = document.querySelector(".mixer .child"), childImg = child.querySelector("img");
+  function mix() {
+    kid = (kid + 1) % KIDS[dad].length;
+    child.classList.add("swap");
+    setTimeout(() => { childImg.src = "img/" + KIDS[dad][kid] + ".webp"; child.classList.remove("swap"); hop(child); }, 240);
+  }
+  document.querySelectorAll("[data-dad]").forEach(b => b.addEventListener("click", () => {
+    dad = b.dataset.dad; kid = -1;
+    document.querySelectorAll("[data-dad]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    dadImg.src = "img/hero-" + dad + "-r.webp"; dadImg.alt = dad === "19" ? "Dad: a teal Kinbit with pink headphones" : "Dad: a green bear Kinbit";
+    mix();
+  }));
+  document.querySelector("[data-mix]").addEventListener("click", mix);
+
+  // Dress up: tap a look to try it on.
+  const model = document.querySelector(".model"), modelImg = model.querySelector("img");
+  document.querySelectorAll(".look").forEach(h => h.addEventListener("click", () => {
+    document.querySelectorAll(".look").forEach(x => x.setAttribute("aria-pressed", x === h));
+    model.classList.add("swap");
+    setTimeout(() => { modelImg.src = "img/wear-" + h.dataset.look + ".webp"; modelImg.alt = "A Kinbit wearing a " + h.getAttribute("aria-label").toLowerCase(); model.classList.remove("swap"); }, 180);
+  }));
+
+  // Waitlist: each signup is emailed to bunsoootchi through FormSubmit, the same way as the Ohaiyou waitlist.
+  (() => {
+    const TO = "bunsoootchi@gmail.com";
+    const f = document.getElementById("waitlist"), msg = f.querySelector(".msg"), btn = f.querySelector("button");
+    const say = (t, err) => { msg.textContent = t; msg.classList.toggle("err", !!err); msg.classList.add("show"); };
+    const email = f.querySelector("#wl-email");
+    email.addEventListener("focus", () => setTimeout(() => email.scrollIntoView({ block: "center", behavior: "smooth" }), 300));   // keep the box above the phone keyboard
+    f.addEventListener("submit", async e => {
+      e.preventDefault();
+      const honey = f.querySelector("#wl-web").value, phone = f.querySelector("input[name=phone]:checked");
+      const done = "You're on the list! I'll email you when Kinbits is out.";
+      if (honey) { f.reset(); return say(done); }   // a bot filled the hidden box: act like it worked, send nothing
+      if (!email.value || !email.checkValidity()) return say("Please type a real email address.", true);
+      if (!phone) return say("Please pick Android or iPhone.", true);
+      btn.disabled = true; say("Sending...");
+      try {
+        const r = await fetch("https://formsubmit.co/ajax/" + TO, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ email: email.value, phone: phone.value, message: "This person wants to join the Kinbits waitlist and apply to test it early.",
+            _subject: "Kinbits waitlist: " + phone.value + ", " + email.value, _template: "table", _captcha: "false", _honey: honey }) });
+        if (!r.ok) throw new Error();
+        f.reset(); say(done);
+      } catch { say("That didn't go through. Please try again in a minute.", true); }
+      btn.disabled = false;
+    });
+  })();
 </script>
 </body>
 </html>
