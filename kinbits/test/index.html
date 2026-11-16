@@ -102,6 +102,12 @@
   .help p { color: var(--muted); margin: 0; }
   footer { margin-top: 44px; font-size: 15px; text-align: center; opacity: .95; }
 
+  /* phones hide the normal scroll bar, so this one always shows (gold on dark coral, like the desktop bar); hidden when the page fits */
+  .rail { position: fixed; top: 10px; bottom: 10px; right: 4px; width: 6px; background: rgba(187,60,42,.9); z-index: 9; pointer-events: none; }
+  .rail i { position: absolute; left: 0; right: 0; background: var(--gold); }
+  .rail[hidden] { display: none; }
+  @media (hover: hover) and (pointer: fine) { .rail { display: none; } }
+
   @media (max-width: 520px) {
     body { padding-top: 36px; }
     .step { grid-template-columns: 1fr; gap: 6px; padding: 24px 20px 22px; }
@@ -112,6 +118,7 @@
 </style>
 </head>
 <body>
+<div class="rail" hidden aria-hidden="true"><i></i></div>
 <main>
   <header>
     <img class="logo" src="../img/logo.png" alt="Kinbits">
@@ -167,7 +174,7 @@
             <div class="bar"><span>9:41</span><span>●●●</span></div>
             <div class="body">
               <div class="top"><span class="dot" style="background:var(--g-green)"></span><b>Google Play</b><span class="avatar"></span></div>
-              <div class="appinfo"><img src="../img/icon.png" alt=""><div><b>Kinbits</b><span>Closed test</span></div></div>
+              <div class="appinfo"><img src="face.png" alt=""><div><b>Kinbits</b><span>Closed test</span></div></div>
               <p class="muted" style="margin:0 0 16px">Become a tester to get the app before it comes out.</p>
               <span class="gbtn fill tap">BECOME A TESTER</span>
             </div>
@@ -242,7 +249,7 @@
             <div class="bar"><span>9:41</span><span>●●●</span></div>
             <div class="body">
               <div class="top"><b>Google Play</b><span class="avatar"></span></div>
-              <div class="appinfo"><img src="../img/icon.png" alt=""><div><b>Kinbits</b><span>bunsoootchi</span></div></div>
+              <div class="appinfo"><img src="face.png" alt=""><div><b>Kinbits</b><span>bunsoootchi</span></div></div>
               <p class="muted" style="margin:0 0 16px">You're a tester for this app.</p>
               <span class="gbtn play tap">Install</span>
             </div>
@@ -296,7 +303,9 @@
     <h3>Found a bug, or have an idea?</h3>
     <p>Tell me anytime, just message me. A screenshot or a screen recording helps a lot.</p>
     <h3>I have more than one Google account</h3>
-    <p>In the Play Store, tap your profile picture and switch to the account you used for the group before you redeem and install.</p>
+    <p>In the Play Store, tap your profile picture and switch to the account you used for the group before you redeem and install. If your browser keeps opening the wrong account, open the links in an incognito tab.</p>
+    <h3>The links don't work for me</h3>
+    <p>Open them in Chrome or the Play Store app, not inside Messenger or Instagram. Use a personal Gmail too: work and school accounts can't join the group.</p>
     <h3>I already have Kinbits from a download link</h3>
     <p>The Google Play version is a separate app, so you can keep both. Your Kinbits family doesn't move over, so you'll start fresh.</p>
   </section>
@@ -304,6 +313,21 @@
   <footer>Made by <a href="https://bunsoootchi.github.io">bunsoootchi</a>. Questions? Email <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a>.</footer>
 </main>
 <script>
+  // keeps the phone scroll bar in step with the page, and hides it when everything fits on one screen
+  const rail = document.querySelector('.rail'), thumb = rail.firstElementChild;
+  function place() {
+    const doc = document.documentElement, view = innerHeight, full = doc.scrollHeight;
+    rail.hidden = full <= view + 2;
+    if (rail.hidden) return;
+    const track = rail.clientHeight, h = Math.max(36, track * view / full);
+    thumb.style.height = h + 'px';
+    thumb.style.top = (track - h) * (scrollY / (full - view)) + 'px';
+  }
+  addEventListener('scroll', place, { passive: true });
+  addEventListener('resize', place);
+  addEventListener('load', place);
+  place();
+
   // Personal links: ?code=XXXX&name=Name shows that tester's code and the "I've redeemed my code" button.
   const q = new URLSearchParams(location.search);
   const code = (q.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
