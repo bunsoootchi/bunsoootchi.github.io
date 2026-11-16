@@ -27,7 +27,7 @@
   :root[data-theme="dark"] { --bg: #000000; --ink: #F2F2F2; --text: #D0D0D0; --faint: #8E8E93; --line: #232325; --card: #111112; --red: #F05A48; --on-ink: #000000; color-scheme: dark; }
   * { box-sizing: border-box; }
   /* pills and buttons always stay on one line */
-  .get, .play, .btn-ghost, .seg button, .type, .badge { white-space: nowrap; }
+  .get, .btn-ghost, .seg button, .type, .badge { white-space: nowrap; }
   html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.6 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -76,16 +76,19 @@
   .hero h1 em { color: var(--red); }
   .hero .lead { font-size: 19px; max-width: 34ch; margin: 0 0 28px; }
   .fine { font-size: 14px; color: var(--faint); margin: 16px 0 0; }
-  /* tip line: Google Play is coming soon, Ko-fi tips welcome until then */
+  /* tip line under the Google Play badge: it's out, and Ko-fi tips are welcome too */
   .tip { font-size: 15px; color: var(--faint); margin: 14px 0 0; max-width: 46ch; }
   .tip a { color: inherit; font-weight: 700; text-underline-offset: 3px; transition: color .2s; }
   .tip a:hover { color: var(--ink); }
   .final p.tip { margin: 22px auto 0; font-size: 15px; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  /* not Google's badge (that's only allowed once the app is live on Google Play): a plain pill until then */
-  .play { display: inline-block; background: var(--ink); color: var(--on-ink); text-decoration: none; padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: 17px; white-space: nowrap; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
-  .play:hover { transform: translateY(-2px) rotate(-1deg); }
-  @media (max-width: 380px) { .play { font-size: 14.5px; padding: 12px 16px; } }
+  /* Google's official badge, unmodified. The file has Google's required clear space built in;
+     81px tall makes the black badge 54px, the same size as the App Store badge on the Ohaiyou page */
+  .store { display: block; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .store:hover, .store:focus-visible { transform: translateY(-3px); }
+  .store img { display: block; height: 81px; width: auto; }
+  .hero .store { margin-left: -13px; }   /* lines the black badge up with the text above; the clear space stays */
+  @media (prefers-reduced-motion: reduce) { .store { transition: none; } }
   .btn-ghost { display: inline-block; padding: 12px 20px; border-radius: 14px; border: 1px solid var(--line); text-decoration: none; font-weight: 500; color: var(--ink); }
   .btn-ghost:hover { border-color: var(--ink); }
   .hero-art { position: relative; justify-self: center; width: min(300px, 70vw); }
@@ -258,11 +261,10 @@
     <div class="dash"></div>
     <p class="lead">You read on the big screen inside. Your book's cover shows on the outside, for the whole train to see. Reading was always cool. Now it's visible.</p>
     <div class="cta-row">
-      <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">Coming <i>really</i> soon to Google Play
-      </a>
+      <a class="store" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener"><img src="img/google-play-badge.png" alt="Get it on Google Play"></a>
       <a class="btn-ghost" href="#features">See what it does</a>
     </div>
-    <p class="tip">Want to support me until then? <a href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Tips are always welcome</a>. Thank you!</p>
+    <p class="tip">It's out now! Want to support me even more? <a href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Tips are always welcome</a>. Thank you!</p>
     <p class="fine">No ads. No account. No subscription. Just books.</p>
   </div>
   <div class="hero-art">
@@ -477,8 +479,8 @@
       <div class="a"><p>You pay once. No ads, no subscription, and no premium version hiding the good stuff.</p></div>
     </details>
     <details>
-      <summary>When can I get it? <span class="badge">Soon</span></summary>
-      <div class="a"><p>It's being tested on Google Play right now. So, really soon. Like, <i>really</i> soon.</p></div>
+      <summary>When can I get it? <span class="badge">Out now</span></summary>
+      <div class="a"><p>Right now! It's on <a href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">Google Play</a>, ready for your Fold 8.</p></div>
     </details>
   </div>
 </div></section>
@@ -487,10 +489,9 @@
   <h2 class="serif">Ready to be seen reading?</h2>
   <p>Your next book deserves an audience.</p>
   <div class="cta-row">
-    <a class="play" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener">Coming <i>really</i> soon to Google Play
-    </a>
+    <a class="store" href="https://play.google.com/store/apps/details?id=com.bunsoootchi.performatively" target="_blank" rel="noopener"><img src="img/google-play-badge.png" alt="Get it on Google Play"></a>
   </div>
-  <p class="tip">Want to support me until then? <a href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Tips are always welcome</a>. Thank you!</p>
+  <p class="tip">It's out now! Want to support me even more? <a href="https://ko-fi.com/bunsoootchi" target="_blank" rel="noopener">Tips are always welcome</a>. Thank you!</p>
   <p class="tiny">Questions or bugs? <a href="mailto:bunsoootchi@gmail.com">bunsoootchi@gmail.com</a></p>
 </div></section>
 
