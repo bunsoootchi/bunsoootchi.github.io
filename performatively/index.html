@@ -298,7 +298,7 @@
 </div></header>
 
 <section class="folio" id="folio"><div class="wrap">
-  <div class="folio-card reveal">
+  <div class="folio-card">
     <div>
       <div class="pair-icons"><img src="img/folio-icon.png" alt="Folio Launcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><img src="img/icon.png" alt="Performatively"></div>
       <p class="eyebrow">Featured in Folio Launcher</p>
@@ -603,7 +603,7 @@
 
   // Fade blocks in the first time they scroll into view. Blocks that arrive together come in one after another.
   window.revealReady = true;
-  const REVEAL = ".hero .eyebrow, .hero h1, .hero .dash, .hero .lead, .hero .cta-row, .hero .tip, .hero .fine, .hero-art, .section-head > *, .seg, .stage .views, .stage .caption, .trailer-video, .types, .panel, details.all, .qa details, .final h2, .final p, .final .cta-row, footer .wrap > *";
+  const REVEAL = ".folio-card, .hero .eyebrow, .hero h1, .hero .dash, .hero .lead, .hero .cta-row, .hero .tip, .hero .fine, .hero-art, .section-head > *, .seg, .stage .views, .stage .caption, .trailer-video, .types, .panel, details.all, .qa details, .final h2, .final p, .final .cta-row, footer .wrap > *";
   const revealer = new IntersectionObserver(entries => {
     entries.filter(e => e.isIntersecting).forEach((e, i) => {
       const el = e.target;
