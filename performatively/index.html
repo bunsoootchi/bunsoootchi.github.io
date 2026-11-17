@@ -198,6 +198,28 @@
   .qa .a p { margin: 0 0 10px; }
   .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); border: 1px solid var(--red); border-radius: 6px; padding: 1px 6px; margin-left: 8px; vertical-align: 2px; }
 
+  /* FEATURED IN FOLIO: Folio Launcher features Performatively in its Market */
+  .folio { padding: 24px 0 48px; }
+  .folio-card { display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 48px 56px; overflow: hidden; }
+  .folio-card > * { min-width: 0; }
+  .folio .pair-icons { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; }
+  .folio .pair-icons img { width: 52px; height: 52px; border-radius: 13px; box-shadow: 0 0 0 1px var(--line), 0 8px 18px -8px rgba(0,0,0,.3); }
+  .folio .pair-icons svg { width: 18px; height: 18px; color: var(--faint); }
+  .folio h2 { font-size: clamp(36px, 4.4vw, 52px); line-height: 1.12; margin: 0 0 14px; }
+  .folio h2 em { color: var(--red); }
+  .folio p { margin: 0 0 26px; max-width: 44ch; }
+  .folio .btn-ghost { display: inline-flex; align-items: center; gap: 10px; background: var(--bg); }
+  .folio .btn-ghost svg { width: 16px; height: 16px; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .folio .btn-ghost:hover svg { transform: translateX(3px); }
+  .folio .shot-wrap { position: relative; justify-self: center; width: min(230px, 56vw); }
+  .folio .shot-wrap .phone { transform: rotate(-4deg); }
+  .folio .shot-wrap .phone img { aspect-ratio: 624 / 986; object-fit: cover; }
+  .folio .shot-wrap .sticker { position: absolute; width: 96px; right: -30px; bottom: 12%; transform: rotate(8deg); filter: drop-shadow(0 8px 14px rgba(0,0,0,.22)); }
+  @media (max-width: 820px) {
+    .folio-card { grid-template-columns: 1fr; padding: 32px 24px 40px; gap: 32px; }
+    .folio .shot-wrap { width: 190px; }
+    .folio .shot-wrap .sticker { width: 80px; right: -24px; }
+  }
   /* FINAL CALL */
   .final { text-align: center; padding: 96px 0 104px; }
   .final h2 { font-size: clamp(44px, 6.4vw, 80px); line-height: 1; margin: 0 0 16px; }
@@ -274,6 +296,22 @@
     <img class="float c" src="img/s-shh.webp" alt="" aria-hidden="true">
   </div>
 </div></header>
+
+<section class="folio" id="folio"><div class="wrap">
+  <div class="folio-card reveal">
+    <div>
+      <div class="pair-icons"><img src="img/folio-icon.png" alt="Folio Launcher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><img src="img/icon.png" alt="Performatively"></div>
+      <p class="eyebrow">Featured in Folio Launcher</p>
+      <h2 class="serif">Spotted in the <em>Folio Market.</em></h2>
+      <p>Folio Launcher gives your Fold an iPhone-style Home Screen, and its Market now features Performatively. Two apps made for the cover screen, side by side.</p>
+      <a class="btn-ghost" href="https://foliolauncher.com" target="_blank" rel="noopener">Meet Folio Launcher<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="shot-wrap">
+      <div class="phone"><img src="img/folio-cover-home.webp" alt="Folio Launcher's Home Screen on the Galaxy Z Fold 8 cover screen"></div>
+      <img class="sticker" src="img/s-seen-reading.webp" alt="" aria-hidden="true">
+    </div>
+  </div>
+</div></section>
 
 <section id="how"><div class="wrap">
   <div class="section-head">
